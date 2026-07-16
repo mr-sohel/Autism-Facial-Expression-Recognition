@@ -53,7 +53,7 @@ torch.backends.cudnn.benchmark = True
 
 # %%
 # ---- Paths (Kaggle default) ----
-DATA_DIR = "/kaggle/input/<YOUR-DATASET-NAME>/dataset"  # <-- CHANGE THIS
+DATA_DIR = "/kaggle/input/datasets/mrsohel/autism-fer-dataset/dataset"  # <-- CHANGE THIS
 OUTPUT_DIR = "/kaggle/working/results"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
