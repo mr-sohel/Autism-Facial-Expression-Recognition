@@ -232,10 +232,16 @@ MODEL_CONFIGS = {
 def get_model(name, pretrained=True):
     cfg = MODEL_CONFIGS[name]
     try:
-        model = timm.create_model(cfg["timm"], pretrained=pretrained, num_classes=NUM_CLASSES,
-                                  drop_rate=0.2, drop_path_rate=0.15)
-    except TypeError:
-        model = timm.create_model(cfg["timm"], pretrained=pretrained, num_classes=NUM_CLASSES)
+        try:
+            model = timm.create_model(cfg["timm"], pretrained=pretrained, num_classes=NUM_CLASSES,
+                                      drop_rate=0.2, drop_path_rate=0.15)
+        except TypeError:
+            model = timm.create_model(cfg["timm"], pretrained=pretrained, num_classes=NUM_CLASSES)
+    except RuntimeError as e:
+        if pretrained and "pretrained" in str(e).lower():
+            print(f"Warning: No pretrained weights for {name}. Using random init.")
+            return get_model(name, pretrained=False)
+        raise
     return model, cfg["size"]
 
 

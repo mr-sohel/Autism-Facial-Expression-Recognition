@@ -28,19 +28,25 @@ def get_model(model_name, num_classes=NUM_CLASSES, pretrained=True):
     if model_name in MODEL_CONFIGS:
         cfg = MODEL_CONFIGS[model_name]
         try:
-            model = timm.create_model(
-                cfg["timm_name"],
-                pretrained=pretrained,
-                num_classes=num_classes,
-                drop_rate=0.2,
-                drop_path_rate=0.15,
-            )
-        except TypeError:
-            model = timm.create_model(
-                cfg["timm_name"],
-                pretrained=pretrained,
-                num_classes=num_classes,
-            )
+            try:
+                model = timm.create_model(
+                    cfg["timm_name"],
+                    pretrained=pretrained,
+                    num_classes=num_classes,
+                    drop_rate=0.2,
+                    drop_path_rate=0.15,
+                )
+            except TypeError:
+                model = timm.create_model(
+                    cfg["timm_name"],
+                    pretrained=pretrained,
+                    num_classes=num_classes,
+                )
+        except RuntimeError as e:
+            if pretrained and "pretrained" in str(e).lower():
+                print(f"Warning: No pretrained weights for {model_name}. Using random init.")
+                return get_model(model_name, num_classes, pretrained=False)
+            raise
         input_size = cfg["input_size"]
     else:
         raise ValueError(f"Unknown model: {model_name}. Available: {list(MODEL_CONFIGS.keys())}")
