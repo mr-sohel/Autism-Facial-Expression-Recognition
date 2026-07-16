@@ -434,6 +434,7 @@ for exp in EXPERIMENTS:
     t0 = time.time()
     for epoch in range(1, NUM_EPOCHS + 1):
         train_loss, train_acc = train_one_epoch(model, train_loader, criterion, optimizer, scaler, ema, True)
+        scheduler.step()
         val_loss, val_preds, val_labels = evaluate(model, val_loader, criterion, ema)
         val_m = compute_metrics(val_labels, val_preds)
 
