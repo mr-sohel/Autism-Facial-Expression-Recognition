@@ -1,6 +1,6 @@
 # Autism Facial Expression Recognition
 
-A comparative study of 15 deep learning architectures for classifying facial expressions in individuals with Autism Spectrum Disorder (ASD). The study evaluates CNNs, Vision Transformers, and a custom hybrid model (EssWin6) across 6 emotion classes.
+A comparative study of 20 deep learning architectures for classifying facial expressions in individuals with Autism Spectrum Disorder (ASD). The study evaluates CNNs, Vision Transformers, and hybrid models across 6 emotion classes.
 
 ## Dataset
 
@@ -13,7 +13,7 @@ The unified corpus is aggregated from 4 sources, deduplicated, and split 70/15/1
 | Dr. Fatma M. Talaat (Kaggle) | ASD facial emotion data |
 | Hasibur Rahman's Kaggle Dataset | ASD facial expression samples |
 
-**Final split** (`master_dataset_split/`):
+**Final split** (`dataset/`):
 
 | Split | anger | fear | joy | natural | sadness | surprise | Total |
 |-------|------:|-----:|----:|--------:|--------:|---------:|------:|
@@ -21,7 +21,7 @@ The unified corpus is aggregated from 4 sources, deduplicated, and split 70/15/1
 | Valid | 31 | 13 | 129 | 34 | 69 | 23 | **299** |
 | Test | 32 | 14 | 130 | 35 | 69 | 24 | **304** |
 
-> **Class imbalance:** joy (602) vs fear (60) = 10:1 ratio. Mitigated via `WeightedRandomSampler` + class-weighted loss.
+> **Class imbalance:** joy (602) vs fear (60) = 10:1 ratio. Mitigated via `WeightedRandomSampler` (loss is unweighted to avoid double-weighting).
 
 ## Architecture
 
@@ -35,27 +35,23 @@ The unified corpus is aggregated from 4 sources, deduplicated, and split 70/15/1
 | InceptionV3 | 21.8M | 299 |
 | EfficientNetV2-S | 20.2M | 224 |
 | EfficientNetV2-M | 52.9M | 224 |
+| ResNet-18 | 11.7M | 224 |
 | ResNet-50 | 23.5M | 224 |
+| SE-ResNet-50 | 26.1M | 224 |
 | DenseNet-121 | 7.0M | 224 |
 | ConvNeXt-Small | 49.5M | 224 |
+| GhostNet-100 | 5.2M | 224 |
 
 ### Transformer & Hybrid Models
 | Model | Params | Input Size |
 |-------|-------:|:----------:|
-| ViT-B/16 | 85.8M | 224 |
-| Swin-B | 86.7M | 224 |
+| ViT-Tiny | 5.7M | 224 |
+| ViT-Base | 85.8M | 224 |
+| DeiT-Small | 22.1M | 224 |
+| Swin-Base | 86.7M | 224 |
+| MobileViT-S | 5.6M | 256 |
 | CoAtNet-1 (via `cvt_13`) | 41.5M | 224 |
 | CrossViT-9 | 8.2M | 240 |
-
-### Proposed Model: EssWin6
-
-A custom dual-branch hybrid combining:
-- **Branch 1:** EfficientNet-V2-S (CNN feature extraction)
-- **Branch 2:** Swin Transformer-B (global context)
-- **Fusion:** Gated attention mechanism with learned projection
-- **Head:** LayerNorm → Dropout → FC → GELU → Dropout → FC
-
-Uses Focal Loss; all baselines use Label Smoothing Cross-Entropy.
 
 ## Training
 
@@ -64,20 +60,20 @@ Uses Focal Loss; all baselines use Label Smoothing Cross-Entropy.
 python src/train.py --model <name> --loss ce_smooth --epochs 80 --batch-size 16 --mixup --ema
 ```
 
-### Local (all 15 models)
+### Local (all 20 models)
 ```bash
 python run_experiments.py
 ```
 
 ### Kaggle (recommended)
-Upload `master_dataset_split/` as a Kaggle dataset, then run `kaggle/run_all_models.py` with GPU enabled. See [`kaggle/SETUP.md`](kaggle/SETUP.md) for step-by-step instructions.
+Upload `dataset/` as a Kaggle dataset, then run `kaggle/run_all_models.py` with GPU enabled. See [`kaggle/SETUP.md`](kaggle/SETUP.md) for step-by-step instructions.
 
 ### Training Details
 - **Optimizer:** AdamW with differential LR (backbone 0.1x, head 1x)
 - **Scheduler:** CosineAnnealingWarmRestarts (T_0=10, T_mult=2)
 - **Regularization:** MixUp (α=0.4), EMA (decay=0.999), dropout, weight decay
 - **Augmentations:** Random flip, rotation (±15°), affine, color jitter, grayscale, Gaussian blur, random erasing
-- **Class balancing:** WeightedRandomSampler + class-weighted loss
+- **Class balancing:** WeightedRandomSampler
 - **Early stopping:** Patience 15 epochs on validation F1-macro
 - **Seed:** 42
 
@@ -113,7 +109,7 @@ results/
 ```
 ├── src/
 │   ├── dataset.py        # Dataset, augmentations, WeightedRandomSampler
-│   ├── models.py         # MODEL_CONFIGS, EssWin6, get_model()
+│   ├── models.py         # MODEL_CONFIGS, get_model()
 │   ├── losses.py         # FocalLoss, LabelSmoothingCrossEntropy
 │   ├── utils.py          # EMA, MixUp, metrics, device detection
 │   ├── evaluate.py       # Plots, confusion matrix, comparison charts
@@ -121,9 +117,9 @@ results/
 ├── kaggle/
 │   ├── run_all_models.py # Self-contained Kaggle notebook
 │   └── SETUP.md          # Kaggle setup instructions
-├── master_dataset_split/ # Train/Valid/Test splits
+├── dataset/              # Train/Valid/Test splits
 ├── Datasets/             # Raw source datasets
-├── run_experiments.py    # Run all 15 models locally
+├── run_experiments.py    # Run all 20 models locally
 └── requirements.txt      # Python dependencies
 ```
 

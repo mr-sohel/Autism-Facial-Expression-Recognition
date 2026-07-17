@@ -47,7 +47,7 @@ else:
 SEED = 42
 torch.manual_seed(SEED)
 np.random.seed(SEED)
-torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.deterministic = False
 torch.backends.cudnn.benchmark = True
 
 
@@ -62,12 +62,12 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # ---- Hyperparameters ----
 IMG_SIZE = 224
-BATCH_SIZE = 32
-NUM_EPOCHS = 60
-LEARNING_RATE = 1e-4
+BATCH_SIZE = 16
+NUM_EPOCHS = 80
+LEARNING_RATE = 1e-3
 WEIGHT_DECAY = 1e-4
-PATIENCE = 12
-MIXUP_ALPHA = 0.2
+PATIENCE = 15
+MIXUP_ALPHA = 0.4
 EMA_DECAY = 0.999
 NUM_WORKERS = 2
 
@@ -137,11 +137,14 @@ def get_train_transforms(img_size=IMG_SIZE):
     return transforms.Compose([
         transforms.Resize((img_size, img_size)),
         transforms.RandomHorizontalFlip(p=0.5),
-        transforms.RandomRotation(10),
-        transforms.RandomAffine(degrees=0, translate=(0.05, 0.05), scale=(0.95, 1.05)),
-        transforms.ColorJitter(brightness=0.2, contrast=0.2),
+        transforms.RandomRotation(15),
+        transforms.RandomAffine(degrees=0, translate=(0.1, 0.1), scale=(0.9, 1.1)),
+        transforms.ColorJitter(brightness=0.3, contrast=0.3, saturation=0.3, hue=0.1),
+        transforms.RandomGrayscale(p=0.05),
+        transforms.GaussianBlur(kernel_size=3, sigma=(0.1, 2.0)),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        transforms.RandomErasing(p=0.25, scale=(0.02, 0.15)),
     ])
 
 
@@ -246,7 +249,7 @@ def get_model(name, pretrained=True):
     try:
         try:
             model = timm.create_model(cfg["timm"], pretrained=pretrained, num_classes=NUM_CLASSES,
-                                      drop_rate=0.2, drop_path_rate=0.15)
+                                      drop_rate=0.3, drop_path_rate=0.2)
         except TypeError:
             model = timm.create_model(cfg["timm"], pretrained=pretrained, num_classes=NUM_CLASSES)
     except RuntimeError as e:
@@ -444,7 +447,7 @@ for exp in EXPERIMENTS:
         {"params": head, "lr": LEARNING_RATE},
     ], weight_decay=WEIGHT_DECAY)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(optimizer, T_0=10, T_mult=2)
-    scaler = GradScaler(enabled=True)
+    scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
     ema = EMA(model, EMA_DECAY)
 
     history = {"epochs": [], "train_loss": [], "val_loss": [], "train_acc": [], "val_acc": []}

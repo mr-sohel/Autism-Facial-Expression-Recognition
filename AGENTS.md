@@ -1,17 +1,17 @@
 # AGENTS.md
 
 ## What This Is
-Autism Facial Expression Recognition — 6-class image classification (anger, fear, joy, natural, sadness, surprise). Trains 14 deep learning models (CNNs + Transformers) for comparative evaluation.
+Autism Facial Expression Recognition — 6-class image classification (anger, fear, joy, natural, sadness, surprise). Trains 20 deep learning models (CNNs + Transformers) for comparative evaluation.
 
 ## Run Commands
 - **Local training (one model):** `python src/train.py --model <name> --loss ce_smooth --epochs 80 --batch-size 16 --mixup --ema`
 - **Local training (all models):** `python run_experiments.py`
-- **Kaggle training:** Upload `master_dataset_split/` as Kaggle dataset, run `kaggle/run_all_models.py` with GPU enabled (see `kaggle/SETUP.md`)
+- **Kaggle training:** Upload `dataset/` as Kaggle dataset, run `kaggle/run_all_models.py` with GPU enabled (see `kaggle/SETUP.md`)
 
 ## Dataset
-- Location: `master_dataset_split/{train,valid,test}/{anger,fear,joy,natural,sadness,surprise}/`
+- Location: `dataset/{train,valid,test}/{anger,fear,joy,natural,sadness,surprise}/`
 - Split: 1400 train / 299 valid / 304 test
-- **Severe class imbalance:** joy=602 vs fear=60 (10:1 ratio). Handled via WeightedRandomSampler + class-weighted loss.
+- **Severe class imbalance:** joy=602 vs fear=60 (10:1 ratio). Handled via WeightedRandomSampler (loss is unweighted to avoid double-weighting).
 - 4 raw datasets aggregated into this split (see `Datasets/` folder).
 
 ## Architecture: Key Gotchas
@@ -33,7 +33,7 @@ src/losses.py     — FocalLoss, LabelSmoothingCrossEntropy, get_loss_fn()
 src/utils.py      — EMA, MixUp, compute_metrics(), TrainingLogger, device detection
 src/evaluate.py   — Confusion matrix plots, training curves, per-class F1 bars
 src/train.py      — Single-model training entrypoint (CLI args)
-run_experiments.py — Runs all 14 models sequentially via subprocess
+run_experiments.py — Runs all 20 models sequentially via subprocess
 kaggle/run_all_models.py — Self-contained Kaggle notebook (duplicates src/ code)
 ```
 

@@ -22,10 +22,16 @@ env/
 # Project Specific Directories
 dataset/
 Datasets/
-master_dataset_split/
 results/
 models_pretrained/
 
 # Logs & Archives
 *.log
 *.zip
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Claude IDE Local Settings
+.claude/
