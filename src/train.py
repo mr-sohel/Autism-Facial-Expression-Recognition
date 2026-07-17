@@ -90,13 +90,10 @@ def train_one_epoch(model, loader, criterion, optimizer, scheduler, scaler, ema,
             correct += predicted.eq(labels).sum().item()
             total += labels.size(0)
         else:
-            correct += predicted.eq(y_a).sum().item()
+            correct += (lam * predicted.eq(y_a).sum().item() + (1 - lam) * predicted.eq(y_b).sum().item())
             total += labels.size(0)
 
         loss_meter.update(loss.item(), images.size(0))
-
-    if ema:
-        ema.apply_shadow()
 
     scheduler.step()
     acc = correct / total if total > 0 else 0.0
@@ -168,8 +165,8 @@ def main():
     for cls_idx, cls_name in enumerate(CLASS_NAMES):
         print(f"  {cls_name}: {train_counts.get(cls_idx, 0)}")
 
-    # Loss
-    criterion = get_loss_fn(args.loss, class_weights=class_weights)
+    # Loss (Don't double weight since we use WeightedRandomSampler)
+    criterion = get_loss_fn(args.loss, class_weights=None)
 
     # Optimizer: lower LR for pretrained backbone
     backbone_params = []

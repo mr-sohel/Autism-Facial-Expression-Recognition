@@ -29,7 +29,10 @@ import seaborn as sns
 from sklearn.metrics import (
     accuracy_score, f1_score, precision_score, recall_score,
     confusion_matrix, classification_report,
+    roc_curve, auc, precision_recall_curve, average_precision_score
 )
+from sklearn.preprocessing import label_binarize
+import pandas as pd
 from tqdm.auto import tqdm
 
 print("PyTorch:", torch.__version__)
@@ -61,10 +64,10 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 IMG_SIZE = 224
 BATCH_SIZE = 32
 NUM_EPOCHS = 60
-LEARNING_RATE = 1e-3
+LEARNING_RATE = 1e-4
 WEIGHT_DECAY = 1e-4
 PATIENCE = 12
-MIXUP_ALPHA = 0.4
+MIXUP_ALPHA = 0.0
 EMA_DECAY = 0.999
 NUM_WORKERS = 2
 
@@ -75,21 +78,27 @@ CLASS_TO_IDX = {c: i for i, c in enumerate(CLASS_NAMES)}
 # ---- Models to train ----
 EXPERIMENTS = [
     # CNNs
-    {"model": "vgg16",                        "loss": "ce_smooth"},
-    {"model": "vgg19",                        "loss": "ce_smooth"},
-    {"model": "mobilenetv2_100",              "loss": "ce_smooth"},
-    {"model": "mobilenetv3_large_100",        "loss": "ce_smooth"},
-    {"model": "inception_v3",                 "loss": "ce_smooth"},
-    {"model": "tf_efficientnetv2_s",          "loss": "ce_smooth"},
-    {"model": "tf_efficientnetv2_m",          "loss": "ce_smooth"},
-    {"model": "resnet50",                     "loss": "ce_smooth"},
-    {"model": "densenet121",                  "loss": "ce_smooth"},
-    {"model": "convnext_small",               "loss": "ce_smooth"},
+    {"model": "vgg16",                        "loss": "focal"},
+    {"model": "vgg19",                        "loss": "focal"},
+    {"model": "mobilenetv2_100",              "loss": "focal"},
+    {"model": "mobilenetv3_large_100",        "loss": "focal"},
+    {"model": "inception_v3",                 "loss": "focal"},
+    {"model": "tf_efficientnetv2_s",          "loss": "focal"},
+    {"model": "tf_efficientnetv2_m",          "loss": "focal"},
+    {"model": "resnet18",                     "loss": "focal"},
+    {"model": "resnet50",                     "loss": "focal"},
+    {"model": "seresnet50",                   "loss": "focal"},
+    {"model": "densenet121",                  "loss": "focal"},
+    {"model": "convnext_small",               "loss": "focal"},
+    {"model": "ghostnet_100",                 "loss": "focal"},
     # Transformers & Hybrids
-    {"model": "vit_base_patch16_224",         "loss": "ce_smooth"},
-    {"model": "swin_base_patch4_window7_224", "loss": "ce_smooth"},
-    {"model": "coatnet_1_224",               "loss": "ce_smooth"},  # CoAtNet hybrid
-    {"model": "crossvit_9_240",              "loss": "ce_smooth"},
+    {"model": "vit_tiny_patch16_224",         "loss": "focal"},
+    {"model": "vit_base_patch16_224",         "loss": "focal"},
+    {"model": "deit_small_patch16_224",       "loss": "focal"},
+    {"model": "swin_base_patch4_window7_224", "loss": "focal"},
+    {"model": "mobilevit_s",                  "loss": "focal"},
+    {"model": "coatnet_1_224",                "loss": "focal"},  # CoAtNet hybrid
+    {"model": "crossvit_9_240",               "loss": "focal"},
 ]
 
 
@@ -128,14 +137,11 @@ def get_train_transforms(img_size=IMG_SIZE):
     return transforms.Compose([
         transforms.Resize((img_size, img_size)),
         transforms.RandomHorizontalFlip(p=0.5),
-        transforms.RandomRotation(15),
-        transforms.RandomAffine(degrees=0, translate=(0.1, 0.1), scale=(0.9, 1.1)),
-        transforms.ColorJitter(brightness=0.3, contrast=0.3, saturation=0.3, hue=0.1),
-        transforms.RandomGrayscale(p=0.05),
-        transforms.GaussianBlur(kernel_size=3, sigma=(0.1, 2.0)),
+        transforms.RandomRotation(10),
+        transforms.RandomAffine(degrees=0, translate=(0.05, 0.05), scale=(0.95, 1.05)),
+        transforms.ColorJitter(brightness=0.2, contrast=0.2),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-        transforms.RandomErasing(p=0.25, scale=(0.02, 0.15)),
     ])
 
 
@@ -219,11 +225,17 @@ MODEL_CONFIGS = {
     "inception_v3": {"timm": "inception_v3", "size": 299},
     "tf_efficientnetv2_s": {"timm": "tf_efficientnetv2_s", "size": 224},
     "tf_efficientnetv2_m": {"timm": "tf_efficientnetv2_m", "size": 224},
+    "resnet18": {"timm": "resnet18", "size": 224},
     "resnet50": {"timm": "resnet50", "size": 224},
+    "seresnet50": {"timm": "seresnet50", "size": 224},
     "densenet121": {"timm": "densenet121", "size": 224},
     "convnext_small": {"timm": "convnext_small.fb_in22k", "size": 224},
+    "ghostnet_100": {"timm": "ghostnet_100", "size": 224},
+    "vit_tiny_patch16_224": {"timm": "vit_tiny_patch16_224.augreg_in21k", "size": 224},
     "vit_base_patch16_224": {"timm": "vit_base_patch16_224.augreg_in21k", "size": 224},
+    "deit_small_patch16_224": {"timm": "deit_small_patch16_224", "size": 224},
     "swin_base_patch4_window7_224": {"timm": "swin_base_patch4_window7_224", "size": 224},
+    "mobilevit_s": {"timm": "mobilevit_s", "size": 256},
     "coatnet_1_224": {"timm": "coatnet_1_224", "size": 224},
     "crossvit_9_240": {"timm": "crossvit_9_240", "size": 240},
 }
@@ -284,14 +296,15 @@ def mixup_data(x, y, alpha=MIXUP_ALPHA):
 
 # %%
 def compute_metrics(y_true, y_pred):
+    labels_list = list(range(NUM_CLASSES))
     return {
         "accuracy": accuracy_score(y_true, y_pred),
-        "f1_macro": f1_score(y_true, y_pred, average="macro", zero_division=0),
-        "precision_macro": precision_score(y_true, y_pred, average="macro", zero_division=0),
-        "recall_macro": recall_score(y_true, y_pred, average="macro", zero_division=0),
-        "confusion_matrix": confusion_matrix(y_true, y_pred).tolist(),
-        "report": classification_report(y_true, y_pred, target_names=CLASS_NAMES, zero_division=0),
-        "per_class_f1": dict(zip(CLASS_NAMES, [float(f) for f in f1_score(y_true, y_pred, average=None, zero_division=0)])),
+        "f1_macro": f1_score(y_true, y_pred, average="macro", zero_division=0, labels=labels_list),
+        "precision_macro": precision_score(y_true, y_pred, average="macro", zero_division=0, labels=labels_list),
+        "recall_macro": recall_score(y_true, y_pred, average="macro", zero_division=0, labels=labels_list),
+        "confusion_matrix": confusion_matrix(y_true, y_pred, labels=labels_list).tolist(),
+        "report": classification_report(y_true, y_pred, target_names=CLASS_NAMES, zero_division=0, labels=labels_list),
+        "per_class_f1": dict(zip(CLASS_NAMES, [float(f) for f in f1_score(y_true, y_pred, average=None, zero_division=0, labels=labels_list)])),
     }
 
 
@@ -306,13 +319,13 @@ def train_one_epoch(model, loader, criterion, optimizer, scaler, ema, use_mixup)
         images, labels = images.to(DEVICE), labels.to(DEVICE)
         optimizer.zero_grad(set_to_none=True)
 
-        with autocast(device_type="cuda", dtype=torch.float16):
-            outputs = model(images)
+        with autocast(device_type=DEVICE.type, dtype=torch.float16 if DEVICE.type == "cuda" else torch.bfloat16):
             if use_mixup:
                 mixed, ya, yb, lam = mixup_data(images, labels)
                 outputs = model(mixed)
                 loss = lam * criterion(outputs, ya) + (1 - lam) * criterion(outputs, yb)
             else:
+                outputs = model(images)
                 loss = criterion(outputs, labels)
 
         scaler.scale(loss).backward()
@@ -327,12 +340,10 @@ def train_one_epoch(model, loader, criterion, optimizer, scaler, ema, use_mixup)
         if not use_mixup:
             correct += outputs.argmax(1).eq(labels).sum().item()
         else:
-            correct += outputs.argmax(1).eq(ya).sum().item()
+            correct += (lam * outputs.argmax(1).eq(ya).sum().item() + (1 - lam) * outputs.argmax(1).eq(yb).sum().item())
         total += labels.size(0)
         total_loss += loss.item() * images.size(0)
 
-    if ema:
-        ema.apply_shadow()
     return total_loss / total, correct / total if total else 0
 
 
@@ -341,16 +352,18 @@ def evaluate(model, loader, criterion, ema=None):
     if ema:
         ema.apply_shadow()
     model.eval()
-    total_loss, all_preds, all_labels = 0.0, [], []
+    total_loss, all_preds, all_labels, all_probs = 0.0, [], [], []
     for images, labels in loader:
         images, labels = images.to(DEVICE), labels.to(DEVICE)
         outputs = model(images)
         total_loss += criterion(outputs, labels).item() * images.size(0)
+        probs = torch.softmax(outputs, dim=1)
+        all_probs.extend(probs.cpu().numpy())
         all_preds.extend(outputs.argmax(1).cpu().numpy())
         all_labels.extend(labels.cpu().numpy())
     if ema:
         ema.restore()
-    return total_loss / len(all_preds), [int(p) for p in all_preds], [int(l) for l in all_labels]
+    return total_loss / len(all_preds), [int(p) for p in all_preds], [int(l) for l in all_labels], np.array(all_probs)
 
 
 # %% [markdown]
@@ -358,14 +371,14 @@ def evaluate(model, loader, criterion, ema=None):
 
 # %%
 def plot_confusion_matrix(y_true, y_pred, path, name):
-    cm = confusion_matrix(y_true, y_pred)
+    cm = confusion_matrix(y_true, y_pred, labels=list(range(NUM_CLASSES)))
     cm_norm = cm.astype("float") / cm.sum(axis=1, keepdims=True)
     fig, ax = plt.subplots(figsize=(10, 8))
     sns.heatmap(cm_norm, annot=True, fmt=".2f", cmap="Blues",
                 xticklabels=CLASS_NAMES, yticklabels=CLASS_NAMES, ax=ax, vmin=0, vmax=1)
     ax.set_xlabel("Predicted"); ax.set_ylabel("True")
     ax.set_title(f"{name} — Confusion Matrix")
-    plt.tight_layout(); plt.savefig(path, dpi=150, bbox_inches="tight"); plt.close()
+    plt.tight_layout(); plt.savefig(path, dpi=150, bbox_inches="tight"); plt.close(fig)
 
 
 def plot_curves(history, path, name):
@@ -378,7 +391,7 @@ def plot_curves(history, path, name):
     axes[1].plot(history["epochs"], history["val_acc"], "r-", label="Val", lw=2)
     axes[1].set(xlabel="Epoch", ylabel="Accuracy", title=f"{name} — Accuracy")
     axes[1].legend(); axes[1].grid(True, alpha=0.3)
-    plt.tight_layout(); plt.savefig(path, dpi=150, bbox_inches="tight"); plt.close()
+    plt.tight_layout(); plt.savefig(path, dpi=150, bbox_inches="tight"); plt.close(fig)
 
 
 def plot_f1_bars(per_class_f1, path, name):
@@ -388,7 +401,7 @@ def plot_f1_bars(per_class_f1, path, name):
     ax.set_ylabel("F1-Score"); ax.set_title(f"{name} — Per-Class F1"); ax.set_ylim(0, 1.0)
     for b, v in zip(bars, per_class_f1.values()):
         ax.text(b.get_x() + b.get_width()/2, v + 0.01, f"{v:.3f}", ha="center", va="bottom", fontsize=10)
-    plt.tight_layout(); plt.savefig(path, dpi=150, bbox_inches="tight"); plt.close()
+    plt.tight_layout(); plt.savefig(path, dpi=150, bbox_inches="tight"); plt.close(fig)
 
 
 # %% [markdown]
@@ -396,6 +409,7 @@ def plot_f1_bars(per_class_f1, path, name):
 
 # %%
 all_results = {}
+global_test_labels = None
 
 for exp in EXPERIMENTS:
     name = exp["model"]
@@ -413,7 +427,7 @@ for exp in EXPERIMENTS:
     total_p = sum(p.numel() for p in model.parameters())
     print(f"  Parameters: {total_p:,}")
 
-    criterion = get_loss_fn(loss_type, class_weights.to(DEVICE))
+    criterion = get_loss_fn(loss_type, None)
 
     # Differential learning rates
     backbone, head = [], []
@@ -441,7 +455,7 @@ for exp in EXPERIMENTS:
     for epoch in range(1, NUM_EPOCHS + 1):
         train_loss, train_acc = train_one_epoch(model, train_loader, criterion, optimizer, scaler, ema, True)
         scheduler.step()
-        val_loss, val_preds, val_labels = evaluate(model, val_loader, criterion, ema)
+        val_loss, val_preds, val_labels, _ = evaluate(model, val_loader, criterion, ema)
         val_m = compute_metrics(val_labels, val_preds)
 
         history["epochs"].append(epoch)
@@ -475,7 +489,7 @@ for exp in EXPERIMENTS:
     model.load_state_dict(ckpt["state_dict"])
     ema.shadow = ckpt["ema"]
 
-    test_loss, test_preds, test_labels = evaluate(model, test_loader, criterion, ema)
+    test_loss, test_preds, test_labels, test_probs = evaluate(model, test_loader, criterion, ema)
     test_m = compute_metrics(test_labels, test_preds)
 
     print(f"\n  TEST — Acc: {test_m['accuracy']:.4f} | F1: {test_m['f1_macro']:.4f} | Prec: {test_m['precision_macro']:.4f} | Rec: {test_m['recall_macro']:.4f}")
@@ -495,42 +509,153 @@ for exp in EXPERIMENTS:
     all_results[name] = test_m
     all_results[name]["params"] = total_p
     all_results[name]["time_min"] = (time.time() - t0) / 60
+    all_results[name]["test_probs"] = test_probs
+    all_results[name]["test_preds"] = test_preds
+    global_test_labels = test_labels
 
     print(f"  Saved to {model_dir}/")
     torch.cuda.empty_cache()
 
+    # --- Explicit Cleanup ---
+    # Prevents "Too many open files" and DataLoader worker process leaks across experiments on Kaggle
+    del model, optimizer, scheduler, scaler, criterion, ema
+    del train_loader, val_loader, test_loader
+    import gc
+    gc.collect()
+
 
 # %% [markdown]
-# # Final Comparison
+# # Final Comparison & Paper Figures
 
 # %%
 print(f"\n{'='*70}")
 print("  FINAL MODEL COMPARISON")
 print(f"{'='*70}")
+
+models_sorted = sorted(all_results.keys(), key=lambda k: all_results[k]["f1_macro"], reverse=True)
+top_5_models = models_sorted[:5]
+
 header = f"{'Model':<35} {'Acc':>8} {'F1':>8} {'Prec':>8} {'Rec':>8} {'Params':>12}"
 print(header)
 print("-" * len(header))
-for name in sorted(all_results, key=lambda x: all_results[x]["f1_macro"], reverse=True):
+for name in models_sorted:
     r = all_results[name]
     print(f"{name:<35} {r['accuracy']:>8.4f} {r['f1_macro']:>8.4f} {r['precision_macro']:>8.4f} {r['recall_macro']:>8.4f} {r.get('params',0):>12,}")
 
-# Save comparison
+# Remove heavy arrays before saving JSON
+json_results = copy.deepcopy(all_results)
+for k in json_results:
+    json_results[k].pop("test_probs", None)
+    json_results[k].pop("test_preds", None)
 with open(f"{OUTPUT_DIR}/comparison.json", "w") as f:
-    json.dump(all_results, f, indent=2)
+    json.dump(json_results, f, indent=2)
 
-# Plot comparison
-fig, ax = plt.subplots(figsize=(12, 7))
-names_sorted = sorted(all_results, key=lambda x: all_results[x]["f1_macro"])
-f1_vals = [all_results[n]["f1_macro"] for n in names_sorted]
-colors = sns.color_palette("coolwarm", len(names_sorted))
-ax.barh(names_sorted, f1_vals, color=colors, edgecolor="black", lw=0.5)
-for i, v in enumerate(f1_vals):
-    ax.text(v + 0.003, i, f"{v:.4f}", va="center", fontsize=9)
-ax.set_xlabel("Macro F1-Score")
-ax.set_title("All Models — Macro F1 Comparison")
+COMPARISON_DIR = os.path.join(OUTPUT_DIR, "paper_figures")
+os.makedirs(COMPARISON_DIR, exist_ok=True)
+
+# 1. Grouped Bar Chart (Acc, F1, Prec, Rec) for Top Models
+df_metrics = []
+for m in top_5_models:
+    df_metrics.extend([
+        {"Model": m, "Metric": "Accuracy", "Score": all_results[m]["accuracy"]},
+        {"Model": m, "Metric": "F1-Macro", "Score": all_results[m]["f1_macro"]},
+        {"Model": m, "Metric": "Precision", "Score": all_results[m]["precision_macro"]},
+        {"Model": m, "Metric": "Recall", "Score": all_results[m]["recall_macro"]},
+    ])
+df_metrics = pd.DataFrame(df_metrics)
+fig1 = plt.figure(figsize=(12, 6))
+sns.barplot(data=df_metrics, x="Model", y="Score", hue="Metric", palette="Set2")
+plt.ylim(0, 1.0)
+plt.title("Top 5 Models - Performance Metrics")
 plt.tight_layout()
-plt.savefig(f"{OUTPUT_DIR}/f1_comparison.png", dpi=150, bbox_inches="tight")
-plt.close()
+plt.savefig(f"{COMPARISON_DIR}/1_grouped_bar_metrics.png", dpi=300)
+plt.close(fig1)
 
-print(f"\nAll results saved to {OUTPUT_DIR}/")
+# 2. Box Plot of Per-Class F1 Scores
+f1_data = []
+for m in models_sorted:
+    for cls_name, f1 in all_results[m]["per_class_f1"].items():
+        f1_data.append({"Model": m, "Class": cls_name, "F1": f1})
+df_f1 = pd.DataFrame(f1_data)
+fig2 = plt.figure(figsize=(14, 8))
+sns.boxplot(data=df_f1, x="F1", y="Model", palette="coolwarm")
+plt.title("Distribution of Per-Class F1 Scores across Models")
+plt.xlabel("F1-Score")
+plt.tight_layout()
+plt.savefig(f"{COMPARISON_DIR}/2_boxplot_f1_distributions.png", dpi=300)
+plt.close(fig2)
+
+# 3. Macro ROC Curve (Top 5 Models)
+fig3 = plt.figure(figsize=(10, 8))
+Y_test_bin = label_binarize(global_test_labels, classes=list(range(NUM_CLASSES)))
+for m in top_5_models:
+    probs = all_results[m]["test_probs"]
+    fpr, tpr, _ = roc_curve(Y_test_bin.ravel(), probs.ravel())
+    macro_auc = auc(fpr, tpr)
+    plt.plot(fpr, tpr, lw=2, label=f"{m} (AUC = {macro_auc:.3f})")
+plt.plot([0, 1], [0, 1], 'k--', lw=2)
+plt.xlabel("False Positive Rate")
+plt.ylabel("True Positive Rate")
+plt.title("Macro-Average ROC Curve (Top 5 Models)")
+plt.legend(loc="lower right")
+plt.grid(alpha=0.3)
+plt.savefig(f"{COMPARISON_DIR}/3_roc_curve.png", dpi=300)
+plt.close(fig3)
+
+# 4. Precision-Recall Curve (Top 5 Models)
+fig4 = plt.figure(figsize=(10, 8))
+for m in top_5_models:
+    probs = all_results[m]["test_probs"]
+    prec, rec, _ = precision_recall_curve(Y_test_bin.ravel(), probs.ravel())
+    ap = average_precision_score(Y_test_bin, probs, average="macro")
+    plt.plot(rec, prec, lw=2, label=f"{m} (AP = {ap:.3f})")
+plt.xlabel("Recall")
+plt.ylabel("Precision")
+plt.title("Macro-Average Precision-Recall Curve (Top 5 Models)")
+plt.legend(loc="lower left")
+plt.grid(alpha=0.3)
+plt.savefig(f"{COMPARISON_DIR}/4_pr_curve.png", dpi=300)
+plt.close(fig4)
+
+# 5. Radar Chart (Spider Chart)
+categories = ['Accuracy', 'F1-Macro', 'Precision', 'Recall']
+N = len(categories)
+angles = [n / float(N) * 2 * np.pi for n in range(N)]
+angles += angles[:1]
+fig5, ax = plt.subplots(figsize=(8, 8), subplot_kw=dict(polar=True))
+ax.set_theta_offset(np.pi / 2)
+ax.set_theta_direction(-1)
+plt.xticks(angles[:-1], categories)
+ax.set_rlabel_position(0)
+plt.yticks([0.2, 0.4, 0.6, 0.8, 1.0], ["0.2", "0.4", "0.6", "0.8", "1.0"], color="grey", size=8)
+plt.ylim(0, 1)
+
+for m in top_5_models:
+    values = [
+        all_results[m]["accuracy"],
+        all_results[m]["f1_macro"],
+        all_results[m]["precision_macro"],
+        all_results[m]["recall_macro"]
+    ]
+    values += values[:1]
+    ax.plot(angles, values, linewidth=2, linestyle='solid', label=m)
+    ax.fill(angles, values, alpha=0.1)
+
+plt.title("Radar Chart - Top 5 Models", y=1.1)
+plt.legend(loc='upper right', bbox_to_anchor=(1.3, 1.1))
+plt.savefig(f"{COMPARISON_DIR}/5_radar_chart.png", dpi=300, bbox_inches="tight")
+plt.close(fig5)
+
+# 6. Model Prediction Correlation Heatmap (Ensemble Diversity)
+preds_dict = {m: all_results[m]["test_preds"] for m in models_sorted}
+df_preds = pd.DataFrame(preds_dict)
+corr = df_preds.corr(method="spearman").fillna(0)
+fig6 = plt.figure(figsize=(12, 10))
+sns.heatmap(corr, annot=False, cmap="coolwarm", vmin=0, vmax=1)
+plt.title("Model Prediction Correlation (Spearman)")
+plt.tight_layout()
+plt.savefig(f"{COMPARISON_DIR}/6_model_correlation_heatmap.png", dpi=300)
+plt.close(fig6)
+
+print(f"\nAll results and paper-ready figures saved to {COMPARISON_DIR}/")
 print("Download the output dataset from the Kaggle 'Output' tab.")

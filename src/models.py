@@ -13,12 +13,18 @@ MODEL_CONFIGS = {
     "inception_v3": {"timm_name": "inception_v3", "input_size": 299},
     "tf_efficientnetv2_s": {"timm_name": "tf_efficientnetv2_s", "input_size": 224},
     "tf_efficientnetv2_m": {"timm_name": "tf_efficientnetv2_m", "input_size": 224},
+    "resnet18": {"timm_name": "resnet18", "input_size": 224},
     "resnet50": {"timm_name": "resnet50", "input_size": 224},
+    "seresnet50": {"timm_name": "seresnet50", "input_size": 224},
     "densenet121": {"timm_name": "densenet121", "input_size": 224},
     "convnext_small": {"timm_name": "convnext_small.fb_in22k", "input_size": 224},
+    "ghostnet_100": {"timm_name": "ghostnet_100", "input_size": 224},
     # Transformer Models
+    "vit_tiny_patch16_224": {"timm_name": "vit_tiny_patch16_224.augreg_in21k", "input_size": 224},
     "vit_base_patch16_224": {"timm_name": "vit_base_patch16_224.augreg_in21k", "input_size": 224},
+    "deit_small_patch16_224": {"timm_name": "deit_small_patch16_224", "input_size": 224},
     "swin_base_patch4_window7_224": {"timm_name": "swin_base_patch4_window7_224", "input_size": 224},
+    "mobilevit_s": {"timm_name": "mobilevit_s", "input_size": 256},
     "cvt_13": {"timm_name": "coatnet_1_224", "input_size": 224}, # CoAtNet hybrid (conv + attention)
     "crossvit_9_240": {"timm_name": "crossvit_9_240", "input_size": 240},
 }
