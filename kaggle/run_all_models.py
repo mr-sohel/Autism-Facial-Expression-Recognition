@@ -67,7 +67,7 @@ NUM_EPOCHS = 60
 LEARNING_RATE = 1e-4
 WEIGHT_DECAY = 1e-4
 PATIENCE = 12
-MIXUP_ALPHA = 0.0
+MIXUP_ALPHA = 0.2
 EMA_DECAY = 0.999
 NUM_WORKERS = 2
 
@@ -97,7 +97,7 @@ EXPERIMENTS = [
     {"model": "deit_small_patch16_224",       "loss": "focal"},
     {"model": "swin_base_patch4_window7_224", "loss": "focal"},
     {"model": "mobilevit_s",                  "loss": "focal"},
-    {"model": "coatnet_1_224",                "loss": "focal"},  # CoAtNet hybrid
+    {"model": "coat_lite_small",              "loss": "focal"},  # CoAtNet hybrid
     {"model": "crossvit_9_240",               "loss": "focal"},
 ]
 
@@ -236,7 +236,7 @@ MODEL_CONFIGS = {
     "deit_small_patch16_224": {"timm": "deit_small_patch16_224", "size": 224},
     "swin_base_patch4_window7_224": {"timm": "swin_base_patch4_window7_224", "size": 224},
     "mobilevit_s": {"timm": "mobilevit_s", "size": 256},
-    "coatnet_1_224": {"timm": "coatnet_1_224", "size": 224},
+    "coat_lite_small": {"timm": "coat_lite_small", "size": 224},
     "crossvit_9_240": {"timm": "crossvit_9_240", "size": 240},
 }
 
