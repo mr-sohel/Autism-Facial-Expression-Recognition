@@ -77,28 +77,29 @@ CLASS_TO_IDX = {c: i for i, c in enumerate(CLASS_NAMES)}
 
 # ---- Models to train ----
 EXPERIMENTS = [
-    # CNNs
-    {"model": "vgg16",                        "loss": "focal"},
-    {"model": "vgg19",                        "loss": "focal"},
-    {"model": "mobilenetv2_100",              "loss": "focal"},
-    {"model": "mobilenetv3_large_100",        "loss": "focal"},
-    {"model": "inception_v3",                 "loss": "focal"},
-    {"model": "tf_efficientnetv2_s",          "loss": "focal"},
-    {"model": "tf_efficientnetv2_m",          "loss": "focal"},
-    {"model": "resnet18",                     "loss": "focal"},
-    {"model": "resnet50",                     "loss": "focal"},
-    {"model": "seresnet50",                   "loss": "focal"},
-    {"model": "densenet121",                  "loss": "focal"},
-    {"model": "convnext_small",               "loss": "focal"},
-    {"model": "ghostnet_100",                 "loss": "focal"},
-    # Transformers & Hybrids
-    {"model": "vit_tiny_patch16_224",         "loss": "focal"},
-    {"model": "vit_base_patch16_224",         "loss": "focal"},
-    {"model": "deit_small_patch16_224",       "loss": "focal"},
-    {"model": "swin_base_patch4_window7_224", "loss": "focal"},
-    {"model": "mobilevit_s",                  "loss": "focal"},
-    {"model": "coat_lite_small",              "loss": "focal"},  # CoAtNet hybrid
-    {"model": "crossvit_9_240",               "loss": "focal"},
+    # CNNs (Thrive with focal loss and higher LR)
+    {"model": "vgg16",                        "loss": "focal",     "lr": 1e-3},
+    {"model": "vgg19",                        "loss": "focal",     "lr": 1e-3},
+    {"model": "mobilenetv2_100",              "loss": "focal",     "lr": 1e-3},
+    {"model": "mobilenetv3_large_100",        "loss": "focal",     "lr": 1e-3},
+    {"model": "inception_v3",                 "loss": "focal",     "lr": 1e-3},
+    {"model": "tf_efficientnetv2_s",          "loss": "focal",     "lr": 1e-3},
+    {"model": "tf_efficientnetv2_m",          "loss": "ce_smooth", "lr": 5e-4},  # Regressed on focal/1e-3
+    {"model": "resnet18",                     "loss": "focal",     "lr": 1e-3},
+    {"model": "resnet50",                     "loss": "focal",     "lr": 1e-3},
+    {"model": "seresnet50",                   "loss": "focal",     "lr": 1e-3},
+    {"model": "densenet121",                  "loss": "focal",     "lr": 1e-3},
+    {"model": "ghostnet_100",                 "loss": "focal",     "lr": 1e-3},
+    
+    # Transformers & Hybrids (Need lower LR to prevent collapse)
+    {"model": "convnext_small",               "loss": "ce_smooth", "lr": 3e-4},
+    {"model": "vit_tiny_patch16_224",         "loss": "ce_smooth", "lr": 1e-4},
+    {"model": "vit_base_patch16_224",         "loss": "ce_smooth", "lr": 1e-4},
+    {"model": "deit_small_patch16_224",       "loss": "ce_smooth", "lr": 1e-4},
+    {"model": "swin_base_patch4_window7_224", "loss": "ce_smooth", "lr": 1e-4},
+    {"model": "mobilevit_s",                  "loss": "ce_smooth", "lr": 3e-4},
+    {"model": "coat_lite_small",              "loss": "ce_smooth", "lr": 3e-4},
+    {"model": "crossvit_9_240",               "loss": "ce_smooth", "lr": 1e-4},  # Worked well at 1e-4 in Run 1
 ]
 
 
@@ -442,9 +443,10 @@ for exp in EXPERIMENTS:
         else:
             backbone.append(p)
 
+    exp_lr = exp.get("lr", LEARNING_RATE)
     optimizer = torch.optim.AdamW([
-        {"params": backbone, "lr": LEARNING_RATE * 0.1},
-        {"params": head, "lr": LEARNING_RATE},
+        {"params": backbone, "lr": exp_lr * 0.1},
+        {"params": head, "lr": exp_lr},
     ], weight_decay=WEIGHT_DECAY)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(optimizer, T_0=10, T_mult=2)
     scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
