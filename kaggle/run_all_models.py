@@ -92,13 +92,13 @@ EXPERIMENTS = [
     {"model": "ghostnet_100",                 "loss": "focal",     "lr": 1e-3},
     
     # Transformers & Hybrids (Need lower LR to prevent collapse)
-    {"model": "convnext_small",               "loss": "ce_smooth", "lr": 3e-4},
+    {"model": "convnext_small",               "loss": "ce_smooth", "lr": 1e-4},
     {"model": "vit_tiny_patch16_224",         "loss": "ce_smooth", "lr": 1e-4},
     {"model": "vit_base_patch16_224",         "loss": "ce_smooth", "lr": 1e-4},
     {"model": "deit_small_patch16_224",       "loss": "ce_smooth", "lr": 1e-4},
     {"model": "swin_base_patch4_window7_224", "loss": "ce_smooth", "lr": 1e-4},
     {"model": "mobilevit_s",                  "loss": "ce_smooth", "lr": 3e-4},
-    {"model": "coat_lite_small",              "loss": "ce_smooth", "lr": 3e-4},
+    {"model": "coat_lite_small",              "loss": "ce_smooth", "lr": 1e-4},
     {"model": "crossvit_9_240",               "loss": "ce_smooth", "lr": 1e-4},  # Worked well at 1e-4 in Run 1
 ]
 

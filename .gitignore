@@ -35,3 +35,6 @@ desktop.ini
 
 # Claude IDE Local Settings
 .claude/
+
+/dataset_quarantine
+
