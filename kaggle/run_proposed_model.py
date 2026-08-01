@@ -38,7 +38,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader, WeightedRandomSampler
-from torch.cuda.amp import autocast, GradScaler
+from torch.cuda.amp import GradScaler
+from torch.amp import autocast
 from torch.nn.utils import clip_grad_norm_
 import torchvision.transforms as transforms
 import timm

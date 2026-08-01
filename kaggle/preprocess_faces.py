@@ -1,33 +1,4 @@
-"""
-==============================================================================
-  Offline Face Preprocessing — MTCNN + CLAHE
-==============================================================================
-  Run this ONCE before training to produce a clean, face-cropped dataset.
-  Output is a parallel directory tree that is a drop-in replacement for the
-  raw dataset in any training script.
 
-  Steps applied per image:
-    1. MTCNN face detection  -> crop to largest/most-confident face + 20% pad
-    2. CLAHE                 -> normalise local contrast (handles multi-dataset
-                                lighting variation from 4 source datasets)
-    3. Fallback              -> if no face detected, centre-crop 85% of image
-    4. Resize to 224x224     -> matches training pipeline input size
-
-  Requirements (install once):
-    pip install facenet-pytorch opencv-python pillow
-
-  Usage — local:
-    python kaggle/preprocess_faces.py
-
-  Usage — Kaggle notebook (add a code cell BEFORE the training cell):
-    import subprocess
-    subprocess.run(["pip", "install", "-q", "facenet-pytorch"], check=True)
-    exec(open("/kaggle/input/<your-dataset>/preprocess_faces.py").read())
-
-  After running, update DATA_DIR / DATASET_DIR in your training scripts to
-  point at the output directory (default: dataset_mtcnn/).
-==============================================================================
-"""
 
 import os
 import sys

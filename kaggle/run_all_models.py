@@ -14,7 +14,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.cuda.amp import GradScaler, autocast
+from torch.cuda.amp import GradScaler
+from torch.amp import autocast
 from torch.utils.data import Dataset, DataLoader, WeightedRandomSampler
 from torchvision import transforms
 from PIL import Image
@@ -204,25 +205,13 @@ def get_loss_fn(loss_type, class_weights=None):
 
 MODEL_CONFIGS = {
     "vgg16": {"timm": "vgg16_bn", "size": 224},
-    "vgg19": {"timm": "vgg19_bn", "size": 224},
-    "mobilenetv2_100": {"timm": "mobilenetv2_100", "size": 224},
-    "mobilenetv3_large_100": {"timm": "mobilenetv3_large_100", "size": 224},
     "inception_v3": {"timm": "inception_v3", "size": 299},
-    "tf_efficientnetv2_s": {"timm": "tf_efficientnetv2_s", "size": 224},
-    "tf_efficientnetv2_m": {"timm": "tf_efficientnetv2_m", "size": 224},
-    "resnet18": {"timm": "resnet18", "size": 224},
-    "resnet50": {"timm": "resnet50", "size": 224},
-    "seresnet50": {"timm": "seresnet50", "size": 224},
     "densenet121": {"timm": "densenet121", "size": 224},
-    "convnext_small": {"timm": "convnext_small.fb_in22k", "size": 224},
-    "ghostnet_100": {"timm": "ghostnet_100", "size": 224},
-    "vit_tiny_patch16_224": {"timm": "vit_tiny_patch16_224.augreg_in21k", "size": 224},
-    "vit_base_patch16_224": {"timm": "vit_base_patch16_224.augreg_in21k", "size": 224},
+    "mobilenetv2_100": {"timm": "mobilenetv2_100", "size": 224},
+    "resnet50": {"timm": "resnet50", "size": 224},
     "deit_small_patch16_224": {"timm": "deit_small_patch16_224", "size": 224},
+    "vit_base_patch16_224": {"timm": "vit_base_patch16_224.augreg_in21k", "size": 224},
     "swin_base_patch4_window7_224": {"timm": "swin_base_patch4_window7_224", "size": 224},
-    "mobilevit_s": {"timm": "mobilevit_s", "size": 256},
-    "coat_lite_small": {"timm": "coat_lite_small", "size": 224},
-    "crossvit_9_240": {"timm": "crossvit_9_240", "size": 240},
 }
 
 
@@ -394,6 +383,7 @@ for exp in EXPERIMENTS:
 
     # Rebuild dataloaders (transforms are recreated each time for safety)
     train_loader, val_loader, test_loader, class_weights, _ = get_dataloaders(DATA_DIR, img_size=input_size)
+    class_weights = class_weights.to(DEVICE)
     total_p = sum(p.numel() for p in model.parameters())
     print(f"  Parameters: {total_p:,}")
 
