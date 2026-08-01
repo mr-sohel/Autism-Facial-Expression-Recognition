@@ -72,13 +72,40 @@ def detect_and_crop(img_pil, mtcnn):
 
     if mtcnn is not None:
         try:
-            boxes, probs = mtcnn.detect(img_pil)
+            boxes, probs, landmarks = mtcnn.detect(img_pil, landmarks=True)
         except Exception:
-            boxes, probs = None, None
+            boxes, probs, landmarks = None, None, None
 
-        if boxes is not None and len(boxes) > 0:
+        if boxes is not None and len(boxes) > 0 and landmarks is not None:
             # Choose face with highest detection confidence
             best = int(np.argmax(probs))
+            
+            # --- ALIGNMENT STEP ---
+            pts = landmarks[best]
+            if pts is not None:
+                left_eye, right_eye = pts[0], pts[1]
+                dy = right_eye[1] - left_eye[1]
+                dx = right_eye[0] - left_eye[0]
+                angle = np.degrees(np.arctan2(dy, dx))
+                
+                # Rotate image to make eyes horizontal
+                if abs(angle) > 1.5:  # Only rotate if tilt is noticeable
+                    eye_center = tuple(((left_eye + right_eye) / 2.0).astype(float))
+                    # PIL rotation is counter-clockwise. A positive dy means right eye is lower than left eye.
+                    # np.arctan2(dy, dx) is positive. To fix it, we must rotate clockwise (negative angle).
+                    # Wait, PIL's rotate takes positive angle for counter-clockwise. 
+                    # If right eye is lower (dy>0), angle>0. We need to rotate clockwise, so we pass angle.
+                    img_pil = img_pil.rotate(angle, center=eye_center, resample=Image.BICUBIC)
+                    
+                    # Re-detect on the aligned image to get straight bounding boxes
+                    try:
+                        boxes2, probs2 = mtcnn.detect(img_pil)
+                        if boxes2 is not None and len(boxes2) > 0:
+                            best = int(np.argmax(probs2))
+                            boxes = boxes2
+                    except Exception:
+                        pass # Fallback to unaligned boxes (they will be slightly off but acceptable)
+
             x1, y1, x2, y2 = boxes[best]
             bw, bh = x2 - x1, y2 - y1
 

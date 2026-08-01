@@ -270,7 +270,8 @@ class_weights = {cls_idx: total_samples / (len(class_counts) * count) for cls_id
 sample_weights = [class_weights[target] for target in train_dataset.targets]
 sampler = WeightedRandomSampler(weights=sample_weights, num_samples=total_samples, replacement=True)
 
-train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, sampler=sampler, num_workers=NUM_WORKERS, pin_memory=True, drop_last=True)
+train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS, pin_memory=True, drop_last=True)
+train_loader_stage2 = DataLoader(train_dataset, batch_size=BATCH_SIZE, sampler=sampler, num_workers=NUM_WORKERS, pin_memory=True, drop_last=True)
 val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS, pin_memory=True)
 test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS, pin_memory=True)
 
@@ -550,8 +551,109 @@ for epoch in range(1, NUM_EPOCHS + 1):
             break
 
 total_time = (time.time() - start_time) / 60
-print(f"\n[*] Training Complete in {total_time:.1f} minutes! Best Validation Macro F1: {best_val_f1:.4f}")
-print(f"[*] Best model checkpoint saved to: {best_model_path}")
+print(f"\n[*] Stage 1 Complete in {total_time:.1f} minutes! Best Validation Macro F1: {best_val_f1:.4f}")
+print(f"[*] Stage 1 checkpoint saved to: {best_model_path}")
+
+# ==============================================================================
+# 5.5 STAGE 2: CLASSIFIER FINE-TUNING (DECOUPLED TRAINING)
+# ==============================================================================
+print("\n" + "="*70)
+print("  STARTING STAGE 2: Classifier Fine-Tuning (Frozen Backbone)")
+print("="*70)
+
+# Load best model from Stage 1
+checkpoint = torch.load(best_model_path, map_location=device)
+model.load_state_dict(checkpoint["model_state_dict"])
+
+# Freeze backbone, unfreeze head
+for name, param in model.named_parameters():
+    if any(k in name for k in ("classifier", "se_a", "se_b")):
+        param.requires_grad = True
+    else:
+        param.requires_grad = False
+
+head_params = [p for p in model.parameters() if p.requires_grad]
+optimizer_stage2 = torch.optim.AdamW(head_params, lr=1e-4, weight_decay=WEIGHT_DECAY)
+ema_model_stage2 = ModelEMA(model, decay=EMA_DECAY)
+
+STAGE2_EPOCHS = 20
+patience_counter_s2 = 0
+start_time_s2 = time.time()
+best_val_f1_s2 = best_val_f1
+
+for epoch in range(1, STAGE2_EPOCHS + 1):
+    model.train()
+    running_loss, running_correct, total_train = 0.0, 0, 0
+    
+    # USE THE BALANCED SAMPLER FOR STAGE 2
+    for imgs, targets in train_loader_stage2:
+        imgs, targets = imgs.to(device), targets.to(device)
+        optimizer_stage2.zero_grad(set_to_none=True)
+        
+        with autocast(device_type=device.type, dtype=torch.float16 if device.type == "cuda" else torch.bfloat16):
+            mixed_imgs, ya, yb, lam = mixup_data(imgs, targets)
+            outputs = model(mixed_imgs)
+            loss = lam * loss_fn(outputs, ya) + (1 - lam) * loss_fn(outputs, yb)
+            
+        scaler.scale(loss).backward()
+        scaler.unscale_(optimizer_stage2)
+        clip_grad_norm_(head_params, max_norm=5.0)
+        scaler.step(optimizer_stage2)
+        scaler.update()
+        ema_model_stage2.update(model)
+        
+        running_loss += loss.item() * imgs.size(0)
+        running_correct += (lam * outputs.argmax(1).eq(ya).sum().item() +
+                           (1 - lam) * outputs.argmax(1).eq(yb).sum().item())
+        total_train += imgs.size(0)
+        
+    epoch_train_loss = running_loss / total_train
+    epoch_train_acc = running_correct / total_train
+    
+    ema_model_stage2.module.eval()
+    val_loss, val_correct, total_val = 0.0, 0, 0
+    val_preds_list, val_targets_list = [], []
+    
+    with torch.no_grad():
+        for imgs, targets in val_loader:
+            imgs, targets = imgs.to(device), targets.to(device)
+            with autocast(device_type=device.type, dtype=torch.float16 if device.type == "cuda" else torch.bfloat16):
+                outputs = ema_model_stage2.module(imgs)
+                loss = loss_fn(outputs, targets)
+                
+            val_loss += loss.item() * imgs.size(0)
+            preds = outputs.argmax(dim=1)
+            val_correct += (preds == targets).sum().item()
+            total_val += imgs.size(0)
+            
+            val_preds_list.extend(preds.cpu().numpy())
+            val_targets_list.extend(targets.cpu().numpy())
+            
+    epoch_val_loss = val_loss / total_val
+    epoch_val_acc = val_correct / total_val
+    epoch_val_f1 = f1_score(val_targets_list, val_preds_list, average="macro")
+    
+    elapsed = (time.time() - start_time_s2) / 60
+    print(f"  Stage 2 Epoch {epoch:3d}/{STAGE2_EPOCHS} | TrL {epoch_train_loss:.4f} TrA {epoch_train_acc:.4f} | "
+          f"VlL {epoch_val_loss:.4f} VaA {epoch_val_acc:.4f} F1 {epoch_val_f1:.4f} | {elapsed:.1f}min")
+        
+    if epoch_val_f1 > best_val_f1_s2:
+        best_val_f1_s2 = epoch_val_f1
+        patience_counter_s2 = 0
+        print(f"    >> New best F1 (Stage 2): {best_val_f1_s2:.4f}")
+        torch.save({
+            "epoch": epoch,
+            "model_state_dict": ema_model_stage2.module.state_dict(),
+            "val_f1": best_val_f1_s2,
+            "val_acc": epoch_val_acc,
+        }, best_model_path)
+    else:
+        patience_counter_s2 += 1
+        if patience_counter_s2 >= PATIENCE:
+            print(f"  Early stopping Stage 2 at epoch {epoch}")
+            break
+
+print(f"\n[*] Stage 2 Complete! Final Best Validation Macro F1: {best_val_f1_s2:.4f}")
 
 
 # ==============================================================================

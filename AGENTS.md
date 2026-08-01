@@ -1,43 +1,54 @@
 # AGENTS.md
 
 ## What This Is
-Autism Facial Expression Recognition — 6-class image classification (anger, fear, joy, natural, sadness, surprise). Trains 20 deep learning models (CNNs + Transformers) for comparative evaluation.
+Autism Facial Expression Recognition — 6-class classification (anger, fear, joy, natural, sadness, surprise). Comparative study: an 8-model baseline sweep vs. the proposed **Care-FER** dual-stream architecture. All real training code is self-contained scripts under `kaggle/`, designed to run on Kaggle GPUs (T4/P100).
 
-## Run Commands
-- **Local training (one model):** `python src/train.py --model <name> --loss ce_smooth --epochs 80 --batch-size 16 --mixup --ema`
-- **Local training (all models):** `python run_experiments.py`
-- **Kaggle training:** Upload `dataset/` as Kaggle dataset, run `kaggle/run_all_models.py` with GPU enabled (see `kaggle/SETUP.md`)
+## Workflow (Kaggle, canonical)
+The full pipeline is `autism-fer-model.ipynb` (5 cells, run in order):
+1. `!pip install -q --no-deps facenet-pytorch`
+2. `offline_augmentation.py` — balance train split to ~600 img/class → `/kaggle/working/dataset_augmented`
+3. `preprocess_faces.py` — MTCNN face detect + eye-align + CLAHE → `/kaggle/working/dataset_mtcnn` (reads the augmented set)
+4. `run_all_models.py` — train 8 curated baselines
+5. `run_proposed_model.py` — train Care-FER
+
+Training scripts auto-prefer `/kaggle/working/dataset_mtcnn`, else fall back to `/kaggle/input/datasets/mrsohel/autism-dataset/dataset`.
+
+## Commands (local)
+- `python kaggle/preprocess_faces.py` — MTCNN+CLAHE over `dataset/` → `dataset_mtcnn/` (CPU default)
+- `python kaggle/offline_augmentation.py` — balance to 600/class → `dataset_augmented/`
+- `python kaggle/run_proposed_model.py` — Care-FER training; falls back to local `dataset/`, outputs `results/care_fer_proposed/`
+
+**`src/`, `run_experiments.py`, and `kaggle/SETUP.md` no longer exist.** README.md / CLAUDE.md describe that deleted architecture — treat them as stale. `python src/train.py ...` will not work.
 
 ## Dataset
-- Location: `dataset/{train,valid,test}/{anger,fear,joy,natural,sadness,surprise}/`
-- Split: 1400 train / 299 valid / 304 test
-- **Severe class imbalance:** joy=602 vs fear=60 (10:1 ratio). Handled via WeightedRandomSampler (loss is unweighted to avoid double-weighting).
-- 4 raw datasets aggregated into this split (see `Datasets/` folder).
+- `dataset/{train,valid,test}/{anger,fear,joy,natural,sadness,surprise}/` — 1400/299/304
+- Severe imbalance: joy=602 vs fear=60 (10:1)
+- Imbalance is addressed with **both** WeightedRandomSampler AND inverse-frequency class weights in the loss (FocalLoss `alpha` / CE `weight`) — NOT an "unweighted loss" as older docs claim. Care-FER additionally boosts sadness ×2.0 and fear ×1.2.
 
-## Architecture: Key Gotchas
-- **`cvt_13` is not a real model name.** `run_experiments.py` uses `"cvt_13"` but `src/models.py` remaps it to `coatnet_1_224` via timm. Don't add `cvt_13` to MODEL_CONFIGS — it's already handled.
-- **`inception_v3` expects 299x299 input** — all other models use 224 (except `crossvit_9_240` which uses 240). The pipeline handles this automatically.
-- **`models.py` catches `TypeError`** when creating models — some timm models don't accept `drop_rate`/`drop_path_rate`. If adding new models, test with `pretrained=False` first.
-- **Differential LR:** backbone gets `lr * 0.1`, head/classifier gets full `lr`. Pattern: params with `"classifier"`, `"head"`, or `"fc"` in name are head params.
+## Training Gotchas
+- **No shared module:** `run_all_models.py` and `run_proposed_model.py` each inline their own datasets/losses/EMA/plots. Cross-script changes must be made twice.
+- **`inception_v3` = 299 input** (all others 224). `MODEL_CONFIGS` carries per-model size; dataloaders are rebuilt per experiment.
+- `vit_base` uses timm tag `vit_base_patch16_224.augreg_in21k`.
+- **Differential LR:** backbone `lr*0.1`, head full `lr`. Head = params named `classifier`/`head`/`fc` (Care-FER adds `se_a`/`se_b`). CNNs train at `lr=1e-3` (focal loss); transformers at `lr=1e-4` (ce_smooth) — higher LR makes them collapse.
+- Care-FER uses warmup + cosine LambdaLR. Do NOT switch to CosineAnnealingWarmRestarts — periodic LR spikes destabilized DeiT.
+- Care-FER: VGG16-BN spatial features (forward_features + GAP, 512-d) + DeiT-S CLS token (384-d), dual SE blocks (r=16), head 896→512→256→6. Two stages: 160 ep (unbalanced shuffle loader), then 20 ep (frozen backbone + balanced sampler).
+- Care-FER EMA is a `deepcopy` (`ModelEMA`) — save/load the EMA weights, not the raw model.
+- Checkpoints are dicts (`state_dict`, `ema.shadow`, …) at `results/<name>_best.pth`; test eval applies EMA weights.
+- `get_model()` in run_all_models.py catches `TypeError` (some timm models reject `drop_rate`/`drop_path_rate`) and retries `pretrained=False` on missing-weights `RuntimeError`.
 
-## Device Handling
-- `src/utils.py:get_device()` auto-detects CUDA > XPU (Intel Arc) > CPU
-- `src/train.py` has separate autocast paths for XPU (bfloat16) and CUDA (float16)
-- Kaggle notebook hardcodes CUDA only
-
-## File Map
-```
-src/dataset.py    — Dataset class, augmentations, WeightedRandomSampler, class weights
-src/models.py     — MODEL_CONFIGS dict, get_model()
-src/losses.py     — FocalLoss, LabelSmoothingCrossEntropy, get_loss_fn()
-src/utils.py      — EMA, MixUp, compute_metrics(), TrainingLogger, device detection
-src/evaluate.py   — Confusion matrix plots, training curves, per-class F1 bars
-src/train.py      — Single-model training entrypoint (CLI args)
-run_experiments.py — Runs all 20 models sequentially via subprocess
-kaggle/run_all_models.py — Self-contained Kaggle notebook (duplicates src/ code)
-```
+## Preprocessing (preprocess_faces.py)
+- MTCNN `keep_all`, min face 30 px, 20% padding, eye-alignment rotation, CLAHE (clip 2.0, tile 8) on LAB L-channel, resized 224, JPEG q95. 85% center-crop fallback. Skips existing outputs (rerun-safe).
+- Needs `facenet-pytorch` + `opencv-python` — **not** in `requirements.txt` (preinstalled on Kaggle). Install manually for local runs.
 
 ## Environment
-- Python 3.14, PyTorch 2.12.0+xpu, timm 1.0.28
-- No `pip install` needed locally — all deps in `requirements.txt`
-- `src/train.py` uses `sys.path.insert(0, os.path.dirname(...))` to find siblings — run from repo root
+- Local machine: Python 3.14, PyTorch 2.12.0+xpu (Intel Arc), timm 1.0.28.
+- Kaggle scripts are **CUDA-only** (`cuda` else `cpu`); no XPU autocast path — they run on CPU on this machine.
+- `dataset/`, `results/`, `*.zip`, `*.log` are gitignored; root `*.zip`/`*.log` files are large experiment artifacts.
+
+## File Map
+- `autism-fer-model.ipynb` — canonical Kaggle notebook orchestrating the 4 scripts
+- `kaggle/run_all_models.py` — 8-model baseline sweep + paper figures (`comparison.json`, `paper_figures/`)
+- `kaggle/run_proposed_model.py` — Care-FER proposed model + 5-view TTA + uncertainty guardrail + Grad-CAM
+- `kaggle/preprocess_faces.py` — MTCNN + CLAHE offline preprocessing
+- `kaggle/offline_augmentation.py` — offline class balancing (to ~600/class)
+- `dataset/` — committed 1400/299/304 split
