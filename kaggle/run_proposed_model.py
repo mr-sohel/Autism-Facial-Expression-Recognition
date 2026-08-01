@@ -32,12 +32,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from PIL import Image
+import cv2
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader, WeightedRandomSampler
-from torch.amp import autocast, GradScaler
+from torch.cuda.amp import autocast, GradScaler
 from torch.nn.utils import clip_grad_norm_
 import torchvision.transforms as transforms
 import timm
@@ -56,22 +57,33 @@ warnings.filterwarnings("ignore")
 # 1. HYPERPARAMETERS & CONFIGURATION
 # ==============================================================================
 SEED = 42
-NUM_EPOCHS = 80
+NUM_EPOCHS = 160  # Increased: V4 showed val F1 still rising at epoch 78 — dual-stream needs more time
 BATCH_SIZE = 16
 LEARNING_RATE = 1e-4  # Optimal for Hybrid Transformer-CNN architectures
 WEIGHT_DECAY = 1e-4
 EMA_DECAY = 0.999
 TTA_VIEWS = 5         # K=5 for Test-Time Augmentation
-UNCERTAINTY_THRESH = 0.70  # Clinical rejection guardrail (70% confidence)
+UNCERTAINTY_THRESH = 0.30  # Clinical rejection guardrail (30% confidence for 6-class softmax — 50% caused 100% rejection)
 IMG_SIZE = 224
-PATIENCE = 15         # Early stopping patience (epochs without F1 improvement)
+PATIENCE = 20         # Increased: large dual-stream model converges more slowly
 MIXUP_ALPHA = 0.4     # MixUp regularization strength
 NUM_WORKERS = 2
 
 # Kaggle dataset paths (fallback to local if running locally for testing)
-KAGGLE_DATASET_DIR = "/kaggle/input/datasets/mrsohel/autism-dataset/dataset"  # Confirmed slug from Kaggle notebook logs
+# Dataset path — priority order:
+#   1. MTCNN-preprocessed output from Cell 1 (same notebook session)
+#   2. Raw Kaggle input dataset
+#   3. Local path (for testing)
+KAGGLE_MTCNN_DIR  = "/kaggle/working/dataset_mtcnn"
+KAGGLE_DATASET_DIR = "/kaggle/input/datasets/mrsohel/autism-dataset/dataset"
 LOCAL_DATASET_DIR = r"C:\Users\mrsoh\Documents\Autism-Facial-Expression-Recognition\dataset"
-DATASET_DIR = KAGGLE_DATASET_DIR if os.path.exists(KAGGLE_DATASET_DIR) else LOCAL_DATASET_DIR
+
+if os.path.exists(KAGGLE_MTCNN_DIR):
+    DATASET_DIR = KAGGLE_MTCNN_DIR
+elif os.path.exists(KAGGLE_DATASET_DIR):
+    DATASET_DIR = KAGGLE_DATASET_DIR
+else:
+    DATASET_DIR = LOCAL_DATASET_DIR
 
 OUTPUT_DIR = "/kaggle/working/results/care_fer_proposed" if os.path.exists("/kaggle") else "./results/care_fer_proposed"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -138,6 +150,7 @@ train_transform = transforms.Compose([
     transforms.Resize((IMG_SIZE, IMG_SIZE)),
     transforms.RandomHorizontalFlip(p=0.5),
     transforms.RandomRotation(15),
+    transforms.RandAugment(num_ops=2, magnitude=7),
     transforms.RandomAffine(degrees=0, translate=(0.1, 0.1), scale=(0.9, 1.1)),
     transforms.ColorJitter(brightness=0.3, contrast=0.3, saturation=0.3, hue=0.1),
     transforms.RandomGrayscale(p=0.05),
@@ -167,6 +180,82 @@ def get_tta_transforms():
         transforms.Compose([transforms.Resize((IMG_SIZE, IMG_SIZE)), transforms.RandomRotation((-5, -5))] + base_norm), # 4. Rotate -5 deg
         transforms.Compose([transforms.Resize((int(IMG_SIZE*1.08), int(IMG_SIZE*1.08))), transforms.CenterCrop(IMG_SIZE)] + base_norm), # 5. Slight zoom
     ]
+
+# Offline Face Alignment Preprocessing (Path B)
+def align_and_crop_faces(src_dir, dst_dir):
+    """
+    Standardizes input images by detecting facial bounding boxes with OpenCV Haar Cascade
+    and cropping with 15% padding. Removes background noise, neck/shoulders, and scale
+    inconsistencies (matching the methodology of top-performing research papers).
+    Fallback: Center crop (85%) if face detection fails on extreme lighting/poses.
+    """
+    src_dir = Path(src_dir)
+    dst_dir = Path(dst_dir)
+    if dst_dir.exists() and sum(1 for f in dst_dir.rglob("*.*") if f.is_file()) > 1000:
+        print(f"[*] Aligned dataset already exists at {dst_dir}. Skipping preprocessing.")
+        return str(dst_dir)
+        
+    print(f"[*] Running Face Alignment Preprocessing (OpenCV Haar Cascade + 15% padding)...")
+    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+    alt_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_alt2.xml')
+    
+    total_imgs = 0
+    detected_faces = 0
+    
+    for split in ["train", "valid", "test"]:
+        for cls_name in CLASSES:
+            s_dir = src_dir / split / cls_name
+            d_dir = dst_dir / split / cls_name
+            os.makedirs(d_dir, exist_ok=True)
+            if not s_dir.exists(): continue
+            
+            for img_path in s_dir.iterdir():
+                if img_path.suffix.lower() not in (".jpg", ".jpeg", ".png", ".bmp"): continue
+                total_imgs += 1
+                try:
+                    img_cv = cv2.imread(str(img_path))
+                    if img_cv is None:
+                        Image.open(img_path).convert("RGB").save(d_dir / img_path.name)
+                        continue
+                    
+                    gray = cv2.cvtColor(img_cv, cv2.COLOR_BGR2GRAY)
+                    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=4, minSize=(30, 30))
+                    if len(faces) == 0:
+                        faces = alt_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=3, minSize=(30, 30))
+                        
+                    if len(faces) > 0:
+                        largest_face = max(faces, key=lambda b: b[2] * b[3])
+                        x, y, w, h = largest_face
+                        img_h, img_w, _ = img_cv.shape
+                        
+                        pad_w = int(w * 0.15)
+                        pad_h = int(h * 0.15)
+                        x1 = max(0, x - pad_w)
+                        y1 = max(0, y - pad_h)
+                        x2 = min(img_w, x + w + pad_w)
+                        y2 = min(img_h, y + h + pad_h)
+                        
+                        cropped_cv = img_cv[y1:y2, x1:x2]
+                        detected_faces += 1
+                    else:
+                        img_h, img_w, _ = img_cv.shape
+                        cw, ch = int(img_w * 0.85), int(img_h * 0.85)
+                        x1 = (img_w - cw) // 2
+                        y1 = (img_h - ch) // 2
+                        cropped_cv = img_cv[y1:y1+ch, x1:x1+cw]
+                        
+                    cropped_rgb = cv2.cvtColor(cropped_cv, cv2.COLOR_BGR2RGB)
+                    Image.fromarray(cropped_rgb).save(d_dir / img_path.name)
+                except Exception as e:
+                    Image.open(img_path).convert("RGB").save(d_dir / img_path.name)
+                    
+    print(f"[*] Face Alignment Complete! Aligned {detected_faces}/{total_imgs} images ({detected_faces/max(1, total_imgs)*100:.1f}% success).")
+    return str(dst_dir)
+
+# Face alignment disabled: Haar Cascade only succeeded on 64.4% of images;
+# the 35.6% fallback center-crops introduced noise and hurt performance.
+# ALIGNED_DATASET_DIR = "/kaggle/working/aligned_dataset" if os.path.exists("/kaggle") else "./aligned_dataset"
+# DATASET_DIR = align_and_crop_faces(DATASET_DIR, ALIGNED_DATASET_DIR)
 
 # Load Datasets
 train_dataset = AutismFERDataset(DATASET_DIR, split="train", transform=train_transform)
@@ -213,58 +302,64 @@ class SqueezeExcitationBlock(nn.Module):
 
 class CareFERModel(nn.Module):
     """
-    Proposed Dual-Stream Architecture:
-    - Stream A: VGG16 (Local Texture Expert - eyes, lips micro-features)
-    - Stream B: DeiT-Small (Global Geometry Expert - holistic attention)
-    - Dual SE Blocks: Recalibrates both streams independently before fusion
-    - Classification Head: Blends features with dropout and linear projection
+    Care-FER v2 — Redesigned Dual-Stream Architecture:
+    - Stream A: VGG16-BN SPATIAL features via forward_features()+GAP
+      * Uses conv feature maps (B,512,7,7) → GAP → (B,512)
+      * NOT the 4096-d FC pre_logits — spatial features are:
+        (a) Smaller (512 vs 4096) = less overfitting on 1386 images
+        (b) Proper SE attention on meaningful conv channels
+        (c) Enable true Grad-CAM saliency on 7×7 facial regions
+    - Stream B: DeiT-Small CLS token (B,384) — global attention geometry
+    - Dual SE Blocks: per-stream channel recalibration
+    - Head: 896→512→256→6 with GELU + progressive dropout
     """
     def __init__(self, num_classes=6, pretrained=True):
         super().__init__()
-        # Stream A: VGG16 Backbone
+        # Stream A: VGG16-BN — spatial conv features (bypasses FC pre_logits)
         vgg = timm.create_model("vgg16_bn", pretrained=pretrained, num_classes=0)
         self.stream_a = vgg
+        dim_a = 512  # VGG16-BN last conv block always outputs 512 channels
 
-        # Stream B: DeiT-Small Backbone
+        # Stream B: DeiT-Small — CLS token (always 384-d)
         deit = timm.create_model("deit_small_patch16_224", pretrained=pretrained, num_classes=0)
         self.stream_b = deit
+        dim_b = 384
 
-        # Probe ACTUAL output dimensions with a dummy forward pass.
-        # timm's num_features can be wrong for some models (e.g. vgg16_bn reports 512
-        # but actually outputs 4096 after its FC pre_logits layers).
-        with torch.no_grad():
-            _dummy = torch.zeros(1, 3, IMG_SIZE, IMG_SIZE)
-            dim_a = int(vgg(_dummy).shape[1])
-            dim_b = int(deit(_dummy).shape[1])
-        print(f"[*] Stream A (VGG16-BN) feature dim: {dim_a} | Stream B (DeiT-Small) feature dim: {dim_b}")
+        print(f"[*] Stream A (VGG16-BN spatial+GAP): {dim_a}-d | Stream B (DeiT-S CLS): {dim_b}-d | Combined: {dim_a+dim_b}-d")
 
-        self.se_a = SqueezeExcitationBlock(dim_a, reduction=16)
-        self.se_b = SqueezeExcitationBlock(dim_b, reduction=16)
+        self.se_a = SqueezeExcitationBlock(dim_a, reduction=16)   # 512→32
+        self.se_b = SqueezeExcitationBlock(dim_b, reduction=16)   # 384→24
 
-        # Combined Classification Head
-        combined_dim = dim_a + dim_b
+        # Deeper classification head: 896→512→256→6
+        combined_dim = dim_a + dim_b  # 896
         self.classifier = nn.Sequential(
-            nn.Dropout(p=0.3),
+            nn.Dropout(p=0.4),
             nn.Linear(combined_dim, 512),
             nn.BatchNorm1d(512),
-            nn.ReLU(inplace=True),
-            nn.Dropout(p=0.2),
-            nn.Linear(512, num_classes)
+            nn.GELU(),
+            nn.Dropout(p=0.25),
+            nn.Linear(512, 256),
+            nn.BatchNorm1d(256),
+            nn.GELU(),
+            nn.Dropout(p=0.1),
+            nn.Linear(256, num_classes),
         )
 
     def forward(self, x):
-        # Extract features
-        feat_a = self.stream_a(x)  # (B, dim_a)
-        feat_b = self.stream_b(x)  # (B, dim_b)
+        # Stream A: spatial conv features via forward_features() then Global Average Pool
+        feat_map_a = self.stream_a.forward_features(x)  # (B, 512, 7, 7)
+        feat_a = feat_map_a.mean(dim=[2, 3])             # GAP → (B, 512)
 
-        # Recalibrate with Dual SE Blocks
-        rec_a = self.se_a(feat_a)
-        rec_b = self.se_b(feat_b)
+        # Stream B: DeiT CLS token
+        feat_b = self.stream_b(x)                        # (B, 384)
 
-        # Fuse feature streams
-        fused = torch.cat([rec_a, rec_b], dim=1)  # (B, dim_a + dim_b)
-        out = self.classifier(fused)
-        return out
+        # SE recalibration per stream
+        rec_a = self.se_a(feat_a)  # (B, 512)
+        rec_b = self.se_b(feat_b)  # (B, 384)
+
+        # Concatenate and classify
+        fused = torch.cat([rec_a, rec_b], dim=1)  # (B, 896)
+        return self.classifier(fused)
 
 model = CareFERModel(num_classes=NUM_CLASSES, pretrained=True).to(device)
 total_params = sum(p.numel() for p in model.parameters())
@@ -314,8 +409,14 @@ _class_counts_list = [class_counts[i] for i in range(NUM_CLASSES)]
 _class_weights = torch.tensor(
     [total_samples / (NUM_CLASSES * c) for c in _class_counts_list], dtype=torch.float32
 ).to(device)
-print(f"[*] Focal Loss Class Weights: { {CLASSES[i]: f'{_class_weights[i].item():.2f}' for i in range(NUM_CLASSES)} }")
-loss_fn = FocalLoss(alpha=_class_weights, gamma=2.0)
+
+# V6 Boost: Strongly upweight sadness (x2.0) and fear (x1.2) to overcome recall collapse and imbalance
+_sadness_idx = CLASSES.index("sadness")
+_fear_idx = CLASSES.index("fear")
+_class_weights[_sadness_idx] *= 2.0  # V5 sadness recall was only 15.9% (computed weight 0.72 was too low)
+_class_weights[_fear_idx] *= 1.2     # V5 fear recall was 28.6%
+print(f"[*] Focal Loss Class Weights (V6 Boost): { {CLASSES[i]: f'{_class_weights[i].item():.2f}' for i in range(NUM_CLASSES)} }")
+loss_fn = FocalLoss(alpha=_class_weights, gamma=1.5)  # gamma 1.5: softer than 2.0, avoids over-suppressing easy samples
 
 # Differential learning rate: backbones get 0.1x LR, SE blocks & head get full LR
 backbone_params = []
@@ -327,11 +428,19 @@ for name, param in model.named_parameters():
         backbone_params.append(param)
 
 optimizer = torch.optim.AdamW([
-    {"params": backbone_params, "lr": LEARNING_RATE * 0.1},
+    {"params": backbone_params, "lr": LEARNING_RATE * 0.1},  # 1e-5 for pretrained backbones (matches baseline differential LR ratio)
     {"params": head_params, "lr": LEARNING_RATE},
 ], weight_decay=WEIGHT_DECAY)
 
-scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(optimizer, T_0=10, T_mult=2)
+# Warmup (10 epochs linear) + Cosine Decay to 0.
+# CosineAnnealingWarmRestarts caused LR spikes every T_0=10 epochs which destabilizes DeiT.
+_WARMUP_EPOCHS = 10
+def _lr_lambda(epoch):
+    if epoch < _WARMUP_EPOCHS:
+        return float(epoch + 1) / float(_WARMUP_EPOCHS)   # 0.1 → 1.0 linearly
+    progress = float(epoch - _WARMUP_EPOCHS) / float(max(1, NUM_EPOCHS - _WARMUP_EPOCHS))
+    return max(0.01, 0.5 * (1.0 + math.cos(math.pi * progress)))  # cosine to 1% of LR
+scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=_lr_lambda)
 ema_model = ModelEMA(model, decay=EMA_DECAY)
 scaler = GradScaler()
 
@@ -471,7 +580,7 @@ with torch.no_grad():
         tta_probs = torch.zeros((1, NUM_CLASSES), device=device)
         for t_idx, t_form in enumerate(tta_transforms):
             t_img = t_form(raw_img).unsqueeze(0).to(device)
-            with autocast(device_type="cuda"):  # FIX: bare autocast() is deprecated
+            with autocast(device_type=device.type, dtype=torch.float16 if device.type == "cuda" else torch.bfloat16):
                 logits = eval_model(t_img)
                 probs = F.softmax(logits, dim=1)
             tta_probs += probs
@@ -594,47 +703,58 @@ print("\n[*] Generating Grad-CAM explainability heatmaps (VGG16 Stream A)...")
 
 class GradCAM:
     """
-    Gradient-weighted Class Activation Mapping (Grad-CAM) for the VGG16 stream.
-    Hooks the last Conv2d layer of stream_a to produce spatial saliency maps
-    showing WHICH facial regions drove each emotion prediction.
+    Grad-CAM using tensor-level gradient hooks (avoids register_full_backward_hook
+    which conflicts with VGG16's inplace ReLU operations in pre_logits FC layers).
+    Hooks the last Conv2d of stream_a; uses activation.register_hook() to capture
+    gradients without triggering the BackwardHookFunctionBackward inplace error.
     """
     def __init__(self, model, target_layer):
         self.model = model
-        self.gradients = None
-        self.activations = None
-        self._handles = [
-            target_layer.register_forward_hook(self._save_activation),
-            target_layer.register_full_backward_hook(self._save_gradient),
-        ]
+        self._activation = None
+        self._fwd_handle = target_layer.register_forward_hook(self._fwd_hook)
 
-    def _save_activation(self, module, inp, output):
-        self.activations = output.detach()  # (1, C, H, W)
-
-    def _save_gradient(self, module, grad_input, grad_output):
-        self.gradients = grad_output[0].detach()  # (1, C, H, W)
+    def _fwd_hook(self, module, inp, output):
+        self._activation = output          # live tensor; retain_grad called in generate()
 
     def generate(self, input_tensor, target_class):
-        """Returns a normalized CAM (H x W) for the given target class."""
+        """Returns a normalized CAM array (H, W) for the given target class."""
         self.model.eval()
-        output = self.model(input_tensor)  # forward pass
-        self.model.zero_grad()
-        one_hot = torch.zeros_like(output)
-        one_hot[0, target_class] = 1.0
-        output.backward(gradient=one_hot)   # backward to get gradients at target layer
+        _grad_holder = [None]
 
-        # Global Average Pool over spatial dimensions → importance weights per channel
-        weights = self.gradients.mean(dim=[2, 3], keepdim=True)   # (1, C, 1, 1)
-        cam = (weights * self.activations).sum(dim=1).squeeze()    # (H, W)
-        cam = F.relu(cam).cpu().numpy()
+        with torch.enable_grad():
+            # Fresh input that carries gradients through the graph
+            x = input_tensor.detach().clone().requires_grad_(True)
+            out = self.model(x)                    # forward — triggers _fwd_hook
 
-        # Min-max normalize to [0, 1]
+            # Retain grad on the (non-leaf) activation so its hook fires
+            if self._activation is not None and self._activation.requires_grad:
+                self._activation.retain_grad()
+                _h = self._activation.register_hook(
+                    lambda g: _grad_holder.__setitem__(0, g.detach())
+                )
+            else:
+                return np.zeros((7, 7))            # fallback: no grad path to target layer
+
+            self.model.zero_grad()
+            out[0, target_class].backward()
+            _h.remove()
+
+        grads = _grad_holder[0]                    # (1, C, H, W) or None
+        acts  = self._activation.detach()          # (1, C, H, W)
+
+        if grads is None:
+            return np.zeros((acts.shape[2], acts.shape[3]))
+
+        # Global-average-pool gradients → channel importance weights
+        weights = grads.mean(dim=[2, 3], keepdim=True)          # (1, C, 1, 1)
+        cam = (weights * acts).sum(dim=1).squeeze().cpu().numpy()  # (H, W)
+        cam = np.maximum(cam, 0)                   # ReLU
         if cam.max() > cam.min():
             cam = (cam - cam.min()) / (cam.max() - cam.min())
         return cam
 
     def remove(self):
-        for h in self._handles:
-            h.remove()
+        self._fwd_handle.remove()
 
 
 # Find the last Conv2d inside stream_a (VGG16 feature extractor)

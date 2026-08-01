@@ -1,14 +1,11 @@
 """
 =============================================================
   Autism Facial Expression Recognition — Full Kaggle Pipeline
-  Train 14 models on free Kaggle GPU (T4/P100)
+  Train 8 curated models on free Kaggle GPU (T4/P100)
 =============================================================
 """
 
-# %% [markdown]
-# # Setup & Installs
 
-# %%
 import os, sys, json, time, copy
 from pathlib import Path
 from collections import Counter
@@ -17,7 +14,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.amp import GradScaler, autocast
+from torch.cuda.amp import GradScaler, autocast
 from torch.utils.data import Dataset, DataLoader, WeightedRandomSampler
 from torchvision import transforms
 from PIL import Image
@@ -51,12 +48,13 @@ torch.backends.cudnn.deterministic = False
 torch.backends.cudnn.benchmark = True
 
 
-# %% [markdown]
-# # Configuration
 
-# %%
 # ---- Paths (Kaggle default) ----
-DATA_DIR = "/kaggle/input/datasets/mrsohel/autism-fer-dataset/dataset"  # <-- CHANGE THIS
+# Auto-detect: prefer MTCNN-preprocessed dataset if available
+_MTCNN_DIR = "/kaggle/working/dataset_mtcnn"
+_RAW_DIR   = "/kaggle/input/datasets/mrsohel/autism-dataset/dataset"
+DATA_DIR   = _MTCNN_DIR if os.path.exists(_MTCNN_DIR) else _RAW_DIR
+print(f"[*] DATA_DIR = {DATA_DIR}")
 OUTPUT_DIR = "/kaggle/working/results"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -76,37 +74,27 @@ NUM_CLASSES = len(CLASS_NAMES)
 CLASS_TO_IDX = {c: i for i, c in enumerate(CLASS_NAMES)}
 
 # ---- Models to train ----
+# Curated 8-model set — one representative per architectural family.
+# Selected based on Run 1 results (see new new log.log).
+# Dropped: VGG19, ResNet18, SEResNet50, MobileNetV3, GhostNet, MobileViT,
+#          CrossViT, ViT-Tiny, EfficientNetV2-M, ConvNeXt-Small (collapsed),
+#          CoaT-Lite-Small (collapsed), EfficientNetV2-S.
 EXPERIMENTS = [
-    # CNNs (Thrive with focal loss and higher LR)
-    {"model": "vgg16",                        "loss": "focal",     "lr": 1e-3},
-    {"model": "vgg19",                        "loss": "focal",     "lr": 1e-3},
-    {"model": "mobilenetv2_100",              "loss": "focal",     "lr": 1e-3},
-    {"model": "mobilenetv3_large_100",        "loss": "focal",     "lr": 1e-3},
-    {"model": "inception_v3",                 "loss": "focal",     "lr": 1e-3},
-    {"model": "tf_efficientnetv2_s",          "loss": "focal",     "lr": 1e-3},
-    {"model": "tf_efficientnetv2_m",          "loss": "ce_smooth", "lr": 5e-4},  # Regressed on focal/1e-3
-    {"model": "resnet18",                     "loss": "focal",     "lr": 1e-3},
-    {"model": "resnet50",                     "loss": "focal",     "lr": 1e-3},
-    {"model": "seresnet50",                   "loss": "focal",     "lr": 1e-3},
-    {"model": "densenet121",                  "loss": "focal",     "lr": 1e-3},
-    {"model": "ghostnet_100",                 "loss": "focal",     "lr": 1e-3},
-    
-    # Transformers & Hybrids (Need lower LR to prevent collapse)
-    {"model": "convnext_small",               "loss": "ce_smooth", "lr": 1e-4},
-    {"model": "vit_tiny_patch16_224",         "loss": "ce_smooth", "lr": 1e-4},
-    {"model": "vit_base_patch16_224",         "loss": "ce_smooth", "lr": 1e-4},
-    {"model": "deit_small_patch16_224",       "loss": "ce_smooth", "lr": 1e-4},
-    {"model": "swin_base_patch4_window7_224", "loss": "ce_smooth", "lr": 1e-4},
-    {"model": "mobilevit_s",                  "loss": "ce_smooth", "lr": 3e-4},
-    {"model": "coat_lite_small",              "loss": "ce_smooth", "lr": 1e-4},
-    {"model": "crossvit_9_240",               "loss": "ce_smooth", "lr": 1e-4},  # Worked well at 1e-4 in Run 1
+    # Classic CNNs
+    {"model": "vgg16",                        "loss": "focal",     "lr": 1e-3},  # Run 1 best: F1=0.5477
+    {"model": "inception_v3",                 "loss": "focal",     "lr": 1e-3},  # Run 1: F1=0.5232
+    {"model": "densenet121",                  "loss": "focal",     "lr": 1e-3},  # Run 1: F1=0.5229  (7M params)
+    {"model": "mobilenetv2_100",              "loss": "focal",     "lr": 1e-3},  # Run 1: F1=0.4984  (lightweight)
+    {"model": "resnet50",                     "loss": "focal",     "lr": 1e-3},  # Run 1: F1=0.4636  (universal baseline)
+
+    # Vision Transformers & Hybrids (need lower LR to prevent collapse)
+    {"model": "deit_small_patch16_224",       "loss": "ce_smooth", "lr": 1e-4},  # Run 1: F1=0.5437  (Care-FER Stream B)
+    {"model": "vit_base_patch16_224",         "loss": "ce_smooth", "lr": 1e-4},  # Run 1: F1=0.5352
+    {"model": "swin_base_patch4_window7_224", "loss": "ce_smooth", "lr": 1e-4},  # Run 1: F1=0.4937  (hierarchical ViT)
 ]
 
 
-# %% [markdown]
-# # Dataset
 
-# %%
 class FacialExpressionDataset(Dataset):
     def __init__(self, root_dir, transform=None):
         self.root_dir = Path(root_dir)
@@ -184,7 +172,6 @@ def get_dataloaders(data_dir, batch_size=BATCH_SIZE, img_size=IMG_SIZE):
     return train_loader, val_loader, test_loader, class_weights, train_ds
 
 
-# %%
 print("Loading datasets...")
 train_loader, val_loader, test_loader, class_weights, train_ds = get_dataloaders(DATA_DIR)
 class_weights = class_weights.to(DEVICE)
@@ -192,10 +179,7 @@ print(f"Train: {len(train_ds)} images")
 print(f"Class weights: {dict(zip(CLASS_NAMES, [f'{w:.2f}' for w in class_weights.cpu()]))}")
 
 
-# %% [markdown]
-# # Losses
 
-# %%
 class FocalLoss(nn.Module):
     def __init__(self, alpha=None, gamma=2.0):
         super().__init__()
@@ -217,10 +201,7 @@ def get_loss_fn(loss_type, class_weights=None):
         return nn.CrossEntropyLoss(weight=class_weights)
 
 
-# %% [markdown]
-# # Models
 
-# %%
 MODEL_CONFIGS = {
     "vgg16": {"timm": "vgg16_bn", "size": 224},
     "vgg19": {"timm": "vgg19_bn", "size": 224},
@@ -261,10 +242,7 @@ def get_model(name, pretrained=True):
     return model, cfg["size"]
 
 
-# %% [markdown]
-# # EMA & MixUp
 
-# %%
 class EMA:
     def __init__(self, model, decay=0.999):
         self.model = model
@@ -295,10 +273,7 @@ def mixup_data(x, y, alpha=MIXUP_ALPHA):
     return lam * x + (1 - lam) * x[idx], y, y[idx], lam
 
 
-# %% [markdown]
-# # Metrics
 
-# %%
 def compute_metrics(y_true, y_pred):
     labels_list = list(range(NUM_CLASSES))
     return {
@@ -312,10 +287,7 @@ def compute_metrics(y_true, y_pred):
     }
 
 
-# %% [markdown]
-# # Training Loop
 
-# %%
 def train_one_epoch(model, loader, criterion, optimizer, scaler, ema, use_mixup):
     model.train()
     total_loss, correct, total = 0.0, 0, 0
@@ -370,10 +342,7 @@ def evaluate(model, loader, criterion, ema=None):
     return total_loss / len(all_preds), [int(p) for p in all_preds], [int(l) for l in all_labels], np.array(all_probs)
 
 
-# %% [markdown]
-# # Plots
 
-# %%
 def plot_confusion_matrix(y_true, y_pred, path, name):
     cm = confusion_matrix(y_true, y_pred, labels=list(range(NUM_CLASSES)))
     cm_norm = cm.astype("float") / cm.sum(axis=1, keepdims=True)
@@ -408,10 +377,7 @@ def plot_f1_bars(per_class_f1, path, name):
     plt.tight_layout(); plt.savefig(path, dpi=150, bbox_inches="tight"); plt.close(fig)
 
 
-# %% [markdown]
-# # Run All Experiments
 
-# %%
 all_results = {}
 global_test_labels = None
 
@@ -431,7 +397,7 @@ for exp in EXPERIMENTS:
     total_p = sum(p.numel() for p in model.parameters())
     print(f"  Parameters: {total_p:,}")
 
-    criterion = get_loss_fn(loss_type, None)
+    criterion = get_loss_fn(loss_type, class_weights)
 
     # Differential learning rates
     backbone, head = [], []
@@ -529,16 +495,13 @@ for exp in EXPERIMENTS:
     gc.collect()
 
 
-# %% [markdown]
-# # Final Comparison & Paper Figures
 
-# %%
 print(f"\n{'='*70}")
 print("  FINAL MODEL COMPARISON")
 print(f"{'='*70}")
 
 models_sorted = sorted(all_results.keys(), key=lambda k: all_results[k]["f1_macro"], reverse=True)
-top_5_models = models_sorted[:5]
+top_5_models = models_sorted[:min(5, len(models_sorted))]
 
 header = f"{'Model':<35} {'Acc':>8} {'F1':>8} {'Prec':>8} {'Rec':>8} {'Params':>12}"
 print(header)
