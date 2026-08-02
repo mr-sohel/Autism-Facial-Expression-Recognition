@@ -107,17 +107,7 @@ CLASS_TO_IDX = {c: i for i, c in enumerate(CLASS_NAMES)}
 # Curated 9-model set — one representative per architectural family
 # (selected from Run 1 results, see new new log.log).
 EXPERIMENTS = [
-    # Classic CNNs
-    {"model": "vgg16",                        "loss": "focal",     "lr": 1e-3},  # Run 1: F1=0.5477
-    {"model": "inception_v3",                 "loss": "focal",     "lr": 1e-3},  # Run 1: F1=0.5232
-    {"model": "densenet121",                  "loss": "focal",     "lr": 1e-3},  # Run 1: F1=0.5229
-    {"model": "efficientnet_b0",              "loss": "focal",     "lr": 1e-3},  # most-cited FER baseline (Run1 family: v2_s F1=0.511)
-    {"model": "mobilenetv2_100",              "loss": "focal",     "lr": 1e-3},  # Run 1: F1=0.4984
-    {"model": "resnet50",                     "loss": "focal",     "lr": 1e-3},  # Run 1: F1=0.4636
-    # Vision Transformers & Hybrids (need lower LR to prevent collapse)
-    {"model": "deit_small_patch16_224",       "loss": "ce_smooth", "lr": 1e-4},  # Run 1: F1=0.5437
-    {"model": "vit_base_patch16_224",         "loss": "ce_smooth", "lr": 1e-4},  # Run 1: F1=0.5352
-    {"model": "swin_base_patch4_window7_224", "loss": "ce_smooth", "lr": 1e-4},  # Run 1: F1=0.4937
+    # Vision Transformers (need lower LR to prevent collapse)
     {"model": "swin_tiny_patch4_window7_224", "loss": "ce_smooth", "lr": 1e-4},
 ]
 
