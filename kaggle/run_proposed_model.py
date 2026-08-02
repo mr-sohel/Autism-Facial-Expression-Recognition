@@ -1,6 +1,6 @@
 """
 ========================================================================================
-Care-FER: Clinically-Aware Recalibrated Ensemble for Autism Facial Expression Recognition
+Proposed-Model: Clinically-Aware Recalibrated Ensemble for Autism Facial Expression Recognition
 ========================================================================================
 Self-contained Kaggle training + evaluation script for the proposed architecture,
 adapted to Stratified K-Fold Cross-Validation on RAW images (no MTCNN/CLAHE):
@@ -122,7 +122,7 @@ elif _auto_detected:
 else:
     DATASET_DIR = KAGGLE_MTCNN_DIR
 
-OUTPUT_DIR = "/kaggle/working/results/care_fer_proposed" if os.path.exists("/kaggle") else "./results/care_fer_proposed"
+OUTPUT_DIR = "/kaggle/working/results/proposed_model_proposed" if os.path.exists("/kaggle") else "./results/proposed_model_proposed"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 CLASSES = ["anger", "fear", "joy", "natural", "sadness", "surprise"]
@@ -218,7 +218,7 @@ def get_tta_transforms():
 
 
 # ==============================================================================
-# 3. PROPOSED ARCHITECTURE: Care-FER (Dual-Stream SE Recalibrated Ensemble)
+# 3. PROPOSED ARCHITECTURE: Proposed-Model (Dual-Stream SE Recalibrated Ensemble)
 # ==============================================================================
 class SqueezeExcitationBlock(nn.Module):
     def __init__(self, channels, reduction=16):
@@ -369,7 +369,7 @@ if os.path.exists(DONE_FILE):
 
 
 def mark_done(fold):
-    done.setdefault("care_fer", []).append(fold)
+    done.setdefault("proposed_model", []).append(fold)
     with open(DONE_FILE, "w") as f:
         json.dump(done, f, indent=2)
 
@@ -436,7 +436,7 @@ def evaluate_tta(model, val_ds):
 
 def run_fold(fold, train_idx, val_idx):
     print(f"\n{'='*70}")
-    print(f"  CARE-FER | Fold {fold+1}/{N_FOLDS}")
+    print(f"  PROPOSED-MODEL | Fold {fold+1}/{N_FOLDS}")
     print(f"{'='*70}")
 
     val_ds = AutismFERDataset([samples[i] for i in val_idx],
@@ -448,7 +448,7 @@ def run_fold(fold, train_idx, val_idx):
 
     best_val_f1 = 0.0
     patience_counter = 0
-    ckpt_path = os.path.join(OUTPUT_DIR, f"care_fer_fold{fold+1}_best.pth")
+    ckpt_path = os.path.join(OUTPUT_DIR, f"proposed_model_fold{fold+1}_best.pth")
     start = time.time()
 
     for epoch in range(1, NUM_EPOCHS + 1):
@@ -630,7 +630,7 @@ if os.path.exists(metrics_path):
         fold_metrics = json.load(f)
 
 for fold, train_idx, val_idx in folds:
-    if fold in done.get("care_fer", []):
+    if fold in done.get("proposed_model", []):
         print(f"  Fold {fold+1} already done — skipping.")
         continue
     fold_m, preds, targets, probs = run_fold(fold, train_idx, val_idx)
@@ -707,7 +707,7 @@ cm_norm = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis]
 plt.figure(figsize=(8, 7))
 sns.heatmap(cm_norm, annot=True, fmt=".2f", cmap="Blues",
             xticklabels=CLASSES, yticklabels=CLASSES, cbar=True)
-plt.title("Care-FER: Out-of-Fold Confusion Matrix (TTA K=5)", fontweight="bold", pad=15)
+plt.title("Proposed-Model: Out-of-Fold Confusion Matrix (TTA K=5)", fontweight="bold", pad=15)
 plt.ylabel("True Emotion Label"); plt.xlabel("Predicted Emotion Label")
 plt.tight_layout()
 plt.savefig(os.path.join(OUTPUT_DIR, "2_test_confusion_matrix.png"), dpi=300)
@@ -721,7 +721,7 @@ metrics_df = pd.DataFrame({
 }).melt(id_vars="Class", var_name="Metric", value_name="Score")
 plt.figure(figsize=(10, 6))
 sns.barplot(data=metrics_df, x="Class", y="Score", hue="Metric", palette="Set2")
-plt.title("Care-FER: Per-Class Performance (Out-of-Fold)", fontweight="bold")
+plt.title("Proposed-Model: Per-Class Performance (Out-of-Fold)", fontweight="bold")
 plt.ylim(0, 1.05); plt.ylabel("Score"); plt.legend(title="Metric")
 plt.tight_layout()
 plt.savefig(os.path.join(OUTPUT_DIR, "3_per_class_metrics.png"), dpi=300)
@@ -775,7 +775,7 @@ class GradCAM:
 
 
 # Load best fold's model for Grad-CAM (use first available checkpoint)
-ckpt_files = sorted([f for f in os.listdir(OUTPUT_DIR) if f.startswith("care_fer_fold") and f.endswith("_best.pth")])
+ckpt_files = sorted([f for f in os.listdir(OUTPUT_DIR) if f.startswith("proposed_model_fold") and f.endswith("_best.pth")])
 if ckpt_files:
     eval_model = CareFERModel(num_classes=NUM_CLASSES, pretrained=False).to(device)
     eval_model.load_state_dict(torch.load(os.path.join(OUTPUT_DIR, ckpt_files[0]),
@@ -800,7 +800,7 @@ if ckpt_files:
                 break
 
         fig, axes = plt.subplots(2, NUM_CLASSES, figsize=(3 * NUM_CLASSES, 6))
-        fig.suptitle("Care-FER Grad-CAM: VGG16 Stream Discriminative Facial Regions",
+        fig.suptitle("Proposed-Model Grad-CAM: VGG16 Stream Discriminative Facial Regions",
                      fontsize=13, fontweight="bold")
         for col, (img_path, true_cls) in enumerate(_gradcam_samples):
             raw = Image.open(img_path).convert("RGB").resize((IMG_SIZE, IMG_SIZE))
@@ -824,5 +824,5 @@ if ckpt_files:
         print(f"[*] Grad-CAM heatmaps saved to: {OUTPUT_DIR}/4_gradcam_heatmaps.png")
 
 print("========================================================================================")
-print("  Care-FER Evaluation Complete! Ready for Paper Publication.")
+print("  Proposed-Model Evaluation Complete! Ready for Paper Publication.")
 print("========================================================================================")

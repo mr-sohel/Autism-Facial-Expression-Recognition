@@ -37,7 +37,7 @@ Our cleaned merged set (~1,870 unique after perceptual dedup + conflict resoluti
 - Differential LR (backbone lr×0.1, head lr)
 - CNNs: focal loss, lr=1e-3; Transformers: label smoothing, lr=1e-4
 
-### 4.2 Proposed: Care-FER (dual-stream)
+### 4.2 Proposed: Proposed-Model (dual-stream)
 - **Spatial stream:** VGG16-BN `forward_features` + GAP → 512-d
 - **Token stream:** DeiT-S CLS token → 384-d
 - Dual **SE blocks** (r=16); head 896→512→256→6
@@ -57,7 +57,7 @@ Our cleaned merged set (~1,870 unique after perceptual dedup + conflict resoluti
 - Compare attention maps on ASD vs. neurotypical faces if TD data is available (clinical angle)
 
 ## 6. Required Ablations (reviewer-proofing)
-- Care-FER vs. each stream alone (spatial-only, token-only)
+- Proposed-Model vs. each stream alone (spatial-only, token-only)
 - ImageNet vs. FER2013 pretrain
 - Focal loss vs. weighted CE; balanced vs. unbalanced stage-2
 - Dedup-cleaned vs. raw dataset impact
@@ -70,13 +70,13 @@ Our cleaned merged set (~1,870 unique after perceptual dedup + conflict resoluti
 
 ## 8. Reproducibility
 - `kaggle/run_all_models.py` — 8 baselines + CV + figures
-- `kaggle/run_proposed_model.py` — Care-FER + 5-view TTA + uncertainty guardrail + Grad-CAM
+- `kaggle/run_proposed_model.py` — Proposed-Model + 5-view TTA + uncertainty guardrail + Grad-CAM
 - Resumable: per-fold `.npy` OOF + `cv_metrics.json`; Kaggle GPU (T4/P100), CUDA-only
 
 ## 9. Timeline / Next Actions
 1. **Now:** download FER-Autism → run verification script → decide clean/leaky
 2. Add FER2013 pretrain option to notebook (`PRETRAIN = "imagenet" | "fer2013"`)
 3. Build dataset-cleaning pass for secondary set
-4. Run baseline sweep → Care-FER → ablations
+4. Run baseline sweep → Proposed-Model → ablations
 5. Run XAI faithfulness evaluation
 6. Write thesis / paper

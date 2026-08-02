@@ -359,7 +359,7 @@ def mark_done(name, fold):
 
 
 # ==============================================================================
-# Cross-validation splits (shared with the Care-FER script)
+# Cross-validation splits (shared with the Proposed-Model script)
 # ==============================================================================
 print("[*] Building full dataset (train+valid+test merged) ...")
 samples, labels = build_full_dataset(DATA_DIR)
