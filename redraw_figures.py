@@ -22,7 +22,8 @@ MODEL_NAME_MAP = {
     "resnet50": "ResNet-50",
     "deit_small_patch16_224": "DeiT Small",
     "vit_base_patch16_224": "ViT Base",
-    "swin_base_patch4_window7_224": "Swin Base"
+    "swin_base_patch4_window7_224": "Swin Base",
+    "swin_tiny_patch4_window7_224": "Swin Tiny"
 }
 
 def load_oof(name):

@@ -12,6 +12,7 @@ This report summarizes the performance of 9 baseline models evaluated on the Aut
 | **DeiT Small** | 0.7113 | 0.6026 | 0.5895 | 0.6417 |
 | **DenseNet-121** | 0.7113 | 0.6001 | 0.5894 | 0.6298 |
 | **ViT Base** | 0.7102 | 0.5984 | 0.5880 | 0.6339 |
+| **Swin Tiny** | 0.7030 | 0.5972 | 0.5827 | 0.6381 |
 | **EfficientNet-B0**| 0.6980 | 0.5871 | 0.5813 | 0.6167 |
 | **MobileNetV2** | 0.6858 | 0.5790 | 0.5687 | 0.6174 |
 | **ResNet-50** | 0.6825 | 0.5762 | 0.5652 | 0.6150 |
