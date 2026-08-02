@@ -37,4 +37,5 @@ desktop.ini
 .claude/
 
 /dataset_quarantine
-
+dataset_clean/
+*.npy

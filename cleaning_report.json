@@ -1,0 +1,3716 @@
+{
+  "threshold": 4,
+  "total_images": 1988,
+  "clusters": [
+    {
+      "cluster": 11,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\test_anger_0094.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0109.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 13,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\test_anger_0100.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "test\\sadness\\train_sadness_0048.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 20,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\test_anger_0140.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0279.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 27,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0002.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\natural\\train_natural_0080.jpg",
+          "class": "natural"
+        }
+      ]
+    },
+    {
+      "cluster": 28,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0004.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0131.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 30,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0006.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0310.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 35,
+      "size": 3,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0012.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "test\\fear\\train_fear_0002.jpg",
+          "class": "fear"
+        },
+        {
+          "path": "test\\surprise\\train_surprise_0020.jpg",
+          "class": "surprise"
+        }
+      ]
+    },
+    {
+      "cluster": 42,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0019.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0054.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 43,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0020.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "test\\sadness\\train_sadness_0018.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 47,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0025.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0276.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 49,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0027.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0116.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 51,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0029.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0170.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 54,
+      "size": 4,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0032.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\fear\\test_fear_0031.jpg",
+          "class": "fear"
+        },
+        {
+          "path": "train\\surprise\\train_surprise_0022.jpg",
+          "class": "surprise"
+        },
+        {
+          "path": "valid\\sadness\\train_sadness_0012.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 56,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0034.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0205.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 58,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0036.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\joy\\train_joy_0341.jpg",
+          "class": "joy"
+        }
+      ]
+    },
+    {
+      "cluster": 70,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0048.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0145.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 76,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0054.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0201.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 77,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0055.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0136.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 86,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0067.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0238.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 93,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0075.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0146.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 95,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0078.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0083.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 102,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0088.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "test\\sadness\\train_sadness_0036.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 107,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0096.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0204.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 116,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0108.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0006.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 120,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0112.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "test\\fear\\train_fear_0004.jpg",
+          "class": "fear"
+        }
+      ]
+    },
+    {
+      "cluster": 121,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0114.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\surprise\\train_surprise_0106.jpg",
+          "class": "surprise"
+        }
+      ]
+    },
+    {
+      "cluster": 124,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0117.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\surprise\\train_surprise_0001.jpg",
+          "class": "surprise"
+        }
+      ]
+    },
+    {
+      "cluster": 132,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0125.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "valid\\sadness\\test_sadness_0017.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 133,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0126.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "valid\\sadness\\train_sadness_0018.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 135,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0128.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\natural\\train_natural_0136.jpg",
+          "class": "natural"
+        }
+      ]
+    },
+    {
+      "cluster": 143,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\anger\\train_anger_0139.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0313.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 151,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\fear\\train_fear_0000.jpg",
+          "class": "fear"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0023.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 152,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\fear\\train_fear_0001.jpg",
+          "class": "fear"
+        },
+        {
+          "path": "train\\surprise\\train_surprise_0053.jpg",
+          "class": "surprise"
+        }
+      ]
+    },
+    {
+      "cluster": 153,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\fear\\train_fear_0002.jpg",
+          "class": "fear"
+        },
+        {
+          "path": "valid\\sadness\\test_sadness_0026.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 155,
+      "size": 3,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\fear\\train_fear_0004.jpg",
+          "class": "fear"
+        },
+        {
+          "path": "train\\joy\\train_joy_0358.jpg",
+          "class": "joy"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0281.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 163,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\fear\\train_fear_0012.jpg",
+          "class": "fear"
+        },
+        {
+          "path": "valid\\sadness\\train_sadness_0029.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 164,
+      "size": 3,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\fear\\train_fear_0013.jpg",
+          "class": "fear"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0280.jpg",
+          "class": "sadness"
+        },
+        {
+          "path": "test\\surprise\\train_surprise_0019.jpg",
+          "class": "surprise"
+        }
+      ]
+    },
+    {
+      "cluster": 165,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\fear\\train_fear_0014.jpg",
+          "class": "fear"
+        },
+        {
+          "path": "train\\natural\\train_natural_0111.jpg",
+          "class": "natural"
+        }
+      ]
+    },
+    {
+      "cluster": 167,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\fear\\train_fear_0016.jpg",
+          "class": "fear"
+        },
+        {
+          "path": "test\\surprise\\train_surprise_0014.jpg",
+          "class": "surprise"
+        }
+      ]
+    },
+    {
+      "cluster": 170,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\fear\\train_fear_0019.jpg",
+          "class": "fear"
+        },
+        {
+          "path": "valid\\sadness\\train_sadness_0028.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 175,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\fear\\train_fear_0025.jpg",
+          "class": "fear"
+        },
+        {
+          "path": "test\\natural\\train_natural_0002.jpg",
+          "class": "natural"
+        }
+      ]
+    },
+    {
+      "cluster": 183,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\fear\\train_fear_0036.jpg",
+          "class": "fear"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0225.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 188,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\fear\\train_fear_0041.jpg",
+          "class": "fear"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0181.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 203,
+      "size": 3,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\fear\\train_fear_0057.jpg",
+          "class": "fear"
+        },
+        {
+          "path": "train\\natural\\train_natural_0034.jpg",
+          "class": "natural"
+        },
+        {
+          "path": "valid\\surprise\\train_surprise_0022.jpg",
+          "class": "surprise"
+        }
+      ]
+    },
+    {
+      "cluster": 223,
+      "size": 2,
+      "decision": "clean",
+      "members": [
+        {
+          "path": "train\\joy\\test_joy_0179.jpg",
+          "class": "joy"
+        },
+        {
+          "path": "train\\joy\\test_joy_0467.jpg",
+          "class": "joy"
+        }
+      ]
+    },
+    {
+      "cluster": 361,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\joy\\train_joy_0067.jpg",
+          "class": "joy"
+        },
+        {
+          "path": "valid\\natural\\train_natural_0005.jpg",
+          "class": "natural"
+        }
+      ]
+    },
+    {
+      "cluster": 411,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\joy\\train_joy_0122.jpg",
+          "class": "joy"
+        },
+        {
+          "path": "train\\surprise\\train_surprise_0085.jpg",
+          "class": "surprise"
+        }
+      ]
+    },
+    {
+      "cluster": 429,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\joy\\train_joy_0141.jpg",
+          "class": "joy"
+        },
+        {
+          "path": "train\\natural\\test_natural_0038.jpg",
+          "class": "natural"
+        }
+      ]
+    },
+    {
+      "cluster": 546,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\joy\\train_joy_0283.jpg",
+          "class": "joy"
+        },
+        {
+          "path": "train\\natural\\test_natural_0099.jpg",
+          "class": "natural"
+        }
+      ]
+    },
+    {
+      "cluster": 626,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\joy\\train_joy_0390.jpg",
+          "class": "joy"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0059.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 636,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\joy\\train_joy_0403.jpg",
+          "class": "joy"
+        },
+        {
+          "path": "train\\surprise\\train_surprise_0005.jpg",
+          "class": "surprise"
+        }
+      ]
+    },
+    {
+      "cluster": 718,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\joy\\train_joy_0505.jpg",
+          "class": "joy"
+        },
+        {
+          "path": "test\\surprise\\train_surprise_0001.jpg",
+          "class": "surprise"
+        }
+      ]
+    },
+    {
+      "cluster": 799,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\joy\\train_joy_0596.jpg",
+          "class": "joy"
+        },
+        {
+          "path": "train\\surprise\\train_surprise_0052.jpg",
+          "class": "surprise"
+        }
+      ]
+    },
+    {
+      "cluster": 834,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\natural\\train_natural_0008.jpg",
+          "class": "natural"
+        },
+        {
+          "path": "train\\surprise\\test_surprise_0063.jpg",
+          "class": "surprise"
+        }
+      ]
+    },
+    {
+      "cluster": 851,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\natural\\train_natural_0026.jpg",
+          "class": "natural"
+        },
+        {
+          "path": "test\\anger\\train_anger_0027.jpg",
+          "class": "anger"
+        }
+      ]
+    },
+    {
+      "cluster": 852,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\natural\\train_natural_0027.jpg",
+          "class": "natural"
+        },
+        {
+          "path": "valid\\sadness\\train_sadness_0046.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 879,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\natural\\train_natural_0060.jpg",
+          "class": "natural"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0089.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 880,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\natural\\train_natural_0061.jpg",
+          "class": "natural"
+        },
+        {
+          "path": "valid\\joy\\train_joy_0065.jpg",
+          "class": "joy"
+        }
+      ]
+    },
+    {
+      "cluster": 894,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\natural\\train_natural_0075.jpg",
+          "class": "natural"
+        },
+        {
+          "path": "train\\surprise\\train_surprise_0013.jpg",
+          "class": "surprise"
+        }
+      ]
+    },
+    {
+      "cluster": 907,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\natural\\train_natural_0090.jpg",
+          "class": "natural"
+        },
+        {
+          "path": "valid\\sadness\\train_sadness_0047.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 915,
+      "size": 2,
+      "decision": "clean",
+      "members": [
+        {
+          "path": "train\\natural\\train_natural_0103.jpg",
+          "class": "natural"
+        },
+        {
+          "path": "valid\\natural\\train_natural_0007.jpg",
+          "class": "natural"
+        }
+      ]
+    },
+    {
+      "cluster": 933,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\natural\\train_natural_0123.jpg",
+          "class": "natural"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0100.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 939,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\natural\\train_natural_0130.jpg",
+          "class": "natural"
+        },
+        {
+          "path": "train\\sadness\\train_sadness_0198.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 942,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\natural\\train_natural_0134.jpg",
+          "class": "natural"
+        },
+        {
+          "path": "train\\surprise\\train_surprise_0064.jpg",
+          "class": "surprise"
+        }
+      ]
+    },
+    {
+      "cluster": 946,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\natural\\train_natural_0139.jpg",
+          "class": "natural"
+        },
+        {
+          "path": "valid\\sadness\\train_sadness_0041.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 952,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\natural\\train_natural_0147.jpg",
+          "class": "natural"
+        },
+        {
+          "path": "valid\\surprise\\train_surprise_0007.jpg",
+          "class": "surprise"
+        }
+      ]
+    },
+    {
+      "cluster": 1041,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\sadness\\train_sadness_0041.jpg",
+          "class": "sadness"
+        },
+        {
+          "path": "test\\anger\\test_anger_0024.jpg",
+          "class": "anger"
+        }
+      ]
+    },
+    {
+      "cluster": 1097,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\sadness\\train_sadness_0104.jpg",
+          "class": "sadness"
+        },
+        {
+          "path": "test\\anger\\train_anger_0030.jpg",
+          "class": "anger"
+        }
+      ]
+    },
+    {
+      "cluster": 1172,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\sadness\\train_sadness_0186.jpg",
+          "class": "sadness"
+        },
+        {
+          "path": "valid\\anger\\train_anger_0002.jpg",
+          "class": "anger"
+        }
+      ]
+    },
+    {
+      "cluster": 1181,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\sadness\\train_sadness_0196.jpg",
+          "class": "sadness"
+        },
+        {
+          "path": "test\\surprise\\train_surprise_0003.jpg",
+          "class": "surprise"
+        }
+      ]
+    },
+    {
+      "cluster": 1203,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\sadness\\train_sadness_0222.jpg",
+          "class": "sadness"
+        },
+        {
+          "path": "test\\anger\\train_anger_0011.jpg",
+          "class": "anger"
+        }
+      ]
+    },
+    {
+      "cluster": 1213,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\sadness\\train_sadness_0237.jpg",
+          "class": "sadness"
+        },
+        {
+          "path": "test\\natural\\train_natural_0018.jpg",
+          "class": "natural"
+        }
+      ]
+    },
+    {
+      "cluster": 1258,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\sadness\\train_sadness_0291.jpg",
+          "class": "sadness"
+        },
+        {
+          "path": "valid\\anger\\train_anger_0015.jpg",
+          "class": "anger"
+        }
+      ]
+    },
+    {
+      "cluster": 1261,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\sadness\\train_sadness_0294.jpg",
+          "class": "sadness"
+        },
+        {
+          "path": "test\\anger\\test_anger_0014.jpg",
+          "class": "anger"
+        }
+      ]
+    },
+    {
+      "cluster": 1263,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\sadness\\train_sadness_0296.jpg",
+          "class": "sadness"
+        },
+        {
+          "path": "test\\anger\\train_anger_0020.jpg",
+          "class": "anger"
+        }
+      ]
+    },
+    {
+      "cluster": 1271,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\sadness\\train_sadness_0305.jpg",
+          "class": "sadness"
+        },
+        {
+          "path": "test\\anger\\train_anger_0006.jpg",
+          "class": "anger"
+        }
+      ]
+    },
+    {
+      "cluster": 1303,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\surprise\\train_surprise_0003.jpg",
+          "class": "surprise"
+        },
+        {
+          "path": "valid\\joy\\train_joy_0088.jpg",
+          "class": "joy"
+        }
+      ]
+    },
+    {
+      "cluster": 1308,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\surprise\\train_surprise_0008.jpg",
+          "class": "surprise"
+        },
+        {
+          "path": "test\\fear\\train_fear_0006.jpg",
+          "class": "fear"
+        }
+      ]
+    },
+    {
+      "cluster": 1332,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\surprise\\train_surprise_0039.jpg",
+          "class": "surprise"
+        },
+        {
+          "path": "test\\sadness\\train_sadness_0001.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 1356,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\surprise\\train_surprise_0069.jpg",
+          "class": "surprise"
+        },
+        {
+          "path": "test\\fear\\train_fear_0007.jpg",
+          "class": "fear"
+        }
+      ]
+    },
+    {
+      "cluster": 1376,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "train\\surprise\\train_surprise_0095.jpg",
+          "class": "surprise"
+        },
+        {
+          "path": "valid\\natural\\train_natural_0027.jpg",
+          "class": "natural"
+        }
+      ]
+    },
+    {
+      "cluster": 1400,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "valid\\anger\\train_anger_0008.jpg",
+          "class": "anger"
+        },
+        {
+          "path": "valid\\natural\\train_natural_0002.jpg",
+          "class": "natural"
+        }
+      ]
+    },
+    {
+      "cluster": 1612,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "valid\\sadness\\train_sadness_0003.jpg",
+          "class": "sadness"
+        },
+        {
+          "path": "test\\anger\\train_anger_0031.jpg",
+          "class": "anger"
+        }
+      ]
+    },
+    {
+      "cluster": 1629,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "valid\\sadness\\train_sadness_0027.jpg",
+          "class": "sadness"
+        },
+        {
+          "path": "valid\\surprise\\train_surprise_0006.jpg",
+          "class": "surprise"
+        }
+      ]
+    },
+    {
+      "cluster": 1667,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "valid\\surprise\\train_surprise_0003.jpg",
+          "class": "surprise"
+        },
+        {
+          "path": "test\\joy\\train_joy_0010.jpg",
+          "class": "joy"
+        }
+      ]
+    },
+    {
+      "cluster": 1728,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "test\\fear\\train_fear_0012.jpg",
+          "class": "fear"
+        },
+        {
+          "path": "test\\sadness\\test_sadness_0043.jpg",
+          "class": "sadness"
+        }
+      ]
+    },
+    {
+      "cluster": 1795,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "test\\joy\\train_joy_0053.jpg",
+          "class": "joy"
+        },
+        {
+          "path": "test\\natural\\train_natural_0000.jpg",
+          "class": "natural"
+        }
+      ]
+    },
+    {
+      "cluster": 1862,
+      "size": 2,
+      "decision": "drop-cluster",
+      "members": [
+        {
+          "path": "test\\natural\\test_natural_0005.jpg",
+          "class": "natural"
+        },
+        {
+          "path": "test\\sadness\\train_sadness_0024.jpg",
+          "class": "sadness"
+        }
+      ]
+    }
+  ],
+  "kept": [
+    {
+      "path": "train\\joy\\test_joy_0467.jpg",
+      "class": "joy",
+      "cluster": 223,
+      "decision": "clean"
+    },
+    {
+      "path": "train\\natural\\train_natural_0103.jpg",
+      "class": "natural",
+      "cluster": 915,
+      "decision": "clean"
+    }
+  ],
+  "removed": [
+    {
+      "path": "train\\anger\\test_anger_0094.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 11
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0109.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 11
+    },
+    {
+      "path": "train\\anger\\test_anger_0100.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 13
+    },
+    {
+      "path": "test\\sadness\\train_sadness_0048.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 13
+    },
+    {
+      "path": "train\\anger\\test_anger_0140.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 20
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0279.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 20
+    },
+    {
+      "path": "train\\anger\\train_anger_0002.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 27
+    },
+    {
+      "path": "train\\natural\\train_natural_0080.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 27
+    },
+    {
+      "path": "train\\anger\\train_anger_0004.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 28
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0131.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 28
+    },
+    {
+      "path": "train\\anger\\train_anger_0006.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 30
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0310.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 30
+    },
+    {
+      "path": "train\\anger\\train_anger_0012.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 35
+    },
+    {
+      "path": "test\\fear\\train_fear_0002.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 35
+    },
+    {
+      "path": "test\\surprise\\train_surprise_0020.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 35
+    },
+    {
+      "path": "train\\anger\\train_anger_0019.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 42
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0054.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 42
+    },
+    {
+      "path": "train\\anger\\train_anger_0020.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 43
+    },
+    {
+      "path": "test\\sadness\\train_sadness_0018.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 43
+    },
+    {
+      "path": "train\\anger\\train_anger_0025.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 47
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0276.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 47
+    },
+    {
+      "path": "train\\anger\\train_anger_0027.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 49
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0116.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 49
+    },
+    {
+      "path": "train\\anger\\train_anger_0029.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 51
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0170.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 51
+    },
+    {
+      "path": "train\\anger\\train_anger_0032.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 54
+    },
+    {
+      "path": "train\\fear\\test_fear_0031.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 54
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0022.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 54
+    },
+    {
+      "path": "valid\\sadness\\train_sadness_0012.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 54
+    },
+    {
+      "path": "train\\anger\\train_anger_0034.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 56
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0205.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 56
+    },
+    {
+      "path": "train\\anger\\train_anger_0036.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 58
+    },
+    {
+      "path": "train\\joy\\train_joy_0341.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 58
+    },
+    {
+      "path": "train\\anger\\train_anger_0048.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 70
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0145.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 70
+    },
+    {
+      "path": "train\\anger\\train_anger_0054.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 76
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0201.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 76
+    },
+    {
+      "path": "train\\anger\\train_anger_0055.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 77
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0136.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 77
+    },
+    {
+      "path": "train\\anger\\train_anger_0067.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 86
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0238.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 86
+    },
+    {
+      "path": "train\\anger\\train_anger_0075.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 93
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0146.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 93
+    },
+    {
+      "path": "train\\anger\\train_anger_0078.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 95
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0083.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 95
+    },
+    {
+      "path": "train\\anger\\train_anger_0088.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 102
+    },
+    {
+      "path": "test\\sadness\\train_sadness_0036.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 102
+    },
+    {
+      "path": "train\\anger\\train_anger_0096.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 107
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0204.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 107
+    },
+    {
+      "path": "train\\anger\\train_anger_0108.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 116
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0006.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 116
+    },
+    {
+      "path": "train\\anger\\train_anger_0112.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 120
+    },
+    {
+      "path": "test\\fear\\train_fear_0004.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 120
+    },
+    {
+      "path": "train\\anger\\train_anger_0114.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 121
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0106.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 121
+    },
+    {
+      "path": "train\\anger\\train_anger_0117.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 124
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0001.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 124
+    },
+    {
+      "path": "train\\anger\\train_anger_0125.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 132
+    },
+    {
+      "path": "valid\\sadness\\test_sadness_0017.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 132
+    },
+    {
+      "path": "train\\anger\\train_anger_0126.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 133
+    },
+    {
+      "path": "valid\\sadness\\train_sadness_0018.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 133
+    },
+    {
+      "path": "train\\anger\\train_anger_0128.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 135
+    },
+    {
+      "path": "train\\natural\\train_natural_0136.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 135
+    },
+    {
+      "path": "train\\anger\\train_anger_0139.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 143
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0313.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 143
+    },
+    {
+      "path": "train\\fear\\train_fear_0000.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 151
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0023.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 151
+    },
+    {
+      "path": "train\\fear\\train_fear_0001.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 152
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0053.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 152
+    },
+    {
+      "path": "train\\fear\\train_fear_0002.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 153
+    },
+    {
+      "path": "valid\\sadness\\test_sadness_0026.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 153
+    },
+    {
+      "path": "train\\fear\\train_fear_0004.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 155
+    },
+    {
+      "path": "train\\joy\\train_joy_0358.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 155
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0281.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 155
+    },
+    {
+      "path": "train\\fear\\train_fear_0012.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 163
+    },
+    {
+      "path": "valid\\sadness\\train_sadness_0029.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 163
+    },
+    {
+      "path": "train\\fear\\train_fear_0013.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 164
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0280.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 164
+    },
+    {
+      "path": "test\\surprise\\train_surprise_0019.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 164
+    },
+    {
+      "path": "train\\fear\\train_fear_0014.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 165
+    },
+    {
+      "path": "train\\natural\\train_natural_0111.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 165
+    },
+    {
+      "path": "train\\fear\\train_fear_0016.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 167
+    },
+    {
+      "path": "test\\surprise\\train_surprise_0014.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 167
+    },
+    {
+      "path": "train\\fear\\train_fear_0019.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 170
+    },
+    {
+      "path": "valid\\sadness\\train_sadness_0028.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 170
+    },
+    {
+      "path": "train\\fear\\train_fear_0025.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 175
+    },
+    {
+      "path": "test\\natural\\train_natural_0002.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 175
+    },
+    {
+      "path": "train\\fear\\train_fear_0036.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 183
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0225.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 183
+    },
+    {
+      "path": "train\\fear\\train_fear_0041.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 188
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0181.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 188
+    },
+    {
+      "path": "train\\fear\\train_fear_0057.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 203
+    },
+    {
+      "path": "train\\natural\\train_natural_0034.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 203
+    },
+    {
+      "path": "valid\\surprise\\train_surprise_0022.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 203
+    },
+    {
+      "path": "train\\joy\\test_joy_0179.jpg",
+      "reason": "clean",
+      "cluster": 223
+    },
+    {
+      "path": "train\\joy\\train_joy_0067.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 361
+    },
+    {
+      "path": "valid\\natural\\train_natural_0005.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 361
+    },
+    {
+      "path": "train\\joy\\train_joy_0122.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 411
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0085.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 411
+    },
+    {
+      "path": "train\\joy\\train_joy_0141.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 429
+    },
+    {
+      "path": "train\\natural\\test_natural_0038.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 429
+    },
+    {
+      "path": "train\\joy\\train_joy_0283.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 546
+    },
+    {
+      "path": "train\\natural\\test_natural_0099.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 546
+    },
+    {
+      "path": "train\\joy\\train_joy_0390.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 626
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0059.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 626
+    },
+    {
+      "path": "train\\joy\\train_joy_0403.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 636
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0005.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 636
+    },
+    {
+      "path": "train\\joy\\train_joy_0505.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 718
+    },
+    {
+      "path": "test\\surprise\\train_surprise_0001.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 718
+    },
+    {
+      "path": "train\\joy\\train_joy_0596.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 799
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0052.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 799
+    },
+    {
+      "path": "train\\natural\\train_natural_0008.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 834
+    },
+    {
+      "path": "train\\surprise\\test_surprise_0063.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 834
+    },
+    {
+      "path": "train\\natural\\train_natural_0026.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 851
+    },
+    {
+      "path": "test\\anger\\train_anger_0027.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 851
+    },
+    {
+      "path": "train\\natural\\train_natural_0027.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 852
+    },
+    {
+      "path": "valid\\sadness\\train_sadness_0046.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 852
+    },
+    {
+      "path": "train\\natural\\train_natural_0060.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 879
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0089.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 879
+    },
+    {
+      "path": "train\\natural\\train_natural_0061.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 880
+    },
+    {
+      "path": "valid\\joy\\train_joy_0065.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 880
+    },
+    {
+      "path": "train\\natural\\train_natural_0075.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 894
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0013.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 894
+    },
+    {
+      "path": "train\\natural\\train_natural_0090.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 907
+    },
+    {
+      "path": "valid\\sadness\\train_sadness_0047.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 907
+    },
+    {
+      "path": "valid\\natural\\train_natural_0007.jpg",
+      "reason": "clean",
+      "cluster": 915
+    },
+    {
+      "path": "train\\natural\\train_natural_0123.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 933
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0100.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 933
+    },
+    {
+      "path": "train\\natural\\train_natural_0130.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 939
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0198.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 939
+    },
+    {
+      "path": "train\\natural\\train_natural_0134.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 942
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0064.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 942
+    },
+    {
+      "path": "train\\natural\\train_natural_0139.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 946
+    },
+    {
+      "path": "valid\\sadness\\train_sadness_0041.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 946
+    },
+    {
+      "path": "train\\natural\\train_natural_0147.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 952
+    },
+    {
+      "path": "valid\\surprise\\train_surprise_0007.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 952
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0041.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1041
+    },
+    {
+      "path": "test\\anger\\test_anger_0024.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1041
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0104.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1097
+    },
+    {
+      "path": "test\\anger\\train_anger_0030.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1097
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0186.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1172
+    },
+    {
+      "path": "valid\\anger\\train_anger_0002.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1172
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0196.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1181
+    },
+    {
+      "path": "test\\surprise\\train_surprise_0003.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1181
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0222.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1203
+    },
+    {
+      "path": "test\\anger\\train_anger_0011.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1203
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0237.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1213
+    },
+    {
+      "path": "test\\natural\\train_natural_0018.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1213
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0291.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1258
+    },
+    {
+      "path": "valid\\anger\\train_anger_0015.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1258
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0294.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1261
+    },
+    {
+      "path": "test\\anger\\test_anger_0014.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1261
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0296.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1263
+    },
+    {
+      "path": "test\\anger\\train_anger_0020.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1263
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0305.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1271
+    },
+    {
+      "path": "test\\anger\\train_anger_0006.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1271
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0003.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1303
+    },
+    {
+      "path": "valid\\joy\\train_joy_0088.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1303
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0008.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1308
+    },
+    {
+      "path": "test\\fear\\train_fear_0006.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1308
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0039.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1332
+    },
+    {
+      "path": "test\\sadness\\train_sadness_0001.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1332
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0069.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1356
+    },
+    {
+      "path": "test\\fear\\train_fear_0007.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1356
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0095.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1376
+    },
+    {
+      "path": "valid\\natural\\train_natural_0027.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1376
+    },
+    {
+      "path": "valid\\anger\\train_anger_0008.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1400
+    },
+    {
+      "path": "valid\\natural\\train_natural_0002.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1400
+    },
+    {
+      "path": "valid\\sadness\\train_sadness_0003.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1612
+    },
+    {
+      "path": "test\\anger\\train_anger_0031.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1612
+    },
+    {
+      "path": "valid\\sadness\\train_sadness_0027.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1629
+    },
+    {
+      "path": "valid\\surprise\\train_surprise_0006.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1629
+    },
+    {
+      "path": "valid\\surprise\\train_surprise_0003.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1667
+    },
+    {
+      "path": "test\\joy\\train_joy_0010.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1667
+    },
+    {
+      "path": "test\\fear\\train_fear_0012.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1728
+    },
+    {
+      "path": "test\\sadness\\test_sadness_0043.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1728
+    },
+    {
+      "path": "test\\joy\\train_joy_0053.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1795
+    },
+    {
+      "path": "test\\natural\\train_natural_0000.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1795
+    },
+    {
+      "path": "test\\natural\\test_natural_0005.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1862
+    },
+    {
+      "path": "test\\sadness\\train_sadness_0024.jpg",
+      "reason": "conflict-no-majority",
+      "cluster": 1862
+    }
+  ],
+  "conflicts": [
+    {
+      "path": "train\\anger\\test_anger_0094.jpg",
+      "cluster": 11,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0109.jpg",
+      "cluster": 11,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\test_anger_0100.jpg",
+      "cluster": 13,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "test\\sadness\\train_sadness_0048.jpg",
+      "cluster": 13,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\test_anger_0140.jpg",
+      "cluster": 20,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0279.jpg",
+      "cluster": 20,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0002.jpg",
+      "cluster": 27,
+      "labels": [
+        "anger",
+        "natural"
+      ]
+    },
+    {
+      "path": "train\\natural\\train_natural_0080.jpg",
+      "cluster": 27,
+      "labels": [
+        "anger",
+        "natural"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0004.jpg",
+      "cluster": 28,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0131.jpg",
+      "cluster": 28,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0006.jpg",
+      "cluster": 30,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0310.jpg",
+      "cluster": 30,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0012.jpg",
+      "cluster": 35,
+      "labels": [
+        "anger",
+        "fear",
+        "surprise"
+      ]
+    },
+    {
+      "path": "test\\fear\\train_fear_0002.jpg",
+      "cluster": 35,
+      "labels": [
+        "anger",
+        "fear",
+        "surprise"
+      ]
+    },
+    {
+      "path": "test\\surprise\\train_surprise_0020.jpg",
+      "cluster": 35,
+      "labels": [
+        "anger",
+        "fear",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0019.jpg",
+      "cluster": 42,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0054.jpg",
+      "cluster": 42,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0020.jpg",
+      "cluster": 43,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "test\\sadness\\train_sadness_0018.jpg",
+      "cluster": 43,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0025.jpg",
+      "cluster": 47,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0276.jpg",
+      "cluster": 47,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0027.jpg",
+      "cluster": 49,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0116.jpg",
+      "cluster": 49,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0029.jpg",
+      "cluster": 51,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0170.jpg",
+      "cluster": 51,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0032.jpg",
+      "cluster": 54,
+      "labels": [
+        "anger",
+        "fear",
+        "sadness",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\fear\\test_fear_0031.jpg",
+      "cluster": 54,
+      "labels": [
+        "anger",
+        "fear",
+        "sadness",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0022.jpg",
+      "cluster": 54,
+      "labels": [
+        "anger",
+        "fear",
+        "sadness",
+        "surprise"
+      ]
+    },
+    {
+      "path": "valid\\sadness\\train_sadness_0012.jpg",
+      "cluster": 54,
+      "labels": [
+        "anger",
+        "fear",
+        "sadness",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0034.jpg",
+      "cluster": 56,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0205.jpg",
+      "cluster": 56,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0036.jpg",
+      "cluster": 58,
+      "labels": [
+        "anger",
+        "joy"
+      ]
+    },
+    {
+      "path": "train\\joy\\train_joy_0341.jpg",
+      "cluster": 58,
+      "labels": [
+        "anger",
+        "joy"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0048.jpg",
+      "cluster": 70,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0145.jpg",
+      "cluster": 70,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0054.jpg",
+      "cluster": 76,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0201.jpg",
+      "cluster": 76,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0055.jpg",
+      "cluster": 77,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0136.jpg",
+      "cluster": 77,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0067.jpg",
+      "cluster": 86,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0238.jpg",
+      "cluster": 86,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0075.jpg",
+      "cluster": 93,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0146.jpg",
+      "cluster": 93,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0078.jpg",
+      "cluster": 95,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0083.jpg",
+      "cluster": 95,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0088.jpg",
+      "cluster": 102,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "test\\sadness\\train_sadness_0036.jpg",
+      "cluster": 102,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0096.jpg",
+      "cluster": 107,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0204.jpg",
+      "cluster": 107,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0108.jpg",
+      "cluster": 116,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0006.jpg",
+      "cluster": 116,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0112.jpg",
+      "cluster": 120,
+      "labels": [
+        "anger",
+        "fear"
+      ]
+    },
+    {
+      "path": "test\\fear\\train_fear_0004.jpg",
+      "cluster": 120,
+      "labels": [
+        "anger",
+        "fear"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0114.jpg",
+      "cluster": 121,
+      "labels": [
+        "anger",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0106.jpg",
+      "cluster": 121,
+      "labels": [
+        "anger",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0117.jpg",
+      "cluster": 124,
+      "labels": [
+        "anger",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0001.jpg",
+      "cluster": 124,
+      "labels": [
+        "anger",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0125.jpg",
+      "cluster": 132,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "valid\\sadness\\test_sadness_0017.jpg",
+      "cluster": 132,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0126.jpg",
+      "cluster": 133,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "valid\\sadness\\train_sadness_0018.jpg",
+      "cluster": 133,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0128.jpg",
+      "cluster": 135,
+      "labels": [
+        "anger",
+        "natural"
+      ]
+    },
+    {
+      "path": "train\\natural\\train_natural_0136.jpg",
+      "cluster": 135,
+      "labels": [
+        "anger",
+        "natural"
+      ]
+    },
+    {
+      "path": "train\\anger\\train_anger_0139.jpg",
+      "cluster": 143,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0313.jpg",
+      "cluster": 143,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\fear\\train_fear_0000.jpg",
+      "cluster": 151,
+      "labels": [
+        "fear",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0023.jpg",
+      "cluster": 151,
+      "labels": [
+        "fear",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\fear\\train_fear_0001.jpg",
+      "cluster": 152,
+      "labels": [
+        "fear",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0053.jpg",
+      "cluster": 152,
+      "labels": [
+        "fear",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\fear\\train_fear_0002.jpg",
+      "cluster": 153,
+      "labels": [
+        "fear",
+        "sadness"
+      ]
+    },
+    {
+      "path": "valid\\sadness\\test_sadness_0026.jpg",
+      "cluster": 153,
+      "labels": [
+        "fear",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\fear\\train_fear_0004.jpg",
+      "cluster": 155,
+      "labels": [
+        "fear",
+        "joy",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\joy\\train_joy_0358.jpg",
+      "cluster": 155,
+      "labels": [
+        "fear",
+        "joy",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0281.jpg",
+      "cluster": 155,
+      "labels": [
+        "fear",
+        "joy",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\fear\\train_fear_0012.jpg",
+      "cluster": 163,
+      "labels": [
+        "fear",
+        "sadness"
+      ]
+    },
+    {
+      "path": "valid\\sadness\\train_sadness_0029.jpg",
+      "cluster": 163,
+      "labels": [
+        "fear",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\fear\\train_fear_0013.jpg",
+      "cluster": 164,
+      "labels": [
+        "fear",
+        "sadness",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0280.jpg",
+      "cluster": 164,
+      "labels": [
+        "fear",
+        "sadness",
+        "surprise"
+      ]
+    },
+    {
+      "path": "test\\surprise\\train_surprise_0019.jpg",
+      "cluster": 164,
+      "labels": [
+        "fear",
+        "sadness",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\fear\\train_fear_0014.jpg",
+      "cluster": 165,
+      "labels": [
+        "fear",
+        "natural"
+      ]
+    },
+    {
+      "path": "train\\natural\\train_natural_0111.jpg",
+      "cluster": 165,
+      "labels": [
+        "fear",
+        "natural"
+      ]
+    },
+    {
+      "path": "train\\fear\\train_fear_0016.jpg",
+      "cluster": 167,
+      "labels": [
+        "fear",
+        "surprise"
+      ]
+    },
+    {
+      "path": "test\\surprise\\train_surprise_0014.jpg",
+      "cluster": 167,
+      "labels": [
+        "fear",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\fear\\train_fear_0019.jpg",
+      "cluster": 170,
+      "labels": [
+        "fear",
+        "sadness"
+      ]
+    },
+    {
+      "path": "valid\\sadness\\train_sadness_0028.jpg",
+      "cluster": 170,
+      "labels": [
+        "fear",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\fear\\train_fear_0025.jpg",
+      "cluster": 175,
+      "labels": [
+        "fear",
+        "natural"
+      ]
+    },
+    {
+      "path": "test\\natural\\train_natural_0002.jpg",
+      "cluster": 175,
+      "labels": [
+        "fear",
+        "natural"
+      ]
+    },
+    {
+      "path": "train\\fear\\train_fear_0036.jpg",
+      "cluster": 183,
+      "labels": [
+        "fear",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0225.jpg",
+      "cluster": 183,
+      "labels": [
+        "fear",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\fear\\train_fear_0041.jpg",
+      "cluster": 188,
+      "labels": [
+        "fear",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0181.jpg",
+      "cluster": 188,
+      "labels": [
+        "fear",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\fear\\train_fear_0057.jpg",
+      "cluster": 203,
+      "labels": [
+        "fear",
+        "natural",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\natural\\train_natural_0034.jpg",
+      "cluster": 203,
+      "labels": [
+        "fear",
+        "natural",
+        "surprise"
+      ]
+    },
+    {
+      "path": "valid\\surprise\\train_surprise_0022.jpg",
+      "cluster": 203,
+      "labels": [
+        "fear",
+        "natural",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\joy\\train_joy_0067.jpg",
+      "cluster": 361,
+      "labels": [
+        "joy",
+        "natural"
+      ]
+    },
+    {
+      "path": "valid\\natural\\train_natural_0005.jpg",
+      "cluster": 361,
+      "labels": [
+        "joy",
+        "natural"
+      ]
+    },
+    {
+      "path": "train\\joy\\train_joy_0122.jpg",
+      "cluster": 411,
+      "labels": [
+        "joy",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0085.jpg",
+      "cluster": 411,
+      "labels": [
+        "joy",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\joy\\train_joy_0141.jpg",
+      "cluster": 429,
+      "labels": [
+        "joy",
+        "natural"
+      ]
+    },
+    {
+      "path": "train\\natural\\test_natural_0038.jpg",
+      "cluster": 429,
+      "labels": [
+        "joy",
+        "natural"
+      ]
+    },
+    {
+      "path": "train\\joy\\train_joy_0283.jpg",
+      "cluster": 546,
+      "labels": [
+        "joy",
+        "natural"
+      ]
+    },
+    {
+      "path": "train\\natural\\test_natural_0099.jpg",
+      "cluster": 546,
+      "labels": [
+        "joy",
+        "natural"
+      ]
+    },
+    {
+      "path": "train\\joy\\train_joy_0390.jpg",
+      "cluster": 626,
+      "labels": [
+        "joy",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0059.jpg",
+      "cluster": 626,
+      "labels": [
+        "joy",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\joy\\train_joy_0403.jpg",
+      "cluster": 636,
+      "labels": [
+        "joy",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0005.jpg",
+      "cluster": 636,
+      "labels": [
+        "joy",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\joy\\train_joy_0505.jpg",
+      "cluster": 718,
+      "labels": [
+        "joy",
+        "surprise"
+      ]
+    },
+    {
+      "path": "test\\surprise\\train_surprise_0001.jpg",
+      "cluster": 718,
+      "labels": [
+        "joy",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\joy\\train_joy_0596.jpg",
+      "cluster": 799,
+      "labels": [
+        "joy",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0052.jpg",
+      "cluster": 799,
+      "labels": [
+        "joy",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\natural\\train_natural_0008.jpg",
+      "cluster": 834,
+      "labels": [
+        "natural",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\surprise\\test_surprise_0063.jpg",
+      "cluster": 834,
+      "labels": [
+        "natural",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\natural\\train_natural_0026.jpg",
+      "cluster": 851,
+      "labels": [
+        "anger",
+        "natural"
+      ]
+    },
+    {
+      "path": "test\\anger\\train_anger_0027.jpg",
+      "cluster": 851,
+      "labels": [
+        "anger",
+        "natural"
+      ]
+    },
+    {
+      "path": "train\\natural\\train_natural_0027.jpg",
+      "cluster": 852,
+      "labels": [
+        "natural",
+        "sadness"
+      ]
+    },
+    {
+      "path": "valid\\sadness\\train_sadness_0046.jpg",
+      "cluster": 852,
+      "labels": [
+        "natural",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\natural\\train_natural_0060.jpg",
+      "cluster": 879,
+      "labels": [
+        "natural",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0089.jpg",
+      "cluster": 879,
+      "labels": [
+        "natural",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\natural\\train_natural_0061.jpg",
+      "cluster": 880,
+      "labels": [
+        "joy",
+        "natural"
+      ]
+    },
+    {
+      "path": "valid\\joy\\train_joy_0065.jpg",
+      "cluster": 880,
+      "labels": [
+        "joy",
+        "natural"
+      ]
+    },
+    {
+      "path": "train\\natural\\train_natural_0075.jpg",
+      "cluster": 894,
+      "labels": [
+        "natural",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0013.jpg",
+      "cluster": 894,
+      "labels": [
+        "natural",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\natural\\train_natural_0090.jpg",
+      "cluster": 907,
+      "labels": [
+        "natural",
+        "sadness"
+      ]
+    },
+    {
+      "path": "valid\\sadness\\train_sadness_0047.jpg",
+      "cluster": 907,
+      "labels": [
+        "natural",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\natural\\train_natural_0123.jpg",
+      "cluster": 933,
+      "labels": [
+        "natural",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0100.jpg",
+      "cluster": 933,
+      "labels": [
+        "natural",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\natural\\train_natural_0130.jpg",
+      "cluster": 939,
+      "labels": [
+        "natural",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0198.jpg",
+      "cluster": 939,
+      "labels": [
+        "natural",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\natural\\train_natural_0134.jpg",
+      "cluster": 942,
+      "labels": [
+        "natural",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0064.jpg",
+      "cluster": 942,
+      "labels": [
+        "natural",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\natural\\train_natural_0139.jpg",
+      "cluster": 946,
+      "labels": [
+        "natural",
+        "sadness"
+      ]
+    },
+    {
+      "path": "valid\\sadness\\train_sadness_0041.jpg",
+      "cluster": 946,
+      "labels": [
+        "natural",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\natural\\train_natural_0147.jpg",
+      "cluster": 952,
+      "labels": [
+        "natural",
+        "surprise"
+      ]
+    },
+    {
+      "path": "valid\\surprise\\train_surprise_0007.jpg",
+      "cluster": 952,
+      "labels": [
+        "natural",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0041.jpg",
+      "cluster": 1041,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "test\\anger\\test_anger_0024.jpg",
+      "cluster": 1041,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0104.jpg",
+      "cluster": 1097,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "test\\anger\\train_anger_0030.jpg",
+      "cluster": 1097,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0186.jpg",
+      "cluster": 1172,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "valid\\anger\\train_anger_0002.jpg",
+      "cluster": 1172,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0196.jpg",
+      "cluster": 1181,
+      "labels": [
+        "sadness",
+        "surprise"
+      ]
+    },
+    {
+      "path": "test\\surprise\\train_surprise_0003.jpg",
+      "cluster": 1181,
+      "labels": [
+        "sadness",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0222.jpg",
+      "cluster": 1203,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "test\\anger\\train_anger_0011.jpg",
+      "cluster": 1203,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0237.jpg",
+      "cluster": 1213,
+      "labels": [
+        "natural",
+        "sadness"
+      ]
+    },
+    {
+      "path": "test\\natural\\train_natural_0018.jpg",
+      "cluster": 1213,
+      "labels": [
+        "natural",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0291.jpg",
+      "cluster": 1258,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "valid\\anger\\train_anger_0015.jpg",
+      "cluster": 1258,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0294.jpg",
+      "cluster": 1261,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "test\\anger\\test_anger_0014.jpg",
+      "cluster": 1261,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0296.jpg",
+      "cluster": 1263,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "test\\anger\\train_anger_0020.jpg",
+      "cluster": 1263,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\sadness\\train_sadness_0305.jpg",
+      "cluster": 1271,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "test\\anger\\train_anger_0006.jpg",
+      "cluster": 1271,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0003.jpg",
+      "cluster": 1303,
+      "labels": [
+        "joy",
+        "surprise"
+      ]
+    },
+    {
+      "path": "valid\\joy\\train_joy_0088.jpg",
+      "cluster": 1303,
+      "labels": [
+        "joy",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0008.jpg",
+      "cluster": 1308,
+      "labels": [
+        "fear",
+        "surprise"
+      ]
+    },
+    {
+      "path": "test\\fear\\train_fear_0006.jpg",
+      "cluster": 1308,
+      "labels": [
+        "fear",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0039.jpg",
+      "cluster": 1332,
+      "labels": [
+        "sadness",
+        "surprise"
+      ]
+    },
+    {
+      "path": "test\\sadness\\train_sadness_0001.jpg",
+      "cluster": 1332,
+      "labels": [
+        "sadness",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0069.jpg",
+      "cluster": 1356,
+      "labels": [
+        "fear",
+        "surprise"
+      ]
+    },
+    {
+      "path": "test\\fear\\train_fear_0007.jpg",
+      "cluster": 1356,
+      "labels": [
+        "fear",
+        "surprise"
+      ]
+    },
+    {
+      "path": "train\\surprise\\train_surprise_0095.jpg",
+      "cluster": 1376,
+      "labels": [
+        "natural",
+        "surprise"
+      ]
+    },
+    {
+      "path": "valid\\natural\\train_natural_0027.jpg",
+      "cluster": 1376,
+      "labels": [
+        "natural",
+        "surprise"
+      ]
+    },
+    {
+      "path": "valid\\anger\\train_anger_0008.jpg",
+      "cluster": 1400,
+      "labels": [
+        "anger",
+        "natural"
+      ]
+    },
+    {
+      "path": "valid\\natural\\train_natural_0002.jpg",
+      "cluster": 1400,
+      "labels": [
+        "anger",
+        "natural"
+      ]
+    },
+    {
+      "path": "valid\\sadness\\train_sadness_0003.jpg",
+      "cluster": 1612,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "test\\anger\\train_anger_0031.jpg",
+      "cluster": 1612,
+      "labels": [
+        "anger",
+        "sadness"
+      ]
+    },
+    {
+      "path": "valid\\sadness\\train_sadness_0027.jpg",
+      "cluster": 1629,
+      "labels": [
+        "sadness",
+        "surprise"
+      ]
+    },
+    {
+      "path": "valid\\surprise\\train_surprise_0006.jpg",
+      "cluster": 1629,
+      "labels": [
+        "sadness",
+        "surprise"
+      ]
+    },
+    {
+      "path": "valid\\surprise\\train_surprise_0003.jpg",
+      "cluster": 1667,
+      "labels": [
+        "joy",
+        "surprise"
+      ]
+    },
+    {
+      "path": "test\\joy\\train_joy_0010.jpg",
+      "cluster": 1667,
+      "labels": [
+        "joy",
+        "surprise"
+      ]
+    },
+    {
+      "path": "test\\fear\\train_fear_0012.jpg",
+      "cluster": 1728,
+      "labels": [
+        "fear",
+        "sadness"
+      ]
+    },
+    {
+      "path": "test\\sadness\\test_sadness_0043.jpg",
+      "cluster": 1728,
+      "labels": [
+        "fear",
+        "sadness"
+      ]
+    },
+    {
+      "path": "test\\joy\\train_joy_0053.jpg",
+      "cluster": 1795,
+      "labels": [
+        "joy",
+        "natural"
+      ]
+    },
+    {
+      "path": "test\\natural\\train_natural_0000.jpg",
+      "cluster": 1795,
+      "labels": [
+        "joy",
+        "natural"
+      ]
+    },
+    {
+      "path": "test\\natural\\test_natural_0005.jpg",
+      "cluster": 1862,
+      "labels": [
+        "natural",
+        "sadness"
+      ]
+    },
+    {
+      "path": "test\\sadness\\train_sadness_0024.jpg",
+      "cluster": 1862,
+      "labels": [
+        "natural",
+        "sadness"
+      ]
+    }
+  ],
+  "result": {
+    "kept": 1808,
+    "removed": 180
+  }
+}
