@@ -1,0 +1,2274 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Autism FER — সম্পূর্ণ ব্যাখ্যা গাইড</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="/dev/stdin" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Autism FER — সম্পূর্ণ ব্যাখ্যা গাইড</h1>
+</header>
+<h1 id="autism-facial-expression-recognition-সমপরণ-বযখয-গইড">🎓 Autism
+Facial Expression Recognition — সম্পূর্ণ ব্যাখ্যা গাইড</h1>
+<h3 id="supervisor-পরশন-করল-যন-সব-উততর-দত-পর">(Supervisor প্রশ্ন করলে যেন
+সব উত্তর দিতে পারো)</h3>
+<blockquote>
+<p><strong>এই ফাইলটি তোমার University Supervisor-এর যেকোনো প্রশ্নের উত্তর
+দেওয়ার জন্য তৈরি করা হয়েছে।</strong> প্রতিটি বিষয় বাংলায় সহজভাবে এবং
+Technical depth সহ ব্যাখ্যা করা হয়েছে।</p>
+</blockquote>
+<hr />
+<h2 id="সচপতর">📋 সূচিপত্র</h2>
+<ol type="1">
+<li><a href="#১-প্রজেক্টের-মূল-উদ্দেশ্য">প্রজেক্টের মূল উদ্দেশ্য</a></li>
+<li><a href="#২-dataset">Dataset — কোথা থেকে, কেন, কতটুকু</a></li>
+<li><a href="#৩-data-cleaning">Data Cleaning — কেন দরকার হলো</a></li>
+<li><a href="#৪-class-imbalance">Class Imbalance সমস্যা ও সমাধান</a></li>
+<li><a href="#৫-baseline-models">Baseline Models — কেন এগুলো বেছে নেওয়া
+হয়েছে</a></li>
+<li><a href="#৬-training-setup">Training Setup — Hyperparameters
+ব্যাখ্যা</a></li>
+<li><a href="#৭-stratified-k-fold-cross-validation">Stratified K-Fold
+Cross-Validation — কেন?</a></li>
+<li><a href="#৮-loss-functions">Loss Functions — Focal Loss vs
+Cross-Entropy</a></li>
+<li><a href="#৯-ema">EMA (Exponential Moving Average) — কী ও
+কেন</a></li>
+<li><a href="#১০-proposed-model-architecture">Proposed Model
+Architecture — বিস্তারিত</a></li>
+<li><a href="#১১-se-block">SE Block (Squeeze-and-Excitation)</a></li>
+<li><a href="#১২-two-stage-training">Two-Stage Training — কেন দুটো
+Stage?</a></li>
+<li><a href="#১৩-tta">TTA (Test-Time Augmentation)</a></li>
+<li><a href="#১৪-uncertainty-guardrail">Uncertainty Guardrail — Clinical
+Safety</a></li>
+<li><a href="#১৫-evaluation-metrics">Evaluation Metrics — কোনটা কী
+বোঝায়</a></li>
+<li><a href="#১৬-results-ও-findings">Results ও Findings</a></li>
+<li><a href="#১৭-grad-cam">Grad-CAM — Explainability</a></li>
+<li><a href="#১৮-কেন-mtcnn-clahe-বাদ-দেওয়া-হলো">কেন MTCNN+CLAHE বাদ
+দেওয়া হলো</a></li>
+<li><a href="#১৯-kaggle-এ-কেন-run-করা-হয়">Kaggle এ কেন Run করা
+হয়</a></li>
+<li><a href="#২০-supervisor-qa">Supervisor এর সম্ভাব্য প্রশ্ন ও
+উত্তর</a></li>
+</ol>
+<hr />
+<h2 id="পরজকটর-মল-উদদশয">১. প্রজেক্টের মূল উদ্দেশ্য</h2>
+<h3 id="ক-কর-হচছ">কী করা হচ্ছে?</h3>
+<p><strong>Autism Spectrum Disorder (ASD)</strong> আক্রান্ত শিশুদের মুখের
+ছবি দেখে তাদের <strong>৬টি Emotion</strong> চেনার একটি Deep Learning
+System তৈরি করা হচ্ছে।</p>
+<h3 id="ট-emotion-ক-ক">৬টি Emotion কী কী?</h3>
+<table>
+<thead>
+<tr>
+<th>Emotion</th>
+<th>বাংলা</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Anger</td>
+<td>রাগ</td>
+</tr>
+<tr>
+<td>Fear</td>
+<td>ভয়</td>
+</tr>
+<tr>
+<td>Joy</td>
+<td>আনন্দ</td>
+</tr>
+<tr>
+<td>Natural</td>
+<td>স্বাভাবিক/নিরপেক্ষ</td>
+</tr>
+<tr>
+<td>Sadness</td>
+<td>দুঃখ</td>
+</tr>
+<tr>
+<td>Surprise</td>
+<td>বিস্ময়</td>
+</tr>
+</tbody>
+</table>
+<h3 id="কন-autism-এর-জনয-আলদ-research">কেন Autism-এর জন্য আলাদা
+Research?</h3>
+<ul>
+<li>ASD শিশুরা সাধারণত facial expression কম প্রকাশ করে অথবা ভিন্নভাবে প্রকাশ
+করে।</li>
+<li>সাধারণ FER (Facial Expression Recognition) model (যেমন FER2013 দিয়ে
+trained) এই শিশুদের ক্ষেত্রে কাজ করে না।</li>
+<li>Clinical সেটিংয়ে ASD শিশুর Emotion বোঝা Therapist ও Parents-এর জন্য
+গুরুত্বপূর্ণ।</li>
+</ul>
+<h3 id="গবষণর-অবদন-ক-research-contribution">গবেষণার অবদান কী? (Research
+Contribution)</h3>
+<ol type="1">
+<li><strong>Comparative Study:</strong> ৯-১০টি State-of-the-art
+Architecture-কে একই fair protocol-এ test করা হয়েছে।</li>
+<li><strong>Proposed Architecture:</strong> VGG16 (CNN) + DeiT
+(Transformer) — দুটি ভিন্ন ধরনের Feature Extractor একসাথে ব্যবহার করা
+হয়েছে।</li>
+<li><strong>Data Cleaning:</strong> Dataset-এর মধ্যে duplicate ও
+conflicting label সরানো হয়েছে — একটি methodological contribution।</li>
+<li><strong>Fair Protocol:</strong> Stratified K-Fold CV ব্যবহার করে
+statistically valid result দেওয়া হয়েছে।</li>
+<li><strong>Explainability:</strong> Grad-CAM দিয়ে দেখানো হয়েছে model
+কোন অংশ দেখে decision নেয়।</li>
+</ol>
+<hr />
+<h2 id="dataset">২. Dataset</h2>
+<h3 id="dataset-কথ-থক-এল">Dataset কোথা থেকে এলো?</h3>
+<p>৪টি আলাদা Source থেকে data নেওয়া হয়েছে এবং merge করা হয়েছে:</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>বিবরণ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FERAC Dataset (Kaggle)</td>
+<td>4-class ASD facial expressions</td>
+</tr>
+<tr>
+<td>Nora Mahmoud’s Mendeley Dataset</td>
+<td>ASD/Non-ASD labeled faces</td>
+</tr>
+<tr>
+<td>Dr. Fatma M. Talaat (Kaggle)</td>
+<td>ASD facial emotion data</td>
+</tr>
+<tr>
+<td>Hasibur Rahman’s Kaggle Dataset</td>
+<td>ASD facial expression samples</td>
+</tr>
+</tbody>
+</table>
+<h3 id="কন-multiple-source">কেন Multiple Source?</h3>
+<ul>
+<li>Single source থেকে যথেষ্ট data পাওয়া যাচ্ছিল না।</li>
+<li>বিশেষত <strong>Fear</strong> এবং <strong>Surprise</strong> class-এ
+খুব কম image ছিল।</li>
+<li>Multiple source merge করলে diversity বাড়ে, model generalize করতে
+পারে ভালো।</li>
+</ul>
+<h3 id="original-dataset-vs-cleaned-dataset">Original Dataset vs Cleaned
+Dataset</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>dataset/ (Original)</th>
+<th>dataset_clean/ (Cleaned)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Image Count</td>
+<td>1,988</td>
+<td>1,808</td>
+</tr>
+<tr>
+<td>Duplicates</td>
+<td>আছে</td>
+<td>সরানো হয়েছে</td>
+</tr>
+<tr>
+<td>Label Conflicts</td>
+<td>আছে</td>
+<td>সরানো হয়েছে</td>
+</tr>
+<tr>
+<td>Pipeline ব্যবহার করে?</td>
+<td>না</td>
+<td>হ্যাঁ</td>
+</tr>
+</tbody>
+</table>
+<h3 id="final-dataset-distribution-dataset_clean">Final Dataset
+Distribution (dataset_clean/):</h3>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Count</th>
+<th>মোটের %</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Anger</td>
+<td>167</td>
+<td>9.2%</td>
+</tr>
+<tr>
+<td>Fear</td>
+<td>68</td>
+<td>3.8%</td>
+</tr>
+<tr>
+<td>Joy</td>
+<td>843</td>
+<td>46.6%</td>
+</tr>
+<tr>
+<td>Natural</td>
+<td>201</td>
+<td>11.1%</td>
+</tr>
+<tr>
+<td>Sadness</td>
+<td>404</td>
+<td>22.3%</td>
+</tr>
+<tr>
+<td>Surprise</td>
+<td>125</td>
+<td>6.9%</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>1,808</strong></td>
+<td><strong>100%</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="data-cleaning">৩. Data Cleaning</h2>
+<h3 id="ক-ক-সমসয-ছল-original-dataset-এ">কী কী সমস্যা ছিল Original
+Dataset-এ?</h3>
+<h4 id="সমসয-১-near-duplicate-images">সমস্যা ১: Near-Duplicate
+Images</h4>
+<ul>
+<li>একই ছবি (বা প্রায় একই ছবি) dataset-এ একাধিকবার ছিল।</li>
+<li>কিছু ছবি <code>train</code> split-এ ছিল এবং একই ছবি <code>test</code>
+split-এও ছিল।</li>
+<li>এতে <strong>Data Leakage</strong> হয় — model test-এ যাকে “নতুন” ছবি
+মনে করে, সে আসলে training-এ দেখা ছবি।</li>
+<li>ফলে accuracy artificially বেড়ে যায় — false high result!</li>
+</ul>
+<h4 id="সমসয-২-label-conflicts">সমস্যা ২: Label Conflicts</h4>
+<ul>
+<li>একই মুখের ছবি এক জায়গায় “Sadness” আর অন্য জায়গায় “Fear” বলে labeled
+ছিল।</li>
+<li>এটি model-কে confuse করে।</li>
+</ul>
+<h3 id="কভব-clean-কর-হল">কীভাবে Clean করা হলো?</h3>
+<ul>
+<li><strong>dHash (Difference Hash)</strong> algorithm ব্যবহার করা
+হয়েছে।</li>
+<li>dHash একটি image-এর “fingerprint” তৈরি করে।</li>
+<li>দুটি image-এর fingerprint-এর মধ্যে পার্থক্য (Hamming Distance) ≤ 4 হলে
+সেগুলো “near-duplicate” বলে ধরা হয়।</li>
+<li><strong>88টি near-duplicate cluster</strong> পাওয়া গেছে।</li>
+<li><strong>86টি label conflict</strong> সরানো হয়েছে।</li>
+<li>ফলাফল: <code>cleaning_report.json</code> ফাইলে সংরক্ষিত আছে।</li>
+</ul>
+<h3 id="এট-কন-গরতবপরণ">এটা কেন গুরুত্বপূর্ণ?</h3>
+<blockquote>
+<p>“Garbage in, Garbage out” — dirty data দিয়ে train করলে model অকার্যকর
+হয় এবং artificially high result পাওয়া যায় যা publication-এ
+dishonest।</p>
+</blockquote>
+<hr />
+<h2 id="class-imbalance">৪. Class Imbalance</h2>
+<h3 id="সমসযট-ক">সমস্যাটা কী?</h3>
+<p>Dataset-এ Joy = 843 কিন্তু Fear = 68। অনুপাত প্রায়
+<strong>12:1</strong>।</p>
+<p>যদি model কে বলো “এই 1808টা ছবি দেখে Emotion বলো” — model শিখবে সবসময়
+“Joy” বলতে। তাহলেও 46% accuracy পাবে। কিন্তু Fear, Surprise কখনো ঠিকমতো
+চিনবে না।</p>
+<h3 id="সমধন-১-weightedrandomsampler-baseline-models">সমাধান ১:
+WeightedRandomSampler (Baseline Models)</h3>
+<ul>
+<li>Training-এর সময় minority class (Fear, Surprise) থেকে বেশি বার sample
+নেওয়া হয়।</li>
+<li>প্রতিটি sample-এর weight = <code>1 / class_count</code></li>
+<li>এতে করে model প্রতিটি class-কে সমান গুরুত্ব দিয়ে দেখে।</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>counts <span class="op">=</span> Counter(train_ds.labels)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>sample_weights <span class="op">=</span> [<span class="fl">1.0</span> <span class="op">/</span> counts[label] <span class="cf">for</span> label <span class="kw">in</span> train_ds.labels]</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>sampler <span class="op">=</span> WeightedRandomSampler(sample_weights, <span class="bu">len</span>(train_ds), replacement<span class="op">=</span><span class="va">True</span>)</span></code></pre></div>
+<h3 id="সমধন-২-focal-loss-alpha-proposed-model">সমাধান ২: Focal Loss
+Alpha (Proposed Model)</h3>
+<ul>
+<li>Proposed Model-এ Focal Loss-এ <code>alpha</code> parameter ব্যবহার
+করা হয়।</li>
+<li>Alpha = inverse frequency (বিরল class → বেশি weight)।</li>
+<li>অতিরিক্ত boost: Sadness ×2.0, Fear ×1.2।</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>alpha[CLASSES.index(<span class="st">&quot;sadness&quot;</span>)] <span class="op">*=</span> <span class="fl">2.0</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>alpha[CLASSES.index(<span class="st">&quot;fear&quot;</span>)] <span class="op">*=</span> <span class="fl">1.2</span></span></code></pre></div>
+<h3 id="কন-দট-একসথ-বযবহর-কর-হযন">কেন দুটো একসাথে ব্যবহার করা হয়নি?</h3>
+<ul>
+<li><strong>Double-weighting bug:</strong> পুরনো version-এ Sampler +
+Class Weight দুটোই ব্যবহার করা হয়েছিল।</li>
+<li>এতে model minority class-কে অতিরিক্ত penalize করে, small model
+collapse করে।</li>
+<li>Fix: Baseline-এ শুধু Sampler, Proposed-এ শুধু Focal Loss Alpha।</li>
+</ul>
+<hr />
+<h2 id="baseline-models">৫. Baseline Models</h2>
+<h3 id="কন-কন-model-তলন-কর-হযছ">কোন কোন Model তুলনা করা হয়েছে?</h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>ধরন</th>
+<th>Parameters</th>
+<th>বিশেষত্ব</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VGG-16 (BN)</td>
+<td>CNN</td>
+<td>134.3M</td>
+<td>Classic, powerful feature extractor</td>
+</tr>
+<tr>
+<td>InceptionV3</td>
+<td>CNN</td>
+<td>21.8M</td>
+<td>Multi-scale convolutions, 299 input</td>
+</tr>
+<tr>
+<td>DenseNet-121</td>
+<td>CNN</td>
+<td>7.0M</td>
+<td>Dense connections, feature reuse</td>
+</tr>
+<tr>
+<td>EfficientNet-B0</td>
+<td>CNN</td>
+<td>~5M</td>
+<td>Compound scaling, efficient</td>
+</tr>
+<tr>
+<td>MobileNetV2</td>
+<td>CNN</td>
+<td>2.2M</td>
+<td>Lightweight, mobile-friendly</td>
+</tr>
+<tr>
+<td>ResNet-50</td>
+<td>CNN</td>
+<td>23.5M</td>
+<td>Skip connections, residual learning</td>
+</tr>
+<tr>
+<td>DeiT-Small</td>
+<td>Transformer</td>
+<td>22.1M</td>
+<td>Knowledge distillation, no CNN</td>
+</tr>
+<tr>
+<td>ViT-Base</td>
+<td>Transformer</td>
+<td>85.8M</td>
+<td>Pure attention, ImageNet-21k</td>
+</tr>
+<tr>
+<td>Swin-Base</td>
+<td>Hybrid</td>
+<td>86.7M</td>
+<td>Shifted window attention</td>
+</tr>
+<tr>
+<td>Swin-Tiny</td>
+<td>Hybrid</td>
+<td>~28M</td>
+<td>Smaller Swin variant</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cnn-কভব-কজ-কর">CNN কীভাবে কাজ করে?</h3>
+<ul>
+<li>ছবিকে ছোট ছোট patch-এ কেটে filter দিয়ে scan করে।</li>
+<li>প্রতিটি filter একটি pattern খোঁজে (edge, texture, shape)।</li>
+<li>অনেকগুলো layer পার হলে high-level feature (চোখ, নাক, মুখ) বের হয়।</li>
+<li>VGG16 এর 13টি Convolutional Layer আছে।</li>
+</ul>
+<h3 id="vision-transformer-vit-কভব-কজ-কর">Vision Transformer (ViT)
+কীভাবে কাজ করে?</h3>
+<ul>
+<li>ছবিকে 16×16 pixel-এর patch-এ ভাগ করে।</li>
+<li>প্রতিটি patch একটি “token” — ঠিক NLP-তে word-এর মতো।</li>
+<li>Self-Attention mechanism দিয়ে প্রতিটি patch অন্য সব patch-এর সাথে
+interact করে।</li>
+<li>Global context ভালো বোঝে, কিন্তু local texture-এ CNN-এর চেয়ে
+দুর্বল।</li>
+</ul>
+<h3 id="deit-ক-আলদ">DeiT কী আলাদা?</h3>
+<ul>
+<li>DeiT = Data-efficient Image Transformer।</li>
+<li>ViT-এর মতো কিন্তু ImageNet-21k ছাড়াই ImageNet-1k দিয়ে train করা।</li>
+<li>Knowledge Distillation ব্যবহার করে — একটি CNN teacher থেকে
+শিখেছে।</li>
+<li>ছোট dataset-এ ViT-এর চেয়ে ভালো কাজ করে।</li>
+</ul>
+<h3 id="swin-transformer-ক">Swin Transformer কী?</h3>
+<ul>
+<li>Shifted Window Transformer।</li>
+<li>ছবিকে window-এ ভাগ করে attention calculate করে — CNN-এর locality ধরে
+রাখে।</li>
+<li>CNN এবং Transformer-এর hybrid benefit পায়।</li>
+</ul>
+<h3 id="কন-differential-learning-rate-বযবহর-কর-হযছ">কেন Differential
+Learning Rate ব্যবহার করা হয়েছে?</h3>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Backbone = pretrained features → ছোট LR দিয়ে ধীরে update</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>backbone LR <span class="op">=</span> lr x <span class="fl">0.1</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Head = নতুন classification layer → বড় LR দিয়ে দ্রুত শিখবে</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>head LR <span class="op">=</span> lr x <span class="fl">1.0</span></span></code></pre></div>
+<ul>
+<li>Pretrained features নষ্ট না করে শুধু classifier adapt করা।</li>
+<li>CNN-এর জন্য: <code>lr = 1e-3</code></li>
+<li>Transformer-এর জন্য: <code>lr = 1e-4</code> (বেশি LR দিলে collapse
+করে)</li>
+</ul>
+<hr />
+<h2 id="training-setup">৬. Training Setup</h2>
+<h3 id="augmentation-ক-ও-কন">Augmentation কী ও কেন?</h3>
+<p>Training-এর সময় প্রতিটি image-কে random transformation দেওয়া হয়:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>transforms.RandomHorizontalFlip(p<span class="op">=</span><span class="fl">0.5</span>)        <span class="co"># আয়নায় উল্টে দেখা</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>transforms.RandomRotation(<span class="dv">10</span>)                  <span class="co"># ±10 degree ঘোরানো</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>transforms.RandomAffine(translate<span class="op">=</span>(<span class="fl">0.1</span>, <span class="fl">0.1</span>))  <span class="co"># একটু সরানো</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>transforms.ColorJitter(brightness<span class="op">=</span><span class="fl">0.2</span>)         <span class="co"># আলো-অন্ধকার বদলানো</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>transforms.RandomGrayscale(p<span class="op">=</span><span class="fl">0.05</span>)             <span class="co"># 5% সময় কালো-সাদা</span></span></code></pre></div>
+<p><strong>কেন?</strong> Overfitting কমাতে। Model যেন training data মুখস্থ
+না করে, বরং pattern শিখুক।</p>
+<h3 id="কন-mixup-এব-randomerasing-বদ-দওয-হল">কেন MixUp এবং RandomErasing
+বাদ দেওয়া হলো?</h3>
+<ul>
+<li>MixUp: দুটি ছবি blend করে নতুন training sample তৈরি।</li>
+<li>RandomErasing: ছবির কিছু অংশ মুছে ফেলা।</li>
+<li>ছোট dataset (~1800 image)-এ এই techniques <strong>নয়েজ যোগ
+করে</strong>, শেখার সুযোগ কমায়।</li>
+<li>পরীক্ষায় দেখা গেছে এগুলো বাদ দেওয়ায় accuracy উন্নত হয়।</li>
+</ul>
+<h3 id="normalization-কন-কর-হয">Normalization কেন করা হয়?</h3>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Normalize(mean<span class="op">=</span>[<span class="fl">0.485</span>, <span class="fl">0.456</span>, <span class="fl">0.406</span>], std<span class="op">=</span>[<span class="fl">0.229</span>, <span class="fl">0.224</span>, <span class="fl">0.225</span>])</span></code></pre></div>
+<ul>
+<li>এই values ImageNet dataset-এর RGB channel-এর mean ও std।</li>
+<li>Pretrained model ImageNet-এ train হওয়ায়, same normalization
+দরকার।</li>
+<li>না করলে input distribution মেলে না → model কাজ করে না।</li>
+</ul>
+<h3 id="optimizer-adamw-কন">Optimizer: AdamW কেন?</h3>
+<ul>
+<li>Adam + Weight Decay (L2 regularization)।</li>
+<li>Adam: adaptive learning rate — প্রতিটি parameter নিজের LR পায়।</li>
+<li>Weight Decay: বড় weight-কে penalize করে → overfitting কমায়।</li>
+<li><code>weight_decay = 1e-4</code></li>
+</ul>
+<h3 id="scheduler-cosineannealingwarmrestarts-কন">Scheduler:
+CosineAnnealingWarmRestarts কেন?</h3>
+<ul>
+<li>Learning rate শুরুতে বড়, ধীরে ধীরে cosine curve অনুযায়ী কমে।</li>
+<li><code>T_0=10, T_mult=2</code> → প্রথম 10 epoch-এ একটি cycle, তারপর
+20, 40 epoch-এ।</li>
+<li>LR restart করলে নতুন minima explore করার সুযোগ পায়।</li>
+<li><strong>Note:</strong> Transformer-এ CosineAnnealingWarmRestarts
+ব্যবহার না করাই ভালো (DeiT collapse করে) — তাই Proposed Model-এ
+warmup+cosine LambdaLR ব্যবহার।</li>
+</ul>
+<h3 id="early-stopping-ক">Early Stopping কী?</h3>
+<ul>
+<li>যদি Validation F1-Macro <code>patience=15</code> epoch-এ উন্নতি না হয়
+→ training বন্ধ।</li>
+<li>Overfitting prevent করে।</li>
+<li>সময় ও resource বাঁচায়।</li>
+</ul>
+<h3 id="mixed-precision-training-amp">Mixed Precision Training
+(AMP)?</h3>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> autocast(device_type<span class="op">=</span><span class="st">&quot;cuda&quot;</span>, dtype<span class="op">=</span>torch.float16):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    outputs <span class="op">=</span> model(images)</span></code></pre></div>
+<ul>
+<li>GPU-তে float16 ব্যবহার করে → দ্রুত calculation, কম memory।</li>
+<li>GradScaler দিয়ে float16-এর numerical instability সামলানো হয়।</li>
+</ul>
+<hr />
+<h2 id="stratified-k-fold-cross-validation">৭. Stratified K-Fold
+Cross-Validation</h2>
+<h3 id="simple-traintest-split-এর-সমসয-ক">Simple Train/Test Split-এর
+সমস্যা কী?</h3>
+<ul>
+<li>ধরো Fear class-এ মাত্র 68টি image।</li>
+<li>Random split করলে test-এ হয়তো মাত্র 10-14টি Fear image পড়বে।</li>
+<li>14টি image দিয়ে Fear-এর performance মাপা → <strong>statistically
+meaningless।</strong></li>
+</ul>
+<h3 id="k-fold-কভব-কজ-কর">K-Fold কীভাবে কাজ করে?</h3>
+<pre><code>Dataset: 1808 images
+            |
+Fold 1: [AAAAA|----] -&gt; Test on A, Train on remaining
+Fold 2: [----|AAAAA] -&gt; Test on A, Train on remaining
+...
+Fold 5: [----|-AAAA] -&gt; Test on A, Train on remaining</code></pre>
+<ul>
+<li>মোট 5 বার model train হয়।</li>
+<li>প্রতিটি image exactly একবার test-এ পড়ে (Out-of-Fold prediction)।</li>
+<li>Final result = 5 fold-এর mean ± std।</li>
+</ul>
+<h3 id="stratified-কন">Stratified কেন?</h3>
+<ul>
+<li>সাধারণ KFold random split করে → কোনো fold-এ Fear হয়তো 2টি, অন্যটায়
+20টি।</li>
+<li>Stratified KFold প্রতিটি fold-এ class distribution একই রাখে।</li>
+<li><code>StratifiedKFold(n_splits=5, shuffle=True, random_state=42)</code></li>
+</ul>
+<h3 id="seed42-কন">seed=42 কেন?</h3>
+<ul>
+<li>Reproducibility-র জন্য। যে কেউ same code চালালে same result
+পাবে।</li>
+<li>“42” — Deep Learning community-তে convention হিসেবে ব্যবহার হয়।</li>
+</ul>
+<h3 id="oof-out-of-fold-prediction-ক">OOF (Out-of-Fold) Prediction
+কী?</h3>
+<ul>
+<li>প্রতিটি image যখন validation set-এ থাকে, তখন model তার prediction
+করে।</li>
+<li>এই predictions কে OOF prediction বলে।</li>
+<li>সমস্ত 5 fold শেষে সব 1808 image-এর OOF prediction একসাথে পেলে সম্পূর্ণ
+evaluation সম্ভব।</li>
+</ul>
+<hr />
+<h2 id="loss-functions">৮. Loss Functions</h2>
+<h3 id="cross-entropy-loss-ক">Cross-Entropy Loss কী?</h3>
+<ul>
+<li>সবচেয়ে common classification loss।</li>
+<li>Model যে class predict করে তার probability কতটা কাছে correct
+answer-এর?</li>
+<li>Formula: <code>-log(p_correct)</code> — correct class-এর probability
+যত কম, loss তত বেশি।</li>
+</ul>
+<h3 id="label-smoothing-cross-entropy-ক">Label Smoothing Cross-Entropy
+কী?</h3>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>nn.CrossEntropyLoss(label_smoothing<span class="op">=</span><span class="fl">0.1</span>)</span></code></pre></div>
+<ul>
+<li>Hard label [0, 0, 1, 0, 0, 0] → Soft label [0.02, 0.02, 0.9, 0.02,
+0.02, 0.02]</li>
+<li>Model একটু less confident থাকে → overconfidence ও overfitting
+কমে।</li>
+<li>Transformer-এর জন্য ব্যবহার করা হয়েছে।</li>
+</ul>
+<h3 id="focal-loss-ক-এব-কন">Focal Loss কী এবং কেন?</h3>
+<pre><code>FL = (1 - p_t)^gamma x CE_loss
+gamma = 2.0</code></pre>
+<ul>
+<li><code>p_t</code> = correct class-এর predicted probability।</li>
+<li>যদি model সঠিক predict করে (p_t = 0.9): (1-0.9)^2 = 0.01 → loss প্রায়
+শূন্য।</li>
+<li>যদি model ভুল করে (p_t = 0.1): (1-0.1)^2 = 0.81 → loss বড়।</li>
+<li><strong>Easy example-এ কম loss, Hard example-এ বেশি
+loss।</strong></li>
+<li>Fear, Surprise class-এর জন্য perfect — এগুলো “hard” examples।</li>
+<li>CNN-এর জন্য ব্যবহার করা হয়েছে।</li>
+</ul>
+<hr />
+<h2 id="ema">৯. EMA</h2>
+<h3 id="ema-ক">EMA কী?</h3>
+<p>EMA = Exponential Moving Average। Model train হওয়ার সময়, প্রতিটি
+step-এ weights-এর একটি “running average” রাখা হয়।</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ema_weight <span class="op">=</span> decay x ema_weight <span class="op">+</span> (<span class="dv">1</span> <span class="op">-</span> decay) x current_weight</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>decay <span class="op">=</span> <span class="fl">0.999</span></span></code></pre></div>
+<h3 id="কন-ema">কেন EMA?</h3>
+<ul>
+<li>Training-এর শেষ দিকে model sometimes “jump” করে — oscillation।</li>
+<li>EMA একটি stable, smooth version রাখে।</li>
+<li>Test করার সময় EMA weights ব্যবহার করলে ভালো result পাওয়া যায়।</li>
+<li>বাস্তবে 0.5-2% F1 improvement দেখা যায়।</li>
+</ul>
+<h3 id="baseline-vs-proposed-model-এ-ema-পরথকয">Baseline vs Proposed
+Model-এ EMA পার্থক্য</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Baseline EMA</th>
+<th>Proposed ModelEMA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Implementation</td>
+<td>Dictionary-based shadow</td>
+<td>Deep copy of model</td>
+</tr>
+<tr>
+<td>Save/Load</td>
+<td>EMA shadow dict</td>
+<td>EMA module state</td>
+</tr>
+<tr>
+<td>কারণ</td>
+<td>সহজ implementation</td>
+<td>More stable for complex model</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="proposed-model-architecture">১০. Proposed Model
+Architecture</h2>
+<h3 id="কন-একট-নতন-architecture-দরকর">কেন একটি নতুন Architecture
+দরকার?</h3>
+<ul>
+<li>সব Baseline model ~68-72% accuracy দিচ্ছে।</li>
+<li>CNN ভালো local texture বোঝে (pixel-level features)।</li>
+<li>Transformer ভালো global structure বোঝে (পুরো মুখের relationship)।</li>
+<li>Emotion recognition-এ দুটোই দরকার — চোখের কোণ (local) + পুরো মুখের
+expression (global)।</li>
+</ul>
+<h3 id="architecture-overview">Architecture Overview:</h3>
+<pre><code>Input Image (224x224x3)
+        |
+   [Stream A]        [Stream B]
+   VGG16-BN          DeiT-Small
+   (CNN)             (Transformer)
+        |                 |
+      GAP             CLS Token
+    (512-d)           (384-d)
+        |                 |
+   SE Block A         SE Block B
+   (Channel Recalib.) (Channel Recalib.)
+        |                 |
+        +---Concatenate---+
+               |
+          [896-d vector]
+               |
+         Dropout(0.4)
+               |
+      Linear(896 -&gt; 512)
+               |
+       BatchNorm + GELU
+               |
+         Dropout(0.25)
+               |
+      Linear(512 -&gt; 256)
+               |
+       BatchNorm + GELU
+               |
+         Dropout(0.1)
+               |
+      Linear(256 -&gt; 6)
+               |
+         [6 class output]</code></pre>
+<h3 id="stream-a-vgg16-bn-spatial-expert">Stream A: VGG16-BN (Spatial
+Expert)</h3>
+<ul>
+<li><code>forward_features()</code> → Feature Map বের করে (শেষ conv
+layer)।</li>
+<li>Global Average Pooling (GAP) → 512-dimensional vector।</li>
+<li>VGG16 local texture, edge, shape ধরতে পারদর্শী।</li>
+<li>BN = Batch Normalization → training stable রাখে।</li>
+</ul>
+<h3 id="stream-b-deit-small-global-geometry-expert">Stream B: DeiT-Small
+(Global Geometry Expert)</h3>
+<ul>
+<li>Input patch 16×16-এ ভাগ হয়।</li>
+<li>CLS Token = পুরো image-এর summary token।</li>
+<li>384-dimensional feature vector পাওয়া যায়।</li>
+<li>Attention mechanism দিয়ে দূরের pixel-এর মধ্যে relationship ধরে।</li>
+</ul>
+<h3 id="কন-vgg16-deit">কেন VGG16 + DeiT?</h3>
+<ul>
+<li>Correlation Heatmap (Figure 7) দেখিয়েছে CNN ও Transformer আলাদা
+ধরনের feature capture করে।</li>
+<li>তাদের combination complementary features দেয়।</li>
+<li>Ablation study: প্রতিটি stream আলাদাভাবে কম accurate। Combined হলে
+বেশি।</li>
+</ul>
+<hr />
+<h2 id="se-block">১১. SE Block</h2>
+<h3 id="se-squeeze-and-excitation">SE = Squeeze-and-Excitation</h3>
+<pre><code>Feature Vector (512-d বা 384-d)
+        |
+   FC1: 512 -&gt; 32  (Squeeze, r=16)
+        |
+      ReLU
+        |
+   FC2: 32 -&gt; 512  (Excitation)
+        |
+      Sigmoid (0 থেকে 1)
+        |
+   Element-wise Multiply
+        |
+Recalibrated Features</code></pre>
+<h3 id="কভব-কজ-কর">কীভাবে কাজ করে?</h3>
+<ul>
+<li>512-d feature vector-এ প্রতিটি dimension এক ধরনের information
+ধরে।</li>
+<li>SE block জিজ্ঞেস করে: “এই 512টি channel-এর মধ্যে কোনটা এখন বেশি
+গুরুত্বপূর্ণ?”</li>
+<li>Sigmoid output → প্রতিটি channel-এর জন্য 0-1 weight।</li>
+<li>গুরুত্বপূর্ণ channel: weight ~1 (amplify)।</li>
+<li>কম গুরুত্বপূর্ণ channel: weight ~0 (suppress)।</li>
+</ul>
+<h3 id="কন-reduction16">কেন reduction=16?</h3>
+<ul>
+<li>512 → 32 → 512।</li>
+<li>16 হলো compression ratio।</li>
+<li>অনেক parameter না বাড়িয়ে channel recalibration শেখানো যায়।</li>
+</ul>
+<h3 id="se-block-এর-clinical-relevance">SE Block-এর Clinical
+Relevance</h3>
+<ul>
+<li>ASD শিশুর facial expression অনেক subtle।</li>
+<li>SE block মুখের গুরুত্বপূর্ণ region (চোখের কোণ, ঠোঁট) automatically
+emphasize করে।</li>
+</ul>
+<hr />
+<h2 id="two-stage-training">১২. Two-Stage Training</h2>
+<h3 id="stage-1-160-epochs-unbalanced-shuffle">Stage 1 (160 Epochs):
+Unbalanced Shuffle</h3>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Full backbone + head, no frozen layers</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Shuffle loader (not balanced)</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Warmup 10 epochs + Cosine LR decay</span></span></code></pre></div>
+<ul>
+<li>Model প্রথমে সব data দেখে naturally শিখুক।</li>
+<li>Warmup: প্রথম 10 epoch LR ধীরে বাড়ে → stable শুরু।</li>
+<li>Cosine decay: LR ধীরে কমে → fine-grained convergence।</li>
+</ul>
+<h3 id="stage-2-20-epochs-frozen-backbone-balanced-sampler">Stage 2 (20
+Epochs): Frozen Backbone + Balanced Sampler</h3>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Backbone frozen (weights fixed)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Only SE blocks + classifier train</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Balanced WeightedRandomSampler</span></span></code></pre></div>
+<ul>
+<li>Stage 1-এ backbone ইতিমধ্যে ভালো features শিখেছে।</li>
+<li>এখন শুধু classifier কে imbalance fix করার জন্য fine-tune।</li>
+<li>Backbone frozen থাকায় catastrophic forgetting হয় না।</li>
+</ul>
+<h3 id="কন-এই-design">কেন এই Design?</h3>
+<ul>
+<li>শুধু balanced loader দিয়ে পুরো training করলে Joy-এর performance
+কমে।</li>
+<li>শুধু unbalanced দিলে Fear-এর performance কমে।</li>
+<li>দুই stage: প্রথমে সব শেখো, তারপর rare class-এ focus করো।</li>
+</ul>
+<hr />
+<h2 id="tta">১৩. TTA</h2>
+<h3 id="tta-test-time-augmentation">TTA = Test-Time Augmentation</h3>
+<p>একই test image-কে ৫ ভিন্নভাবে transform করে model-এ দেওয়া হয়:</p>
+<pre><code>TTA View 1: Normal (resize only)
+TTA View 2: Horizontal Flip
+TTA View 3: Rotate +5 degrees
+TTA View 4: Rotate -5 degrees
+TTA View 5: Scale up 108% + Center Crop</code></pre>
+<h3 id="কন">কেন?</h3>
+<ul>
+<li>একটি image দেখলে model uncertainty থাকতে পারে।</li>
+<li>৫টি view-এর prediction average করলে → more robust, less
+variance।</li>
+<li>Clinical setting-এ জরুরি: একটি ভুল prediction patient-এর জন্য harmful
+হতে পারে।</li>
+</ul>
+<h3 id="কভব-average-কর-হয">কীভাবে Average করা হয়?</h3>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>avg_prob <span class="op">=</span> mean([prob_1, prob_2, prob_3, prob_4, prob_5])</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>prediction <span class="op">=</span> argmax(avg_prob)</span></code></pre></div>
+<hr />
+<h2 id="uncertainty-guardrail">১৪. Uncertainty Guardrail</h2>
+<h3 id="ক-সমসয-solve-কর">কী সমস্যা Solve করে?</h3>
+<ul>
+<li>Model যখন confused থাকে, তবু একটি class predict করে।</li>
+<li>ASD শিশুর therapy-তে wrong prediction = wrong intervention।</li>
+<li>Clinical safety এর জন্য “I don’t know” বলার ক্ষমতা দরকার।</li>
+</ul>
+<h3 id="কভব-কজ-কর-1">কীভাবে কাজ করে?</h3>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>UNCERTAINTY_THRESH <span class="op">=</span> <span class="fl">0.30</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>max_prob <span class="op">=</span> <span class="bu">max</span>(softmax(output))</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> max_prob <span class="op">&lt;</span> <span class="fl">0.30</span>:</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    prediction <span class="op">=</span> <span class="st">&quot;Uncertain — refer to clinician&quot;</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    prediction <span class="op">=</span> argmax(output)</span></code></pre></div>
+<ul>
+<li>যদি highest class probability &lt; 30%, model বলে “নিশ্চিত না”।</li>
+<li>এটি low-confidence prediction বাতিল করে।</li>
+</ul>
+<hr />
+<h2 id="evaluation-metrics">১৫. Evaluation Metrics</h2>
+<h3 id="accuracy">Accuracy</h3>
+<pre><code>Accuracy = Correct Predictions / Total Predictions</code></pre>
+<ul>
+<li>সবচেয়ে intuitive metric।</li>
+<li><strong>কিন্তু imbalanced dataset-এ misleading!</strong></li>
+<li>Joy = 843 হলে সবসময় “Joy” বললেও 46% accuracy।</li>
+</ul>
+<h3 id="macro-f1-score-সবচয-গরতবপরণ">Macro F1-Score (সবচেয়ে
+গুরুত্বপূর্ণ)</h3>
+<pre><code>F1 = 2 x (Precision x Recall) / (Precision + Recall)
+Macro F1 = Average of all class F1 scores (equally weighted)</code></pre>
+<ul>
+<li>প্রতিটি class-এর F1 calculate করো, তারপর average নাও।</li>
+<li>Joy ও Fear দুটোকে সমান গুরুত্ব দেয়।</li>
+<li><strong>এই project-এ primary metric Macro F1।</strong></li>
+</ul>
+<h3 id="precision-vs-recall">Precision vs Recall</h3>
+<pre><code>Precision = True Positives / (True Positives + False Positives)
+            &quot;যাকে Joy বললাম, সে কতটা সত্যিই Joy?&quot;
+
+Recall    = True Positives / (True Positives + False Negatives)
+            &quot;সব Joy image-এর মধ্যে কতটা চিনতে পারলাম?&quot;</code></pre>
+<h3 id="confusion-matrix">Confusion Matrix</h3>
+<ul>
+<li>6×6 matrix।</li>
+<li>Row = Actual class, Column = Predicted class।</li>
+<li>Diagonal = সঠিক prediction।</li>
+<li>Off-diagonal = ভুল — Fear মাঝে মাঝে Sadness হিসেবে predict হয়।</li>
+</ul>
+<h3 id="auc-roc">AUC-ROC</h3>
+<ul>
+<li>Area Under the ROC Curve।</li>
+<li>0.5 = random guess, 1.0 = perfect।</li>
+<li>Multi-class: প্রতিটি class-এর আলাদা ROC curve, তারপর macro
+average।</li>
+</ul>
+<h3 id="mean-std">mean ± std</h3>
+<ul>
+<li>5 fold-এ F1: [0.61, 0.63, 0.60, 0.62, 0.61]।</li>
+<li>Mean = 0.614, Std = 0.011।</li>
+<li>Report: <strong>0.614 ± 0.011</strong>।</li>
+<li>Std কম হলে model stable।</li>
+</ul>
+<hr />
+<h2 id="results-ও-findings">১৬. Results ও Findings</h2>
+<h3 id="baseline-model-results-stratified-5-fold-cv">Baseline Model
+Results (Stratified 5-Fold CV):</h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Accuracy</th>
+<th>F1-Macro</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>VGG-16</strong></td>
+<td><strong>0.7201</strong></td>
+<td><strong>0.6217</strong></td>
+</tr>
+<tr>
+<td>Swin Base</td>
+<td>0.7201</td>
+<td>0.6100</td>
+</tr>
+<tr>
+<td>InceptionV3</td>
+<td>0.7196</td>
+<td>0.6067</td>
+</tr>
+<tr>
+<td>DeiT Small</td>
+<td>0.7113</td>
+<td>0.6026</td>
+</tr>
+<tr>
+<td>DenseNet-121</td>
+<td>0.7113</td>
+<td>0.6001</td>
+</tr>
+<tr>
+<td>ViT Base</td>
+<td>0.7102</td>
+<td>0.5984</td>
+</tr>
+<tr>
+<td>Swin Tiny</td>
+<td>0.7030</td>
+<td>0.5972</td>
+</tr>
+<tr>
+<td>EfficientNet-B0</td>
+<td>0.6980</td>
+<td>0.5871</td>
+</tr>
+<tr>
+<td>MobileNetV2</td>
+<td>0.6858</td>
+<td>0.5790</td>
+</tr>
+<tr>
+<td>ResNet-50</td>
+<td>0.6825</td>
+<td>0.5762</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-findings">Key Findings:</h3>
+<ol type="1">
+<li><strong>VGG-16 সেরা Baseline</strong> — Accuracy 72.01%, Macro F1
+62.17%।</li>
+<li><strong>CNN vs Transformer কাছাকাছি</strong> — Swin (Transformer)
+এবং VGG-16 (CNN) প্রায় সমান।</li>
+<li><strong>সব model 68-72% plateau-এ আটকে</strong> — শুধু backbone বদলালে
+হবে না, Architecture innovation দরকার।</li>
+<li><strong>Fear ও Surprise সবচেয়ে কঠিন</strong> — কম data + visually
+similar to other emotions।</li>
+<li><strong>CNN ও Transformer ভিন্ন Feature ধরে</strong> (Correlation
+Heatmap প্রমাণ করে) → Fusion promising।</li>
+</ol>
+<h3 id="কন-vgg-16-সর">কেন VGG-16 সেরা?</h3>
+<ul>
+<li>Texture-heavy architecture।</li>
+<li>ASD facial expression অনেক subtle texture-dependent (wrinkle, muscle
+twitch)।</li>
+<li>VGG-16 low-level feature ভালো ধরে।</li>
+<li>সহজ, deep architecture → কম overfit।</li>
+</ul>
+<hr />
+<h2 id="grad-cam">১৭. Grad-CAM</h2>
+<h3 id="grad-cam-ক">Grad-CAM কী?</h3>
+<p>Gradient-weighted Class Activation Mapping। Model কোন pixel দেখে কোন
+decision নিচ্ছে — সেটা visualize করার technique।</p>
+<h3 id="কভব-কজ-কর-2">কীভাবে কাজ করে?</h3>
+<ol type="1">
+<li>Forward pass করো → prediction পাও।</li>
+<li>Target class-এর score backward propagate করো।</li>
+<li>Last convolutional layer-এর gradient ধরো।</li>
+<li>Gradient-এর average দিয়ে feature map weight করো।</li>
+<li>ReLU apply করো → Heatmap তৈরি।</li>
+</ol>
+<h3 id="এট-কন-গরতবপরণ-1">এটা কেন গুরুত্বপূর্ণ?</h3>
+<ul>
+<li>Clinician-কে দেখাতে পারি: “দেখো, model Sadness চেনে কারণ সে ঠোঁটের
+কোণ দেখেছে।”</li>
+<li>Model যদি background দেখে decision নেয় (spurious correlation) —
+সেটাও ধরা পড়বে।</li>
+<li>Explainability ছাড়া Clinical AI trust করা যায় না।</li>
+</ul>
+<hr />
+<h2 id="কন-mtcnnclahe-বদ-দওয-হল">১৮. কেন MTCNN+CLAHE বাদ দেওয়া হলো</h2>
+<h3 id="শরত-ক-ছল">শুরুতে কী ছিল?</h3>
+<ul>
+<li><strong>MTCNN:</strong> Multi-task Cascaded Convolutional Networks —
+face detect করে crop করে।</li>
+<li><strong>CLAHE:</strong> Contrast Limited Adaptive Histogram
+Equalization — image contrast বাড়ায়।</li>
+</ul>
+<h3 id="কন-মন-হযছল-দরকর">কেন মনে হয়েছিল দরকার?</h3>
+<ul>
+<li>ASD dataset-এ অনেক image-এ face ছোট বা off-center।</li>
+<li>CLAHE দিলে face-এর detail বেশি visible।</li>
+</ul>
+<h3 id="কনত-accuracy-কন-কমল">কিন্তু Accuracy কেন কমলো?</h3>
+<pre><code>VGG-16: CLAHE preprocessing → F1 0.548 → 0.528 (কমলো!)
+ResNet50 / ViT: Collapsed (খুব খারাপ result)</code></pre>
+<p><strong>কারণসমূহ:</strong> 1. <strong>MTCNN False Detection:</strong>
+ASD শিশুদের অস্বাভাবিক expression-এ MTCNN face ঠিকমতো detect করতে পারে না।
+Detection fail হলে blank বা wrong crop আসে। 2. <strong>CLAHE
+Artifact:</strong> অতিরিক্ত contrast বাড়ানো natural color distribution
+নষ্ট করে। 3. <strong>Pretrained Model Mismatch:</strong>
+ImageNet-pretrained model natural image দেখে শিখেছে। Over-processed
+image দিলে feature mismatch। 4. <strong>Information Loss:</strong> Face
+crop করলে surrounding context (পোশাক, posture) বাদ পড়ে যা emotion clue
+দিতে পারে।</p>
+<p><strong>সিদ্ধান্ত:</strong> RAW image সরাসরি model-এ দাও। Augmentation
+শুধু training-এ।</p>
+<hr />
+<h2 id="kaggle-এ-কন-run-কর-হয">১৯. Kaggle এ কেন Run করা হয়</h2>
+<h3 id="local-machine-সমসয">Local Machine সমস্যা</h3>
+<ul>
+<li>Local machine: Python 3.14, PyTorch 2.12 (Intel Arc XPU)।</li>
+<li>Training scripts CUDA-only — Intel GPU support নেই।</li>
+<li>CPU-তে train করলে একটি model-এ কয়েকদিন লাগবে।</li>
+</ul>
+<h3 id="kaggle-সবধ">Kaggle সুবিধা</h3>
+<ul>
+<li>Free NVIDIA T4/P100 GPU (40 GPU hours/week)।</li>
+<li>Pre-installed: PyTorch, timm, sklearn সব আছে।</li>
+<li>Session timeout-এ resume করার system আছে।</li>
+</ul>
+<h3 id="resumable-training-system">Resumable Training System</h3>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># প্রতিটি fold শেষে save করা হয়:</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>oof_preds.npy    <span class="co"># Predictions</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>oof_labels.npy   <span class="co"># True labels</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>cv_metrics.json  <span class="co"># Metrics</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>cv_done.json     <span class="co"># Completed fold markers</span></span></code></pre></div>
+<ul>
+<li>যদি Kaggle 9 ঘণ্টায় session terminate করে:</li>
+<li>দ্বিতীয়বার চালালে ইতিমধ্যে শেষ হওয়া fold skip হবে।</li>
+<li>কোনো progress নষ্ট হবে না।</li>
+</ul>
+<hr />
+<h2 id="supervisor-qa">২০. Supervisor Q&amp;A</h2>
+<h3 id="q1-এই-research-এর-novelty-ক">Q1: এই research-এর novelty কী?</h3>
+<p><strong>উত্তর:</strong> এই গবেষণার novelty চারটি স্তরে:</p>
+<ol type="1">
+<li><p><strong>Methodological Novelty:</strong> আগের ASD emotion
+papers-এ fixed train/test split ব্যবহার হয়েছে। আমরা Stratified 5-Fold CV
+ব্যবহার করেছি — প্রতিটি image test-এ আসে, Fear মাত্র 14/fold থাকলেও
+statistically valid result দেওয়া সম্ভব।</p></li>
+<li><p><strong>Data Integrity:</strong> dHash deduplication করে 88
+near-duplicate cluster ও 86 label conflict সরানো হয়েছে। পুরনো papers
+leaky data দিয়ে inflate করা result report করেছে।</p></li>
+<li><p><strong>Architectural Novelty:</strong> CNN (VGG16) + Transformer
+(DeiT) dual-stream with Squeeze-Excitation recalibration — ASD emotion
+recognition-এ প্রথম এই combination।</p></li>
+<li><p><strong>Clinical Awareness:</strong> TTA + Uncertainty Guardrail
+— clinical deployment-এ low-confidence prediction reject করার
+ব্যবস্থা।</p></li>
+</ol>
+<hr />
+<h3 id="q2-কন-vgg16-সর-হল-resnet50-নয">Q2: কেন VGG16 সেরা হলো, ResNet50
+নয়?</h3>
+<p><strong>উত্তর:</strong> VGG-16-এর sequential convolution stack
+low-level texture ও edge ভালো ধরে। ASD শিশুদের facial expression অনেক
+subtle — pixel-level texture change (muscle twitch, eye crinkle)
+গুরুত্বপূর্ণ।</p>
+<p>ResNet-50-এর skip connection high-level semantic feature prioritize
+করে কিন্তু ~1800 image-এ high-level features শেখার জন্য যথেষ্ট data নেই।
+VGG-16 simpler architecture হওয়ায় কম data-এও overfit করে না।</p>
+<hr />
+<h3
+id="q3-fear-ও-surprise-এ-performance-কম-কন-কভব-আরও-উননত-কর-যত-পর">Q3:
+Fear ও Surprise-এ performance কম কেন? কীভাবে আরও উন্নত করা যেতে
+পারে?</h3>
+<p><strong>উত্তর:</strong></p>
+<p><strong>কারণ:</strong> - Fear: মাত্র 68 image (3.8% dataset)। -
+Surprise ও Fear visually similar (raised eyebrows, wide eyes)। - প্রতি
+fold-এ Fear = ~14 images → model শেখার সুযোগ কম।</p>
+<p><strong>উন্নতির সম্ভাব্য পদ্ধতি:</strong> 1. <strong>Data
+Collection:</strong> আরও Fear/Surprise image collect করা। 2.
+<strong>Synthetic Data (GAN):</strong> StyleGAN বা diffusion model দিয়ে
+Fear image generate করা। 3. <strong>Transfer Learning from
+FER2013:</strong> General FER dataset-এ pretrain করে ASD data-এ
+fine-tune। 4. <strong>Few-Shot Learning:</strong> Few example থেকে শেখার
+specialized architecture।</p>
+<hr />
+<h3
+id="q4-transformer-এর-attention-ক-asd-face-এ-কজ-কর-যখন-expression-কম">Q4:
+Transformer-এর attention কি ASD face-এ কাজ করে যেখানে expression
+কম?</h3>
+<p><strong>উত্তর:</strong> এটি একটি excellent প্রশ্ন। Transformer-এর
+self-attention সবসময় expression-heavy region-এ focus করে না — এটি
+training data থেকে শেখে।</p>
+<p>আমাদের ক্ষেত্রে: - ASD শিশুরা expression কম করে, কিন্তু করে। - Transformer
+global context ধরে — পুরো মুখের geometry, head pose, body language। -
+Grad-CAM visualization দেখায় DeiT stream চোখের region-এ attention দেয়
+even for subtle expressions।</p>
+<p>কিন্তু এটা CNN (VGG16) এর complement হিসেবে কাজ করে, একা যথেষ্ট নয়।</p>
+<hr />
+<h3 id="q5-stratified-k-fold-cv-vs-leave-one-out-cv-কনট-ভল">Q5:
+Stratified K-Fold CV vs Leave-One-Out CV — কোনটা ভালো?</h3>
+<p><strong>উত্তর:</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Stratified 5-Fold</th>
+<th>Leave-One-Out</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Training sets</td>
+<td>5</td>
+<td>n (1808)</td>
+</tr>
+<tr>
+<td>Variance</td>
+<td>মাঝারি</td>
+<td>খুব কম</td>
+</tr>
+<tr>
+<td>Computation</td>
+<td>সাধ্যমত</td>
+<td>অনেক বেশি (1808x training)</td>
+</tr>
+<tr>
+<td>Bias</td>
+<td>সামান্য</td>
+<td>প্রায় শূন্য</td>
+</tr>
+</tbody>
+</table>
+<p>~1800 image-এর জন্য 5-Fold ভালো trade-off। LOOCV-তে 1808 বার training
+করতে হতো — Kaggle GPU তে প্রতিটি model-এ সপ্তাহ লেগে যেত।</p>
+<hr />
+<h3 id="q6-amp-automatic-mixed-precision-ক-accuracy-কময">Q6: AMP
+(Automatic Mixed Precision) কি accuracy কমায়?</h3>
+<p><strong>উত্তর:</strong> না, AMP accuracy কমায় না।</p>
+<ul>
+<li>Float16-এর range কম কিন্তু GradScaler gradient overflow রোধ করে।</li>
+<li>Forward/Backward pass float16-এ, weight update float32-এ।</li>
+<li>Practical difference negligible।</li>
+<li>Speed benefit: ~2x faster training, ~50% less GPU memory।</li>
+</ul>
+<hr />
+<h3 id="q7-কন-শধ-image-বযবহর-কর-হচছ-video-ব-audio-কন-নয">Q7: কেন শুধু
+Image ব্যবহার করা হচ্ছে? Video বা Audio কেন নয়?</h3>
+<p><strong>উত্তর:</strong> প্রশ্নটি valid। Multi-modal approach
+theoretically better।</p>
+<p>কিন্তু: 1. <strong>Data Availability:</strong> ASD children-এর labeled
+video dataset publicly available নয়। 2. <strong>Privacy
+Concerns:</strong> শিশুদের video data ethics ও consent সমস্যা। 3.
+<strong>Scope:</strong> এই research Image-based FER-এ architecture
+comparison করছে — একটি well-defined, publishable scope। 4.
+<strong>Baseline Establishment:</strong> আমাদের image-based result
+ভবিষ্যৎ multi-modal research-এর baseline হবে।</p>
+<hr />
+<h3 id="q8-তমর-model-ক-real-time-কজ-করত-পরব">Q8: তোমার Model কি
+Real-time কাজ করতে পারবে?</h3>
+<p><strong>উত্তর:</strong> সরাসরি deployment-এ কিছু challenge আছে:</p>
+<p><strong>Current State:</strong> - Proposed Model ~70M parameters —
+inference slow on CPU। - TTA: 5 forward pass করতে হয় — 5x slower।</p>
+<p><strong>Production-ready করতে:</strong> 1. <strong>Model
+Pruning/Quantization:</strong> Parameters কমিয়ে inference speed বাড়ানো।
+2. <strong>ONNX export:</strong> Framework-independent deployment। 3.
+<strong>Single pass inference:</strong> TTA বাদ দিয়ে speed বাড়ানো। 4.
+<strong>Edge Device:</strong> NVIDIA Jetson বা similar hardware।</p>
+<p>TTA ছাড়া DeiT-S inference ~10ms/image on GPU — real-time সম্ভব।</p>
+<hr />
+<h3 id="q9-কন-seed42-সব-জযগয">Q9: কেন seed=42 সব জায়গায়?</h3>
+<p><strong>উত্তর:</strong> Reproducibility নিশ্চিত করতে। Random seed fix
+না করলে: - প্রতিবার data split আলাদা হবে। - Weight initialization আলাদা
+হবে। - Result verify করা যাবে না।</p>
+<p>“42” popular কারণ “The Hitchhiker’s Guide to the Galaxy” বইয়ে
+universe-এর সব প্রশ্নের উত্তর ৪২। Deep Learning community-তে convention হয়ে
+গেছে।</p>
+<hr />
+<h3 id="q10-proposed-model-এর-ablation-study-করছ">Q10: Proposed Model-এর
+Ablation Study করেছো?</h3>
+<p><strong>উত্তর:</strong> PLAN.md তে ablation study planned আছে:</p>
+<ol type="1">
+<li><strong>Stream Ablation:</strong> শুধু VGG16 stream vs শুধু DeiT stream
+vs Combined।</li>
+<li><strong>SE Block Ablation:</strong> SE block ছাড়া simple
+concatenation।</li>
+<li><strong>Loss Ablation:</strong> Focal Loss vs Weighted CE।</li>
+<li><strong>Stage Ablation:</strong> Only Stage 1 vs Two-Stage।</li>
+<li><strong>Data Cleaning Impact:</strong> Raw dataset vs Cleaned
+dataset।</li>
+</ol>
+<p>এই ablations প্রমাণ করবে প্রতিটি component কতটুকু contribute করছে।</p>
+<hr />
+<h3 id="q11-তম-কভব-জনল-য-cnn-ও-transformer-আলদ-feature-capture-কর">Q11:
+তুমি কীভাবে জানলে যে CNN ও Transformer আলাদা feature capture করে?</h3>
+<p><strong>উত্তর:</strong> Figure 7 — Model Prediction Correlation
+Heatmap (Spearman Correlation)।</p>
+<ul>
+<li>সব OOF prediction একসাথে নিয়ে correlation matrix তৈরি।</li>
+<li>CNN models নিজেদের মধ্যে highly correlated (VGG-ResNet-DenseNet
+cluster)।</li>
+<li>Transformer models নিজেদের মধ্যে highly correlated (ViT-DeiT-Swin
+cluster)।</li>
+<li><strong>CNN ও Transformer-এর মধ্যে correlation কম</strong> → তারা
+ভিন্ন error করে।</li>
+</ul>
+<p>এই diversity থেকে ensemble/fusion benefit expected — যা Proposed
+Model-এর motivation।</p>
+<hr />
+<h3 id="q12-paper-এ-ক-report-করব">Q12: Paper-এ কী Report করবে?</h3>
+<p><strong>উত্তর:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dataset</td>
+<td>Cleaning methodology, final stats, class distribution</td>
+</tr>
+<tr>
+<td>Protocol</td>
+<td>Stratified 5-Fold CV, seed, fold sharing</td>
+</tr>
+<tr>
+<td>Baselines</td>
+<td>10 model comparison table, mean plus/minus std</td>
+</tr>
+<tr>
+<td>Proposed</td>
+<td>Architecture diagram, two-stage training</td>
+</tr>
+<tr>
+<td>Results</td>
+<td>Accuracy, Macro F1, Per-class F1, Confusion Matrix</td>
+</tr>
+<tr>
+<td>Ablation</td>
+<td>Component contribution analysis</td>
+</tr>
+<tr>
+<td>XAI</td>
+<td>Grad-CAM heatmaps, ROI statistics</td>
+</tr>
+<tr>
+<td>Comparison</td>
+<td>Beat prior work: CvT 79.12%, MobileNet 73.3%</td>
+</tr>
+</tbody>
+</table>
+<p>Target journal: <strong>Q1</strong> (IEEE Transactions on Affective
+Computing / Pattern Recognition)।</p>
+<hr />
+<h2 id="একনজর-সব-key-numbers">একনজরে সব Key Numbers</h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dataset (clean)</td>
+<td>1,808 images</td>
+</tr>
+<tr>
+<td>Classes</td>
+<td>6 (anger, fear, joy, natural, sadness, surprise)</td>
+</tr>
+<tr>
+<td>Imbalance ratio</td>
+<td>12:1 (joy:fear)</td>
+</tr>
+<tr>
+<td>Baseline models compared</td>
+<td>10</td>
+</tr>
+<tr>
+<td>CV folds</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Seed</td>
+<td>42</td>
+</tr>
+<tr>
+<td>Batch size</td>
+<td>16</td>
+</tr>
+<tr>
+<td>Max epochs (baseline)</td>
+<td>80</td>
+</tr>
+<tr>
+<td>Patience</td>
+<td>15</td>
+</tr>
+<tr>
+<td>EMA decay</td>
+<td>0.999</td>
+</tr>
+<tr>
+<td>Proposed Model Stage 1 epochs</td>
+<td>160</td>
+</tr>
+<tr>
+<td>Proposed Model Stage 2 epochs</td>
+<td>20</td>
+</tr>
+<tr>
+<td>TTA views</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Uncertainty threshold</td>
+<td>0.30</td>
+</tr>
+<tr>
+<td>Best baseline</td>
+<td>VGG-16: Acc 72.01%, F1 62.17%</td>
+</tr>
+<tr>
+<td>Proposed model VGG stream</td>
+<td>512-d</td>
+</tr>
+<tr>
+<td>Proposed model DeiT stream</td>
+<td>384-d</td>
+</tr>
+<tr>
+<td>Combined dimension</td>
+<td>896-d</td>
+</tr>
+<tr>
+<td>SE reduction ratio</td>
+<td>16</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="মখ-মখ-মন-রখর-পযনট">মুখে মুখে মনে রাখার পয়েন্ট</h2>
+<ol type="1">
+<li><strong>“আমরা Autism শিশুদের emotion চিনতে CNN ও Transformer-এর
+dual-stream fusion করেছি।”</strong></li>
+<li><strong>“Dataset clean করেছি — 88 duplicate cluster, 86 label
+conflict সরিয়েছি।”</strong></li>
+<li><strong>“5-Fold CV ব্যবহার করেছি — প্রতিটি image একবার test-এ আসে, তাই
+Fear মাত্র 68 image হলেও valid result।”</strong></li>
+<li><strong>“Double-weighting bug fix করেছি — Sampler অথবা Loss weight,
+দুটো একসাথে নয়।”</strong></li>
+<li><strong>“MTCNN+CLAHE বাদ দিয়েছি কারণ VGG-16 এর F1 0.548 থেকে 0.528
+কমেছিল।”</strong></li>
+<li><strong>“EMA ব্যবহার করা হয় stable evaluation weights
+পেতে।”</strong></li>
+<li><strong>“Uncertainty Guardrail: max probability 30% এর কম হলে model
+বলে uncertain।”</strong></li>
+<li><strong>“CNN ও Transformer আলাদা feature ধরে — Correlation Heatmap
+প্রমাণ করে।”</strong></li>
+<li><strong>“Best baseline VGG-16: 72.01% accuracy, 62.17% Macro
+F1।”</strong></li>
+<li><strong>“Primary metric Macro F1 — imbalanced dataset-এ accuracy
+misleading।”</strong></li>
+</ol>
+<hr />
+<h2 id="কন-এত-কম-accuracy-হল-সমপরণ-বশলষণ">২১. কেন এত কম Accuracy হলো —
+সম্পূর্ণ বিশ্লেষণ</h2>
+<blockquote>
+<p>এই section-এ বুঝবে কেন সব model 68-72% এ আটকে গেছে এবং 100% কেন
+impossible।</p>
+</blockquote>
+<h3 id="পরথম-বঝত-হব-72-ক-আসলই-কম">প্রথমে বুঝতে হবে: 72% কি আসলেই
+“কম”?</h3>
+<p>একটু perspective দরকার: - <strong>Random guess (6 class):</strong>
+100% ÷ 6 = <strong>16.7%</strong> - <strong>সবসময় “Joy” বললে:</strong>
+~46% (কারণ Joy = 46.6% dataset) - <strong>আমাদের best model
+(VGG-16):</strong> <strong>72%</strong></p>
+<p>তাই 72% মানে model অনেক কিছু শিখেছে। কিন্তু clinical application-এর জন্য
+আরও বেশি দরকার।</p>
+<p>এখন দেখি <strong>কেন 72% এর বেশি উঠছে না:</strong></p>
+<hr />
+<h3 id="করণ-১-dataset-অনক-ছট">কারণ ১: Dataset অনেক ছোট 🔢</h3>
+<pre><code>আমাদের dataset: 1,808 images (6 class)
+প্রতি class গড়ে: ~300 images
+
+তুলনার জন্য:
+- FER2013 (General emotion): 35,887 images
+- ImageNet (Object recognition): 1,200,000 images
+- AffectNet (General emotion): 450,000 images</code></pre>
+<p><strong>কী হয় ছোট dataset-এ?</strong></p>
+<p>ধরো তুমি বাংলাদেশের সব মানুষ চেনো — মানে 1 জন। এখন সেই 1 জন মানুষ দেখে
+তুমি সব “বাংলাদেশী মানুষের” face recognize করার চেষ্টা করলে।</p>
+<p>এটাই হচ্ছে। Model কম উদাহরণ দেখে general rule শিখতে পারছে না।</p>
+<p><strong>Deep Learning-এর জন্য rule of thumb:</strong> - Minimum per
+class: ~1,000 images - ভালো result-এর জন্য: ~10,000+ images - আমাদের Fear
+class: মাত্র 68 images → প্রতি fold-এ ~14টি!</p>
+<hr />
+<h3 id="করণ-২-severe-class-imbalance">কারণ ২: Severe Class Imbalance
+⚖️</h3>
+<pre><code>Joy:     843 images  ████████████████████████████ 46.6%
+Sadness: 404 images  █████████████ 22.3%
+Natural: 201 images  ██████ 11.1%
+Anger:   167 images  █████ 9.2%
+Surprise: 125 images ████ 6.9%
+Fear:     68 images  ██ 3.8%</code></pre>
+<p><strong>কী হয় এতে?</strong></p>
+<p>Model training-এ Joy এত বেশি দেখে যে সে Joy চিনতে expert হয়ে যায়।
+কিন্তু Fear মাত্র 68টি দেখেছে — Fear কী জিনিস সেটাই ভালো শেখেনি।</p>
+<p><strong>WeightedRandomSampler দিয়ে কতটুকু fix হয়?</strong></p>
+<p>Fix হয়, কিন্তু সম্পূর্ণ নয়। 68টি Fear image বারবার দেখালেও 68টি unique
+image-এর বেশি pattern নেই। Sampler same 68টি image বারবার দেখাচ্ছে →
+model সেগুলো memorize করে (overfit)।</p>
+<hr />
+<h3 id="করণ-৩-asd-facial-expression-অনক-subtle">কারণ ৩: ASD Facial
+Expression অনেক Subtle 😐</h3>
+<p><strong>সাধারণ মানুষের “Fear”:</strong> - চোখ বড় হয় - ভ্রু উপরে উঠে - মুখ
+খোলে - Face পেশী tensed থাকে</p>
+<p><strong>ASD শিশুর “Fear”:</strong> - হয়তো সামান্য চোখ বড় হয় - বা শুধু
+হাতের ভঙ্গি পরিবর্তন - বা মুখে কোনো পরিবর্তনই নেই, কিন্তু শরীর rigid হয়</p>
+<p>Model কিভাবে শিখবে যদি expression-ই minimal থাকে? Image
+classification model শুধু image দেখে — body language, context বোঝে না।</p>
+<hr />
+<h3 id="করণ-৪-dataset-multiple-source-থক-এসছ-quality-inconsistent">কারণ
+৪: Dataset Multiple Source থেকে এসেছে — Quality Inconsistent 📂</h3>
+<pre><code>Source 1: FERAC Dataset → ছবির quality ভালো, professional setting
+Source 2: Nora Mahmoud&#39;s Dataset → clinical setting, different lighting
+Source 3: Dr. Fatma&#39;s Dataset → different camera, different age group
+Source 4: Hasibur Rahman&#39;s Dataset → web-scraped, mixed quality</code></pre>
+<p>এই ৪টি source-এর ছবির: - <strong>Lighting আলাদা</strong> — একটায়
+bright light, অন্যটায় dim - <strong>Resolution আলাদা</strong> — একটা
+64×64, অন্যটা 640×480 - <strong>Background আলাদা</strong> — কেউ plain
+background, কেউ cluttered room - <strong>Age group আলাদা</strong> — 3
+বছরের শিশু থেকে 15 বছরের কিশোর</p>
+<p>Model এই inconsistency দেখে confuse হয়।</p>
+<hr />
+<h3 id="করণ-৫-fear-ও-surprise-visually-similar">কারণ ৫: Fear ও Surprise
+Visually Similar 👀</h3>
+<p>নিচের দুটো description পড়ো:</p>
+<p><strong>Fear:</strong> উপরের পাতা উঠে, ভ্রু কুঁচকানো, মুখ সামান্য খোলে
+<strong>Surprise:</strong> উপরের পাতা উঠে, ভ্রু উপরে উঠে, মুখ বড় করে
+খোলে</p>
+<p>Difference সূক্ষ্ম — ভ্রু কুঁচকানো vs সোজা উঠা। এই পার্থক্য 224×224 pixel
+image-এ ধরা কঠিন।</p>
+<p>এমনকি মানুষেরাও এই দুটো emotion confuse করে! তাই model-এর confusion
+স্বাভাবিক।</p>
+<p><strong>Confusion Matrix-এ দেখবে:</strong></p>
+<pre><code>Actual Fear → Predicted Surprise: ঘন ঘন হয়
+Actual Surprise → Predicted Fear: ঘন ঘন হয়</code></pre>
+<hr />
+<h3 id="করণ-৬-pre-trained-model-bias-imagenet-vs-asd-face">কারণ ৬:
+Pre-trained Model Bias — ImageNet vs ASD Face</h3>
+<p>আমাদের সব model (VGG16, ResNet, DeiT…) ImageNet-এ pre-trained।</p>
+<p><strong>ImageNet-এ কী ছিল?</strong> - 1000 ধরনের object: গাড়ি, বিড়াল,
+আসবাবপত্র, ফুল… - কিছু face ছিল, কিন্তু majority non-face objects</p>
+<p><strong>আমরা fine-tune করছি:</strong> - শুধু ASD শিশুদের face - মাত্র
+1,808 image</p>
+<p>Model-এর brain-এ ImageNet-এর সব memory আছে। সেই memory থেকে ASD
+face-এর জন্য relevant part বের করা — এটা 1,808 image দিয়ে সম্পূর্ণ করা
+কঠিন।</p>
+<p><strong>FER2013-এ pretrain করলে:</strong> → সে আগে থেকেই face ও
+emotion pattern জানতো → ASD face-এ fine-tune করা সহজ হতো → Accuracy
+বাড়তো (এটাই Transfer Learning-এর real power)</p>
+<hr />
+<h3 id="করণ-৭-overfitting-model-training-data-মখসথ-কর-নচছ">কারণ ৭:
+Overfitting — Model Training Data মুখস্থ করে নিচ্ছে</h3>
+<pre><code>Training Accuracy: 92%
+Validation Accuracy: 72%
+পার্থক্য: 20% → Severe Overfitting</code></pre>
+<p><strong>Overfitting মানে কী?</strong></p>
+<p>ধরো তুমি math exam-এর জন্য শুধু practice question-এর answer মুখস্থ করলে।
+Exam-এ same question আসলে perfect, কিন্তু নতুন question আসলে fail।</p>
+<p>Model ঠিক এটাই করে। Training image-এর specific pixel pattern মুখস্থ করে
+— নতুন image-এ generalize করতে পারে না।</p>
+<p><strong>কেন এত Overfitting?</strong> - মাত্র 1,808 image - মডেল অনেক
+বড় (VGG16 = 134M parameters, dataset = 1,808 images) - অনুপাত: প্রতিটি
+image-এর জন্য 74,000+ parameters! → memorization সহজ</p>
+<hr />
+<h3 id="করণ-৮-information-loss-শধ-image-দখ">কারণ ৮: Information Loss —
+শুধু Image দেখা</h3>
+<p>Real-world emotion recognition-এ মানুষ যা দেখে: - ✅ Face expression -
+✅ Body language - ✅ Voice tone - ✅ Context (কোথায় আছে, কী ঘটছে) - ✅
+History (আগে কেমন ছিল)</p>
+<p>আমরা যা দেখছি: - ✅ শুধু Face image (static)</p>
+<p>এই information gap-এর জন্য accuracy ceiling আছে।</p>
+<hr />
+<h3 id="সরসকষপ-কন-72-এর-ceiling">সারসংক্ষেপ: কেন 72% এর “Ceiling”</h3>
+<pre><code>┌─────────────────────────────────────────────┐
+│           Accuracy Ceiling কারণসমূহ          │
+├─────────────────────────────────────────────┤
+│ 1. Dataset ছোট (1808 image)     → -10~15%  │
+│ 2. Class Imbalance (12:1)       → -5~8%    │
+│ 3. Subtle ASD expression        → -5~10%   │
+│ 4. Multi-source quality gap     → -3~5%    │
+│ 5. Similar class (Fear/Surprise) → -3~5%   │
+│ 6. ImageNet pretraining bias    → -2~4%    │
+│ 7. Overfitting                  → -5~8%    │
+│ 8. Static image only            → -5~10%   │
+└─────────────────────────────────────────────┘</code></pre>
+<p>এই সব কারণ মিলিয়ে 72% ceiling সম্পূর্ণ explainable।</p>
+<hr />
+<h2 id="কভব-accuracy-বডন-যব-complete-roadmap">২২. কীভাবে Accuracy বাড়ানো
+যাবে — Complete Roadmap</h2>
+<h3 id="পদধত-১-আরও-data-সগরহ-কর-সবচয-করযকর">পদ্ধতি ১: আরও Data সংগ্রহ করো
+(সবচেয়ে কার্যকর) 📈</h3>
+<p><strong>কোথা থেকে পাবে?</strong></p>
+<table>
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 52%" />
+</colgroup>
+<thead>
+<tr>
+<th>Source</th>
+<th>কী পাবে</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NIMH Data Archive</td>
+<td>ASD research data (USA, academic access)</td>
+</tr>
+<tr>
+<td>OpenFace dataset</td>
+<td>Face action unit labeled data</td>
+</tr>
+<tr>
+<td>AffWild2</td>
+<td>Wild-condition emotional video</td>
+</tr>
+<tr>
+<td>Kaggle competitions</td>
+<td>FER-related labeled datasets</td>
+</tr>
+<tr>
+<td>Hospital collaboration</td>
+<td>Real clinical ASD data (ethics approval দরকার)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>কত image দরকার?</strong> - Fear class এখন 68 → কম করে 500+
+দরকার - Total dataset → কম করে 5,000-10,000 target করো</p>
+<p><strong>Expected improvement:</strong> +5 to +15% F1-Macro</p>
+<hr />
+<h3 id="পদধত-২-synthetic-data-generation-gandiffusion">পদ্ধতি ২:
+Synthetic Data Generation — GAN/Diffusion 🤖</h3>
+<p>যদি real data পাওয়া না যায়, AI দিয়ে নতুন image generate করো।</p>
+<p><strong>কীভাবে কাজ করে?</strong></p>
+<pre><code>Real Fear Images (68টি)
+        ↓
+StyleGAN বা Stable Diffusion Train করো
+        ↓
+Synthetic Fear Images Generate করো (500টি)
+        ↓
+Original + Synthetic মিলিয়ে Train করো</code></pre>
+<p><strong>কোন tools ব্যবহার করবে?</strong></p>
+<ol type="1">
+<li><strong>StyleGAN3</strong> (NVIDIA): Face generation-এ সেরা</li>
+<li><strong>Stable Diffusion + LoRA</strong>: “autism child fearful
+expression” prompt দিয়ে</li>
+<li><strong>DCGAN</strong>: Simple GAN, ছোট dataset-এ কাজ করে</li>
+</ol>
+<p><strong>সতর্কতা:</strong> - Synthetic image দিয়ে train করলে test-এ
+real image-এ performance test করতে হবে - Synthetic data “too perfect”
+হওয়ার risk আছে → domain gap</p>
+<p><strong>Expected improvement:</strong> +3 to +8% F1 for minority
+classes</p>
+<hr />
+<h3 id="পদধত-৩-better-transfer-learning-strategy">পদ্ধতি ৩: Better
+Transfer Learning Strategy 🔄</h3>
+<p><strong>এখন কী হচ্ছে:</strong></p>
+<pre><code>ImageNet Pretrained → Fine-tune on ASD data
+(general objects)     (specific ASD faces)</code></pre>
+<p><strong>উন্নত কী হতে পারে:</strong></p>
+<pre><code>Stage 1: ImageNet Pretrained
+           ↓
+Stage 2: Fine-tune on FER2013 (35,887 general emotion images)
+           ↓
+Stage 3: Fine-tune on ASD dataset (1,808 images)</code></pre>
+<p>এই <strong>two-hop transfer</strong> approach-এ: - Stage 2-এ model
+emotion-specific feature শিখবে - Stage 3-এ শুধু ASD-specific adaptation
+দরকার - কম overfitting, কারণ emotion feature ইতিমধ্যে learned</p>
+<p><strong>Alternative pre-training targets:</strong> -
+<strong>RAF-DB</strong> (Real-world Affective Faces Database): 29,672
+labeled face images - <strong>SFEW</strong> (Static Facial Expressions
+in the Wild): Clinical-close dataset - <strong>EmotioNet</strong>: ~1M
+automatically annotated face images</p>
+<p><strong>Expected improvement:</strong> +5 to +12% F1-Macro</p>
+<hr />
+<h3 id="পদধত-৪-advanced-augmentation-techniques">পদ্ধতি ৪: Advanced
+Augmentation Techniques 🎨</h3>
+<p><strong>এখন যা আছে (basic):</strong></p>
+<div class="sourceCode" id="cb32"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>RandomHorizontalFlip, RandomRotation, ColorJitter</span></code></pre></div>
+<p><strong>যা যোগ করা যায়:</strong></p>
+<h4 id="cutmix-খব-effective">CutMix (খুব effective!)</h4>
+<pre><code>Image A (Joy) + Image B (Fear) → 
+ছবির একটি rectangular region Fear দিয়ে replace
+Label: [0.7 Joy, 0.3 Fear]</code></pre>
+<p>এতে model দুটো class-এর mixed feature শিখতে পারে।</p>
+<h4 id="facialregioncrop">FacialRegionCrop</h4>
+<pre><code>চোখের region crop করো → আলাদা augment করো
+ঠোঁটের region crop করো → আলাদা augment করো</code></pre>
+<p>Emotion-relevant region-এ focus বাড়ে।</p>
+<h4 id="augmix">AugMix</h4>
+<pre><code>একই image-এ parallel augmentation chains
+Results average করা হয়</code></pre>
+<p>Model augmentation-robust হয়।</p>
+<h4 id="griddistortion">GridDistortion</h4>
+<pre><code>Image-কে grid-এ ভাগ করে প্রতিটি cell distort করো</code></pre>
+<p>Face shape variation simulate করে।</p>
+<p><strong>Expected improvement:</strong> +2 to +5% F1</p>
+<hr />
+<h3 id="পদধত-৫-better-architecture-choices">পদ্ধতি ৫: Better Architecture
+Choices 🏗️</h3>
+<h4 id="option-a-ensemble-method">Option A: Ensemble Method</h4>
+<pre><code>VGG-16 prediction (weight: 0.4)
+  +
+DeiT prediction (weight: 0.35)
+  +
+InceptionV3 prediction (weight: 0.25)
+  ↓
+Final prediction = Weighted Average</code></pre>
+<p><strong>কেন কাজ করে?</strong> আমরা দেখেছি CNN ও Transformer আলাদা
+feature ধরে (Correlation Heatmap)। তাদের predictions average করলে দুটোর
+strength combine হয়।</p>
+<p><strong>Expected improvement:</strong> +3 to +7% F1</p>
+<h4
+id="option-b-cross-attention-fusion-আমদর-proposed-model-এর-পরবরত-step">Option
+B: Cross-Attention Fusion (আমাদের Proposed Model-এর পরবর্তী step)</h4>
+<pre><code>এখন: VGG16 features | Concatenate | DeiT features
+উন্নত: VGG16 features ←Cross-Attention→ DeiT features</code></pre>
+<p>Cross-attention মানে CNN stream কে জিজ্ঞেস করবে: “Transformer কোথায়
+দেখছে?” এবং সেই জায়গায় CNN-ও focus করবে।</p>
+<h4 id="option-c-hierarchical-classification">Option C: Hierarchical
+Classification</h4>
+<pre><code>Level 1: Positive vs Negative vs Neutral (3-class)
+           ↓
+Level 2: যদি Negative → Anger, Fear, Sadness (3-class)
+         যদি Positive → Joy, Surprise (2-class)
+         যদি Neutral → Natural (1-class)</code></pre>
+<p>Easier problem → Higher accuracy</p>
+<hr />
+<h3 id="পদধত-৬-regularization-বডন-overfitting-কমন">পদ্ধতি ৬:
+Regularization বাড়ানো (Overfitting কমানো) 🛡️</h3>
+<h4 id="dropout-বডন">Dropout বাড়ানো</h4>
+<div class="sourceCode" id="cb40"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># এখন:</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>Dropout(<span class="fl">0.4</span>) → Dropout(<span class="fl">0.25</span>) → Dropout(<span class="fl">0.1</span>)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co"># উন্নত (ছোট dataset-এ):</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>Dropout(<span class="fl">0.5</span>) → Dropout(<span class="fl">0.4</span>) → Dropout(<span class="fl">0.3</span>)</span></code></pre></div>
+<h4 id="stochastic-depth-droppath">Stochastic Depth (DropPath)</h4>
+<div class="sourceCode" id="cb41"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># প্রতিটি layer-কে random ভাবে skip করো</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop probability: 0.1-0.2</span></span></code></pre></div>
+<p>Model প্রতিটি layer-এর উপর dependent না হয়ে robust হয়।</p>
+<h4 id="weight-decay-বডন">Weight Decay বাড়ানো</h4>
+<div class="sourceCode" id="cb42"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># এখন:</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> AdamW(lr<span class="op">=</span><span class="fl">1e-3</span>, weight_decay<span class="op">=</span><span class="fl">1e-4</span>)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="co"># উন্নত:</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> AdamW(lr<span class="op">=</span><span class="fl">1e-3</span>, weight_decay<span class="op">=</span><span class="fl">1e-3</span>)</span></code></pre></div>
+<h4 id="label-smoothing-বডন">Label Smoothing বাড়ানো</h4>
+<div class="sourceCode" id="cb43"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># এখন (Transformer):</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>CrossEntropyLoss(label_smoothing<span class="op">=</span><span class="fl">0.1</span>)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="co"># উন্নত:</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>CrossEntropyLoss(label_smoothing<span class="op">=</span><span class="fl">0.2</span>)</span></code></pre></div>
+<p><strong>Expected improvement:</strong> +2 to +4% validation F1</p>
+<hr />
+<h3 id="পদধত-৭-attention-mechanism-যগ-কর-face-specific">পদ্ধতি ৭:
+Attention Mechanism যোগ করো (Face-specific) 👁️</h3>
+<p><strong>CBAM (Convolutional Block Attention Module):</strong></p>
+<pre><code>Feature Map
+     ↓
+Channel Attention → &quot;কোন feature channel গুরুত্বপূর্ণ?&quot;
+     ↓
+Spatial Attention → &quot;ছবির কোন region গুরুত্বপূর্ণ?&quot;
+     ↓
+Refined Feature Map</code></pre>
+<p>CBAM automatically face-এর relevant region (চোখ, ঠোঁট) focus করে।</p>
+<p><strong>Face Alignment যোগ করা:</strong></p>
+<pre><code>Input Image
+     ↓
+Face Landmark Detection (68 points: চোখ, নাক, ঠোঁট)
+     ↓
+Canonical Face Alignment (সব face একই angle-এ)
+     ↓
+Cropped, Aligned Face
+     ↓
+Feature Extraction</code></pre>
+<p>Alignment করলে model কে rotation/pose variation থেকে বাঁচানো যায়।</p>
+<hr />
+<h3 id="পদধত-৮-multi-modal-approach-long-term-goal">পদ্ধতি ৮: Multi-Modal
+Approach (Long-term Goal) 🎬</h3>
+<p><strong>Image শুধু নয়, আরও তথ্য যোগ করো:</strong></p>
+<pre><code>Static Image → CNN Features (512-d)
+Video Frames → Temporal CNN Features (256-d)
+Facial Landmarks → Point Cloud Features (128-d)
+Audio (voice tone) → Audio CNN Features (256-d)
+                ↓
+        Fusion Layer
+                ↓
+      Final Prediction</code></pre>
+<p><strong>কেন এটা dramatic improvement দেবে?</strong> - ASD শিশুর face-এ
+expression minimal → image alone insufficient - কিন্তু voice tension, body
+movement অনেক clue দেয় - Multi-modal model 90%+ accuracy দেখিয়েছে
+general emotion dataset-এ</p>
+<p><strong>Challenge:</strong> - ASD multi-modal dataset publicly নেই -
+Video + Audio collection-এ ethics approval দরকার - Computational cost
+বেশি</p>
+<hr />
+<h3 id="একনজর-priority-list">একনজরে Priority List</h3>
+<pre><code>┌─────────────────────────────────────────────────────┐
+│           Accuracy বাড়ানোর Priority List             │
+├──────┬──────────────────────────────┬───────────────┤
+│ Rank │ পদ্ধতি                        │ Expected Gain │
+├──────┼──────────────────────────────┼───────────────┤
+│  1   │ আরও Data সংগ্রহ              │ +10-15%       │
+│  2   │ FER2013→ASD Transfer          │ +5-12%        │
+│  3   │ Ensemble (VGG+DeiT+Inception) │ +3-7%         │
+│  4   │ GAN Synthetic Data            │ +3-8%         │
+│  5   │ Advanced Augmentation         │ +2-5%         │
+│  6   │ Regularization Tuning         │ +2-4%         │
+│  7   │ Cross-Attention Fusion        │ +3-6%         │
+│  8   │ Multi-Modal (long-term)       │ +15-25%       │
+└──────┴──────────────────────────────┴───────────────┘</code></pre>
+<hr />
+<h2 id="সব-technical-শবদর-বসতরত-বযখয-একদম-basic-থক">২৩. সব Technical
+শব্দের বিস্তারিত ব্যাখ্যা — একদম Basic থেকে</h2>
+<blockquote>
+<p>এই section-এ ধরে নিচ্ছি তুমি কিছুই জানো না। একদম শূন্য থেকে explain করা
+হয়েছে।</p>
+</blockquote>
+<hr />
+<h3 id="neural-network-ক">🔵 Neural Network কী?</h3>
+<p><strong>মানুষের Brain কীভাবে কাজ করে?</strong></p>
+<p>তোমার brain-এ কোটি কোটি neuron আছে। একটি neuron আরেকটির সাথে
+connected। যখন তুমি “বিড়াল” দেখো, তোমার চোখ থেকে signal যায় → neuron-এ
+neuron activate হয় → “এটা বিড়াল” চেনা হয়।</p>
+<p><strong>Neural Network হলো এই Brain-এর Mathematical
+Copy:</strong></p>
+<pre><code>Input Layer          Hidden Layers         Output Layer
+(ছবির pixel)         (calculation)          (class probability)
+
+[255] ──┐           [Node 1] ──┐
+[128] ──┤──[Node A]──[Node 2] ──┤──[Joy: 0.8]
+[200] ──┘           [Node 3] ──┘   [Sad: 0.1]
+ ...                   ...          [Fear: 0.05]
+                                     ...</code></pre>
+<p>প্রতিটি connection-এ একটি <strong>weight (সংখ্যা)</strong> আছে।
+Training মানে এই weights সঠিক value-তে set করা।</p>
+<hr />
+<h3 id="deep-learning-ক">🔵 Deep Learning কী?</h3>
+<p>“Deep” মানে অনেক Layer।</p>
+<pre><code>শুধু 1-2 layer → Regular Neural Network (shallow)
+10-100+ layer  → Deep Neural Network (deep learning)</code></pre>
+<p>বেশি layer মানে বেশি complex pattern শিখতে পারবে: - Layer 1: Edge
+দেখে (সরল রেখা) - Layer 3: Shape দেখে (চোখের outline) - Layer 7: Object
+দেখে (চোখ সম্পূর্ণ) - Layer 13: High-level concept (আনন্দিত চোখ vs দুঃখী
+চোখ)</p>
+<hr />
+<h3 id="cnn-convolutional-neural-network-ক">🔵 CNN (Convolutional Neural
+Network) কী?</h3>
+<p><strong>Problem:</strong> ছবির প্রতিটি pixel-কে input দিলে: -
+224×224×3 = 150,528 input values - এত input handle করা কঠিন</p>
+<p><strong>Solution:</strong> Convolution — একটি ছোট filter দিয়ে ছবি
+scan করো।</p>
+<pre><code>ছবির একটি অংশ:     Filter (3×3):     ফলাফল:
+[120  80  90]      [1  0 -1]
+[ 60 150 200]  ×   [2  0 -2]   =   একটি সংখ্যা
+[ 90 110 180]      [1  0 -1]</code></pre>
+<p>এই filter একটি নির্দিষ্ট pattern (যেমন vertical edge) খোঁজে।</p>
+<p><strong>অনেকগুলো filter → অনেক ধরনের pattern:</strong> - Filter 1:
+Horizontal edge - Filter 2: Vertical edge<br />
+- Filter 3: Curve - Filter 64: Something complex (model নিজেই শিখে
+নেয়)</p>
+<p>CNN-এ এই filter-গুলোই <strong>শিখে নেওয়া হয়</strong> training-এর
+সময়।</p>
+<p><strong>VGG-16 এর Structure:</strong></p>
+<pre><code>Conv Layer 1 (64 filters) → Pool
+Conv Layer 2 (64 filters) → Pool
+Conv Layer 3 (128 filters) → Pool
+...13 Convolutional Layers মোট
+Fully Connected Layers
+Output (6 classes)</code></pre>
+<hr />
+<h3 id="transformer-ও-attention-mechanism-ক">🔵 Transformer ও Attention
+Mechanism কী?</h3>
+<p><strong>CNN-এর সীমাবদ্ধতা:</strong> CNN local pattern দেখে। মানে চোখের
+কাছের pixel-গুলো process করে, কিন্তু চোখ আর ঠোঁটের মধ্যে relationship সরাসরি
+দেখে না।</p>
+<p><strong>Attention কী?</strong></p>
+<p>তুমি যখন কারো মুখ দেখো, তুমি সব pixel সমান গুরুত্বে দেখো না। তোমার মস্তিষ্ক
+automatically চোখ, ভ্রু, ঠোঁটে বেশি focus করে।</p>
+<p>Attention Mechanism ঠিক এটাই করে — mathematically।</p>
+<pre><code>প্রতিটি image region অন্য সব region-কে জিজ্ঞেস করে:
+&quot;তুমি কি আমার সাথে related?&quot;
+
+চোখ ← → ভ্রু: &quot;হ্যাঁ, strongly related (anger-এ দুটোই tensed)&quot;
+চোখ ← → পেট: &quot;না, কম related&quot;
+
+এই relationship-এর উপর ভিত্তি করে প্রতিটি region-এর importance ঠিক হয়।</code></pre>
+<p><strong>Self-Attention Formula (simplified):</strong></p>
+<pre><code>Attention(Q, K, V) = softmax(QK^T / √d) × V
+
+Q = Query (কী খুঁজছি?)
+K = Key (কার সাথে match করব?)
+V = Value (match হলে কী তথ্য নেব?)</code></pre>
+<p><strong>ViT (Vision Transformer):</strong></p>
+<pre><code>ছবি → 16×16 patch → সংখ্যার list (token) → Self-Attention → Classification</code></pre>
+<hr />
+<h3 id="epoch-batch-learning-rate-ক">🔵 Epoch, Batch, Learning Rate
+কী?</h3>
+<p><strong>Dataset:</strong> ১,৮০৮টি ছবি</p>
+<p><strong>Epoch:</strong> সব ছবি একবার দেখা = ১ Epoch - আমরা 80 epoch
+train করি = সব ছবি 80 বার দেখে</p>
+<p><strong>Batch:</strong> একসাথে কতটা ছবি process করি? - Batch Size =
+16 মানে একসাথে 16টি ছবি - ১,৮০৮ ÷ 16 = ~113 steps per epoch</p>
+<p><strong>কেন Batch? সব একসাথে নয় কেন?</strong> - ১,৮০৮টি ছবি GPU
+memory-তে একসাথে ধরে না - বড় batch-এ gradient noisier → generalization
+ভালো</p>
+<p><strong>Learning Rate (lr):</strong></p>
+<pre><code>Model একটু ভুল করলে weight কতটুকু পরিবর্তন করবে?
+
+lr = 0.1 → বড় পরিবর্তন (দ্রুত শেখে, কিন্তু overshoot করতে পারে)
+lr = 0.001 → ছোট পরিবর্তন (ধীর, কিন্তু stable)
+lr = 0.0001 → খুব ছোট (খুব ধীর, Transformer-এ ব্যবহার)</code></pre>
+<p><strong>Analogy:</strong> পাহাড়ের নিচে নামছো (Loss কমাচ্ছো)। - বড় LR =
+বড় পদক্ষেপ → দ্রুত নামছো কিন্তু পড়ে যেতে পারো - ছোট LR = ছোট পদক্ষেপ → ধীরে
+কিন্তু নিরাপদ</p>
+<hr />
+<h3 id="overfitting-ও-underfitting-ক">🔵 Overfitting ও Underfitting
+কী?</h3>
+<p><strong>তিনটি scenario:</strong></p>
+<pre><code>Scenario 1: Underfitting (খুব simple model)
+Training accuracy: 60%, Test accuracy: 59%
+Model কিছুই শিখতে পারেনি।
+
+Scenario 2: Perfect fit (ideal)
+Training accuracy: 88%, Test accuracy: 85%
+Model general pattern শিখেছে।
+
+Scenario 3: Overfitting (মুখস্থ করা)
+Training accuracy: 98%, Test accuracy: 70%
+Model training data memorize করেছে।</code></pre>
+<p><strong>আমাদের case:</strong> Training ~90%+ → Validation ~72% →
+<strong>Overfitting আছে</strong></p>
+<p><strong>কীভাবে বুঝবে Overfit?</strong> Training accuracy &gt;&gt;
+Validation accuracy → Overfit</p>
+<p><strong>Overfitting fix করার tools:</strong> 1. Dropout: random
+neuron-কে training-এ off করো 2. Weight Decay: বড় weight-কে penalize করো
+3. Data Augmentation: আরও diverse training data 4. Early Stopping:
+validation performance না বাড়লে থামো</p>
+<hr />
+<h3 id="precision-recall-f1-ক-একদম-সহজ-ভষয">🔵 Precision, Recall, F1 কী
+— একদম সহজ ভাষায়</h3>
+<p><strong>একটি doctor-এর উদাহরণ:</strong></p>
+<p>100 জন রোগী আসলো। - Actually অসুস্থ: 30 জন - Actually সুস্থ: 70 জন</p>
+<p>Doctor সবাইকে দেখে বললো: - “অসুস্থ”: 40 জনকে - এর মধ্যে actually অসুস্থ:
+25 জন ✅ (True Positive) - এর মধ্যে actually সুস্থ: 15 জন ❌ (False
+Positive) - “সুস্থ”: 60 জনকে - এর মধ্যে actually সুস্থ: 55 জন ✅ (True
+Negative) - এর মধ্যে actually অসুস্থ: 5 জন ❌ (False Negative)</p>
+<p><strong>Precision:</strong></p>
+<pre><code>&quot;Doctor যাদের অসুস্থ বলেছে, তাদের মধ্যে কতজন সত্যি অসুস্থ?&quot;
+Precision = 25 / (25+15) = 25/40 = 62.5%</code></pre>
+<p><strong>Recall:</strong></p>
+<pre><code>&quot;সত্যিকারের অসুস্থ 30 জনের মধ্যে Doctor কতজনকে ধরতে পেরেছে?&quot;
+Recall = 25 / (25+5) = 25/30 = 83.3%</code></pre>
+<p><strong>F1 Score:</strong></p>
+<pre><code>&quot;Precision ও Recall-এর balanced average&quot;
+F1 = 2 × (62.5 × 83.3) / (62.5 + 83.3) = 71.4%</code></pre>
+<p><strong>কখন Precision গুরুত্বপূর্ণ?</strong> Cancer screening: False
+Positive ঠিক আছে (extra test করবে), কিন্তু False Negative মানে real cancer
+miss করা — deadly। → Recall বেশি গুরুত্বপূর্ণ</p>
+<p><strong>কখন F1 গুরুত্বপূর্ণ?</strong> আমাদের project-এ imbalanced dataset
+→ F1 Macro সবচেয়ে honest metric।</p>
+<hr />
+<h3 id="cross-validation-ক-সহজ-ভষয">🔵 Cross-Validation কী — সহজ
+ভাষায়</h3>
+<p><strong>সমস্যা:</strong> মাত্র 1,808 image আছে।</p>
+<p>যদি 80% train, 20% test করি: - Train: 1,446 image - Test: 362
+image</p>
+<p>এই 362 image-এ Fear = 68×0.2 = ~13 image। <strong>13টি image দিয়ে
+Fear-এর performance কি বিশ্বাসযোগ্য?</strong></p>
+<p><strong>Cross-Validation-এর সমাধান:</strong></p>
+<pre><code>সব 1,808 image-কে 5 ভাগে ভাগ করো।
+
+Round 1: [ভাগ-1=Test][ভাগ-2,3,4,5=Train] → F1 = 0.61
+Round 2: [ভাগ-2=Test][ভাগ-1,3,4,5=Train] → F1 = 0.63
+Round 3: [ভাগ-3=Test][ভাগ-1,2,4,5=Train] → F1 = 0.60
+Round 4: [ভাগ-4=Test][ভাগ-1,2,3,5=Train] → F1 = 0.62
+Round 5: [ভাগ-5=Test][ভাগ-1,2,3,4=Train] → F1 = 0.61
+
+Final: Mean = 0.614, Std = 0.011
+Report: 0.614 ± 0.011</code></pre>
+<p>এতে প্রতিটি image একবার test-এ আসে → আরও reliable estimate।</p>
+<p><strong>Stratified মানে:</strong> প্রতিটি ভাগে class distribution একই
+থাকে। - ভাগ 1-এ Fear: ~14 image, Joy: ~169 image - ভাগ 2-এ Fear: ~14
+image, Joy: ~169 image - (প্রতিটি ভাগে সমান অনুপাত)</p>
+<hr />
+<h3 id="focal-loss-ক-সহজ-ভষয">🔵 Focal Loss কী — সহজ ভাষায়</h3>
+<p><strong>Normal Cross-Entropy Loss-এর সমস্যা:</strong></p>
+<pre><code>Model একটি Joy image দেখলো:
+Prediction: Joy = 0.95 (95% confident, সঠিক)
+Loss: -log(0.95) = 0.05 → ছোট loss
+
+Model একটি Fear image দেখলো:
+Prediction: Joy = 0.85 (ভুল prediction, 85% confident)
+Loss: -log(0.15) = 0.82 → বড় loss</code></pre>
+<p>মোট training-এ: Joy image = 843টি, Fear = 68টি। Joy-এর loss সব
+মিলিয়ে: 843 × 0.05 = 42.15 Fear-এর loss সব মিলিয়ে: 68 × 0.82 = 55.76</p>
+<p>Model Joy-এর জন্যই বেশি update হচ্ছে (কারণ Joy image বেশি) —
+<strong>imbalance!</strong></p>
+<p><strong>Focal Loss-এর সমাধান:</strong></p>
+<pre><code>Focal Loss = (1 - p_correct)^γ × Cross-Entropy
+γ (gamma) = 2</code></pre>
+<p><strong>সহজ ভাষায়:</strong> - Easy example (model সঠিক, confident):
+Loss প্রায় শূন্য করে দাও - Hard example (model ভুল বা uncertain): Loss বড়
+রাখো</p>
+<pre><code>Joy image, correct, p=0.95:
+(1-0.95)^2 = 0.0025 → loss প্রায় zero → model এখানে বেশি শিখবে না
+
+Fear image, wrong, p=0.15:
+(1-0.15)^2 = 0.7225 → loss বড় → model এখানে বেশি শিখবে</code></pre>
+<p>ফলে Fear class-এ model বেশি মনোযোগ দেয়!</p>
+<hr />
+<h3 id="ema-exponential-moving-average-ক">🔵 EMA (Exponential Moving
+Average) কী</h3>
+<p><strong>সমস্যা:</strong> Training শেষের দিকে weights অনেক জাম্প
+করে।</p>
+<pre><code>Epoch 70: Validation F1 = 0.64
+Epoch 71: Validation F1 = 0.61  ← Jump!
+Epoch 72: Validation F1 = 0.65
+Epoch 73: Validation F1 = 0.60  ← Jump!
+Epoch 74: Validation F1 = 0.66</code></pre>
+<p>কোন epoch-এর weight ব্যবহার করবো?</p>
+<p><strong>EMA-এর সমাধান:</strong></p>
+<pre><code>EMA Weight = 0.999 × (পুরনো EMA weight) + 0.001 × (এই epoch-এর weight)</code></pre>
+<p>এটা একটি <strong>running average</strong> — নতুন weight একটু একটু করে
+blend হয়।</p>
+<pre><code>Epoch 70: EMA = weighted average of 70 past epochs → smooth = 0.63
+Epoch 71: EMA = weighted average → smooth = 0.635 (jump হয় না)</code></pre>
+<p><strong>Analogy:</strong> তাপমাত্রা forecast। - আজকের তাপমাত্রা: 35°C
+(হঠাৎ গরম) - EMA: গত কয়েকদিনের weighted average = 32°C (stable
+estimate)</p>
+<hr />
+<h3 id="grad-cam-ক-সহজ-ভষয">🔵 Grad-CAM কী — সহজ ভাষায়</h3>
+<p><strong>প্রশ্ন:</strong> Model “Anger” predict করলো — কিন্তু কোন অংশ
+দেখে?</p>
+<p><strong>Grad-CAM-এর কাজ:</strong></p>
+<pre><code>Step 1: Image → Model → Prediction: &quot;Anger&quot;
+Step 2: &quot;Anger&quot; score-কে backward propagate করো
+Step 3: CNN-এর শেষ layer-এ gradient দেখো
+         (gradient মানে &quot;এই pixel কতটা influence করলো?&quot;)
+Step 4: বড় gradient = বেশি influence = গুরুত্বপূর্ণ region
+Step 5: Heatmap তৈরি → Original image-এ overlay</code></pre>
+<p><strong>Result:</strong> একটি color-coded heatmap। - 🔴 লাল: মডেল
+এখানে বেশি দেখেছে - 🔵 নীল: মডেল এখানে কম দেখেছে</p>
+<p><strong>কেন গুরুত্বপূর্ণ?</strong></p>
+<pre><code>ভালো result: Model ভ্রু ও চোখে লাল → সঠিক
+খারাপ result: Model শার্টের color-এ লাল → model cheat করছে!</code></pre>
+<p>যদি model background দেখে emotion predict করে — সেটা spurious
+correlation। Grad-CAM সেটা ধরে ফেলে।</p>
+<hr />
+<h3 id="softmax-ক-এব-probability-কভব-আস">🔵 Softmax কী এবং Probability
+কীভাবে আসে</h3>
+<p><strong>Model-এর raw output (logits):</strong></p>
+<pre><code>Anger:    2.1
+Fear:    -0.5
+Joy:      3.8
+Natural:  1.2
+Sadness:  0.9
+Surprise: -1.1</code></pre>
+<p>এগুলো probability নয় — raw scores। Softmax এগুলোকে probability-তে
+convert করে:</p>
+<div class="sourceCode" id="cb70"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>softmax(x) <span class="op">=</span> exp(x) <span class="op">/</span> <span class="bu">sum</span>(exp(<span class="bu">all</span> x))</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>Anger:    exp(<span class="fl">2.1</span>)  <span class="op">/</span> total <span class="op">=</span> <span class="fl">8.17</span>  <span class="op">/</span> ... <span class="op">=</span> <span class="fl">0.19</span></span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>Fear:     exp(<span class="op">-</span><span class="fl">0.5</span>) <span class="op">/</span> total <span class="op">=</span> <span class="fl">0.61</span>  <span class="op">/</span> ... <span class="op">=</span> <span class="fl">0.01</span></span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>Joy:      exp(<span class="fl">3.8</span>)  <span class="op">/</span> total <span class="op">=</span> <span class="fl">44.7</span>  <span class="op">/</span> ... <span class="op">=</span> <span class="fl">0.73</span>  ← সর্বোচ্চ<span class="op">!</span></span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>Natural:  exp(<span class="fl">1.2</span>)  <span class="op">/</span> total <span class="op">=</span> <span class="fl">3.32</span>  <span class="op">/</span> ... <span class="op">=</span> <span class="fl">0.05</span></span>
+<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>Sadness:  exp(<span class="fl">0.9</span>)  <span class="op">/</span> total <span class="op">=</span> <span class="fl">2.46</span>  <span class="op">/</span> ... <span class="op">=</span> <span class="fl">0.04</span></span>
+<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a>Surprise: exp(<span class="op">-</span><span class="fl">1.1</span>) <span class="op">/</span> total <span class="op">=</span> <span class="fl">0.33</span>  <span class="op">/</span> ... <span class="op">=</span> <span class="fl">0.006</span></span>
+<span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a>Sum:                                       <span class="fl">1.00</span></span></code></pre></div>
+<p><strong>Uncertainty Guardrail:</strong></p>
+<pre><code>সর্বোচ্চ probability = 0.73 (Joy)
+0.73 &gt; 0.30 (threshold) → confident prediction: &quot;Joy&quot;</code></pre>
+<p>কিন্তু যদি হতো:</p>
+<pre><code>Anger: 0.21, Fear: 0.18, Joy: 0.19, Natural: 0.15, Sadness: 0.14, Surprise: 0.13
+সর্বোচ্চ = 0.21 &lt; 0.30 → &quot;Uncertain — refer to clinician&quot;</code></pre>
+<hr />
+<h3 id="batch-normalization-ক">🔵 Batch Normalization কী</h3>
+<p><strong>সমস্যা:</strong> Deep network-এ training-এর সময় layer-এর
+output-এর distribution পরিবর্তন হতে থাকে। Layer 5 যা expect করছে, Layer 4
+কিন্তু অন্য ধরনের value দিচ্ছে। এটাকে <strong>Internal Covariate
+Shift</strong> বলে।</p>
+<p><strong>Batch Normalization-এর সমাধান:</strong></p>
+<pre><code>প্রতিটি layer-এর output-কে normalize করো:
+- Mean = 0 করো
+- Standard Deviation = 1 করো
+- তারপর learnable scale (γ) ও shift (β) দিয়ে adjust করো</code></pre>
+<p><strong>Benefit:</strong> - Training অনেক stable হয় - বড় learning
+rate ব্যবহার করা যায় → দ্রুত training - কিছুটা regularization-এর কাজও
+করে</p>
+<p><strong>VGG-16 BN:</strong> “BN” মানে Batch Normalization আছে।</p>
+<hr />
+<h3 id="global-average-pooling-gap-ক">🔵 Global Average Pooling (GAP)
+কী</h3>
+<p>CNN-এর শেষ convolutional layer output দেয়:</p>
+<pre><code>Feature Map: 7 × 7 × 512
+(7×7 spatial, 512 channels)</code></pre>
+<p>এটাকে কীভাবে classification-এ ব্যবহার করবো?</p>
+<p><strong>Option 1: Flatten:</strong> 7 × 7 × 512 = 25,088 numbers →
+Fully Connected Layer</p>
+<p><strong>Option 2: Global Average Pooling (GAP):</strong> প্রতিটি 7×7
+channel-এর average নাও → 512 numbers</p>
+<p>GAP-এর সুবিধা: - কম parameters (overfitting কম) - Spatial
+information-এর summary - যেকোনো input size-এ কাজ করে</p>
+<p>আমাদের Proposed Model-এ VGG16 stream → GAP → <strong>512-d
+vector</strong>।</p>
+<hr />
+<h3 id="squeeze-and-excitation-se-block-ক-বসতরত">🔵
+Squeeze-and-Excitation (SE) Block কী — বিস্তারিত</h3>
+<p>ধরো তোমার 512-d feature vector আছে। এই 512টি dimension বিভিন্ন তথ্য
+ধরে: - Dimension 1-50: চোখের information - Dimension 51-150: ঠোঁটের
+information - Dimension 151-300: নাকের information - Dimension 301-512:
+Background information</p>
+<p><strong>Emotion recognize করতে সব dimension সমান গুরুত্বপূর্ণ
+নয়।</strong></p>
+<p>Anger-এর জন্য: চোখ ও ঠোঁট বেশি গুরুত্বপূর্ণ Joy-এর জন্য: ঠোঁট (হাসি) বেশি
+গুরুত্বপূর্ণ</p>
+<p><strong>SE Block কাজ করে:</strong></p>
+<pre><code>Step 1: Squeeze
+512-d → FC Layer → 32-d (information compress করো)
+
+Step 2: Excitation  
+32-d → FC Layer → 512-d → Sigmoid (0 থেকে 1)
+
+Step 3: Scale
+Original 512-d × Sigmoid output → গুরুত্বপূর্ণ channel amplify, অগুরুত্বপূর্ণ suppress</code></pre>
+<p><strong>Analogy:</strong> একটি mixing board-এর মতো। - 512 টি channel
+= 512 টি knob - SE block শিখে নেয় কোন knob কতটা তুলতে হবে - Anger-এর জন্য:
+“চোখের channel” knob উঁচু, “background channel” knob নিচু</p>
+<hr />
+<h3 id="two-stage-training-কন-দরকর">🔵 Two-Stage Training কেন দরকার</h3>
+<p><strong>একটি চাকরির interview analogy:</strong></p>
+<p><strong>Stage 1 (160 epoch):</strong> General Learning</p>
+<pre><code>তুমি university-তে সব subject পড়লে।
+(Model: সব data দেখে, সব class সমান সুযোগে, backbone সহ সব update)
+এতে model general feature ভালো শিখলো।</code></pre>
+<p><strong>Stage 2 (20 epoch):</strong> Specialized Fine-tuning</p>
+<pre><code>তুমি specific job-এর জন্য prepare করলে।
+(Model: backbone frozen, শুধু classifier update, balanced sampling)
+এতে model imbalanced class-এর জন্য specifically adjust করলো।</code></pre>
+<p><strong>কেন Stage 1-এ balanced sampler নয়?</strong> যদি শুরু থেকে
+balanced করি, Joy = 843 → sample weight কম, Fear = 68 → weight বেশি।
+Model Fear image বারবার দেখে এবং Joy কম দেখে। Joy-এর performance কমে
+যায়!</p>
+<p><strong>কেন Stage 2-এ backbone frozen?</strong> Stage 1-এ backbone
+অনেক কষ্ট করে ভালো feature শিখেছে। Stage 2-এ যদি backbone-ও update হয়,
+balanced sampling-এর কারণে Joy features নষ্ট হয়ে যেতে পারে। Frozen
+backbone = protect করা হলো।</p>
+<hr />
+<h3 id="warmup-learning-rate-ক">🔵 Warmup Learning Rate কী</h3>
+<p><strong>সমস্যা:</strong> Training শুরুতে weights random initialize করা
+থাকে। Random weights থেকে বড় LR দিয়ে শুরু করলে বিশৃঙ্খল update হয়।</p>
+<p><strong>Warmup:</strong></p>
+<pre><code>Epoch 1:  lr = 0.00001 (খুব ছোট)
+Epoch 2:  lr = 0.00002
+Epoch 3:  lr = 0.00004
+...
+Epoch 10: lr = 0.001   (পূর্ণ learning rate)
+Epoch 11: lr = 0.00099 (cosine decay শুরু)
+...
+Epoch 160: lr = ~0.00001 (প্রায় শূন্য)</code></pre>
+<p><strong>Analogy:</strong> গাড়ি চালানো শেখার মতো। - প্রথমে slow speed-এ
+practice - তারপর normal speed - তারপর আস্তে আস্তে brake করে থামা</p>
+<hr />
+<h3 id="dhash-duplicate-detection-কভব-কজ-কর">🔵 dHash (Duplicate
+Detection) কীভাবে কাজ করে</h3>
+<p><strong>সমস্যা:</strong> দুটো ছবি প্রায় একই কিন্তু pixel-exactly same নয়।
+(Different JPEG compression, slightly different crop)</p>
+<p><strong>dHash Algorithm:</strong></p>
+<pre><code>Step 1: Image → Resize করো 9×8 (72 pixel)
+Step 2: Grayscale করো (রঙ বাদ)
+Step 3: প্রতিটি row-তে পাশের pixel-এর সাথে compare করো:
+        বাঁয়ের pixel &gt; ডানের pixel? → 1
+        বাঁয়ের pixel ≤ ডানের pixel? → 0
+Step 4: ফলাফল: 64-bit binary string (এটাই hash/fingerprint)
+
+Image A hash: 1011001101...
+Image B hash: 1011001101...  (same → duplicate)
+Image C hash: 1110110010...  (different → unique)</code></pre>
+<p><strong>Hamming Distance:</strong></p>
+<pre><code>Hash A: 10110011
+Hash B: 10110001
+Difference: শুধু 7তম bit আলাদা → distance = 1</code></pre>
+<p>Distance ≤ 4 → near-duplicate → সরিয়ে দাও।</p>
+<hr />
+<h3 id="adamw-optimizer-কভব-কজ-কর">🔵 AdamW Optimizer কীভাবে কাজ
+করে</h3>
+<p><strong>Gradient Descent (মূল idea):</strong></p>
+<pre><code>নতুন weight = পুরনো weight - lr × gradient</code></pre>
+<p>Gradient বলে: “এই weight বাড়ালে loss বাড়ে নাকি কমে?”</p>
+<p><strong>Adam (Adaptive Moment Estimation):</strong> সব weight-এর জন্য
+একই lr ব্যবহার করা inefficient। - কিছু weight খুব sensitive (ছোট lr দরকার)
+- কিছু weight কম sensitive (বড় lr দেওয়া যায়)</p>
+<p>Adam প্রতিটি weight-এর জন্য আলাদা lr রাখে:</p>
+<pre><code>m = average of recent gradients (momentum)
+v = average of recent squared gradients (velocity)
+effective_lr = lr / √v × m</code></pre>
+<p><strong>W = Weight Decay:</strong></p>
+<pre><code>নতুন weight = পুরনো weight × (1 - weight_decay) - lr × gradient</code></pre>
+<p>Weight Decay প্রতিটি weight-কে একটু ছোট করে দেয় → বড় weight
+penalize।</p>
+<p><strong>কেন Weight Decay?</strong> বড় weight → model specific
+pattern-এ overfit। Penalty দিলে model simple, general weights prefer
+করে।</p>
+<hr />
+<h3 id="একট-training-loop-কভব-কজ-কর-step-by-step">🔵 একটি Training Loop
+কীভাবে কাজ করে — Step by Step</h3>
+<div class="sourceCode" id="cb84"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">80</span>):                    <span class="co"># ৮০ বার</span></span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> batch <span class="kw">in</span> dataloader:               <span class="co"># প্রতিটি ১৬-image batch</span></span>
+<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Step 1: Forward Pass</span></span>
+<span id="cb84-5"><a href="#cb84-5" aria-hidden="true" tabindex="-1"></a>        images, labels <span class="op">=</span> batch</span>
+<span id="cb84-6"><a href="#cb84-6" aria-hidden="true" tabindex="-1"></a>        predictions <span class="op">=</span> model(images)        <span class="co"># model দিয়ে predict করো</span></span>
+<span id="cb84-7"><a href="#cb84-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-8"><a href="#cb84-8" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Step 2: Loss Calculate</span></span>
+<span id="cb84-9"><a href="#cb84-9" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> focal_loss(predictions, labels)  <span class="co"># কতটা ভুল?</span></span>
+<span id="cb84-10"><a href="#cb84-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-11"><a href="#cb84-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Step 3: Backward Pass (Backpropagation)</span></span>
+<span id="cb84-12"><a href="#cb84-12" aria-hidden="true" tabindex="-1"></a>        optimizer.zero_grad()              <span class="co"># পুরনো gradient মুছে দাও</span></span>
+<span id="cb84-13"><a href="#cb84-13" aria-hidden="true" tabindex="-1"></a>        loss.backward()                    <span class="co"># gradient calculate করো</span></span>
+<span id="cb84-14"><a href="#cb84-14" aria-hidden="true" tabindex="-1"></a>                                           <span class="co"># &quot;কোন weight পরিবর্তন করলে loss কমবে?&quot;</span></span>
+<span id="cb84-15"><a href="#cb84-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-16"><a href="#cb84-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Step 4: Weight Update</span></span>
+<span id="cb84-17"><a href="#cb84-17" aria-hidden="true" tabindex="-1"></a>        optimizer.step()                   <span class="co"># weight update করো</span></span>
+<span id="cb84-18"><a href="#cb84-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-19"><a href="#cb84-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Step 5: EMA Update</span></span>
+<span id="cb84-20"><a href="#cb84-20" aria-hidden="true" tabindex="-1"></a>        ema.update(model)                  <span class="co"># smooth version update</span></span>
+<span id="cb84-21"><a href="#cb84-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-22"><a href="#cb84-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Epoch শেষে Validation</span></span>
+<span id="cb84-23"><a href="#cb84-23" aria-hidden="true" tabindex="-1"></a>    val_f1 <span class="op">=</span> evaluate(model, val_loader)</span>
+<span id="cb84-24"><a href="#cb84-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> val_f1 <span class="op">&gt;</span> best_f1:</span>
+<span id="cb84-25"><a href="#cb84-25" aria-hidden="true" tabindex="-1"></a>        best_f1 <span class="op">=</span> val_f1</span>
+<span id="cb84-26"><a href="#cb84-26" aria-hidden="true" tabindex="-1"></a>        save_checkpoint(model)             <span class="co"># সেরা model save করো</span></span>
+<span id="cb84-27"><a href="#cb84-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-28"><a href="#cb84-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> no_improvement_for_15_epochs:</span>
+<span id="cb84-29"><a href="#cb84-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span>                              <span class="co"># Early Stopping</span></span></code></pre></div>
+<hr />
+<h3 id="inference-test-time-কভব-কজ-কর">🔵 Inference (Test Time) কীভাবে
+কাজ করে</h3>
+<p>Training শেষ। এখন নতুন ছবি দিলে কী হয়?</p>
+<pre><code>নতুন Image (224×224×3)
+        ↓
+Resize + Normalize (training-এর মতো)
+        ↓
+[TTA View 1: Original]
+[TTA View 2: Flipped]
+[TTA View 3: Rotated +5°]
+[TTA View 4: Rotated -5°]
+[TTA View 5: Scaled + Cropped]
+        ↓
+প্রতিটি view → Model → Softmax Probability
+        ↓
+5টি probability-র Average
+        ↓
+Uncertainty Check: max_prob &gt; 0.30?
+        ↓ হ্যাঁ              ↓ না
+argmax → Emotion label    &quot;Uncertain&quot;</code></pre>
+<hr />
+<h2 id="বসতব-জবন-এই-project-বযবহর-হল-কমন-দখব">২৪. বাস্তব জীবনে এই Project
+ব্যবহার হলে কেমন দেখাবে</h2>
+<h3 id="একট-কলপনক-clinical-scenario">একটি কাল্পনিক Clinical Scenario</h3>
+<pre><code>🏥 Autism Therapy Center, ঢাকা
+
+Dr. রাহেলা একটি tablet নিয়ে Rafi-র (৭ বছর, ASD) কাছে বসলেন।
+Rafi-কে একটি গল্প শোনানো হচ্ছে।
+
+Camera → Image Capture (প্রতি সেকেন্ডে ৫ frame)
+                ↓
+        Proposed Model (inference)
+                ↓
+        &quot;Joy: 0.73&quot; → &quot;Joy&quot; ✓
+                ↓
+Screen-এ Dr. রাহেলার সামনে:
+┌─────────────────────────────────┐
+│ Emotion: JOY                    │
+│ Confidence: 73%                 │
+│ [██████████░░░░] High            │
+│                                 │
+│ Timeline: ███████░░███          │
+│ Joy       Neutral   Joy         │
+└─────────────────────────────────┘
+
+Dr. রাহেলা দেখলেন: গল্পের Happy part-এ Rafi Joy দেখাচ্ছে।
+কিন্তু Sad part-এ: &quot;Uncertain (0.22)&quot; → refer to closer observation।</code></pre>
+<p>এই tool Dr. রাহেলাকে help করবে: - Rafi কোন context-এ কোন emotion
+দেখায় track করতে - Therapy-র progress measure করতে - Parent-এর সাথে
+objective data শেয়ার করতে</p>
+<hr />
+<p><em>এই ফাইলটি তোমার প্রজেক্টের সম্পূর্ণ technical ও conceptual ব্যাখ্যা ধারণ
+করে।</em> <em>Supervisor যেকোনো দিক থেকে প্রশ্ন করলে উপরের sections থেকে
+উত্তর দিতে পারবে।</em> <em>Good luck!</em> 🎓</p>
+</body>
+</html>
