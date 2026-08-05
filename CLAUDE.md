@@ -1,30 +1,33 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) or other AI agents when working with code in this repository.
+
+## Important Rule: Source of Truth
+**Always refer to `AGENTS.md`** as the ultimate source of truth for the project's current architecture, file structure, and workflow.
 
 ## Commands
 
-**Project Setup**
-- Install dependencies: `pip install -r requirements.txt` (requires Python 3.10+, PyTorch 2.0+, and `timm`)
-
-**Training & Execution**
-- Train a single model locally: `python src/train.py --model <model_name> --loss ce_smooth --epochs 80 --batch-size 16 --mixup --ema`
-- Run the full pipeline (all 20 models sequentially): `python run_experiments.py`
-- Kaggle pipeline: The script `kaggle/run_all_models.py` is intended to be run in a Kaggle notebook environment with the dataset uploaded there (see `kaggle/SETUP.md` for details).
+**Training & Execution (Local & Kaggle)**
+- All real training code is completely self-contained in the `kaggle/` folder.
+- Run the 10-model baseline sweep: `python kaggle/run_all_models.py`
+- Run the dual-stream proposed model: `python kaggle/run_proposed_model.py`
+- *Note: `src/train.py`, `run_experiments.py`, and `kaggle/SETUP.md` no longer exist. Do not attempt to run them.*
 
 ## Architecture & Structure
 
-This repository is an evaluation framework comparing 20 deep learning architectures (CNNs, Vision Transformers, and hybrid models) for Facial Expression Recognition in individuals with Autism Spectrum Disorder (ASD). 
+This repository is an evaluation framework comparing 10 curated baseline deep learning architectures (CNNs, Vision Transformers) against a Proposed-Model dual-stream architecture for Facial Expression Recognition in individuals with Autism Spectrum Disorder (ASD). 
 
 **Data & Imbalance Handling**
-- The dataset (`dataset/`) suffers from severe class imbalance. This is primarily handled in `src/dataset.py` using a custom `WeightedRandomSampler` (loss is unweighted to avoid double-penalizing).
+- The canonical dataset is `dataset_clean/` (1,808 deduplicated images).
+- The dataset suffers from severe class imbalance. This is primarily handled via a single weighting strategy:
+  - Baselines (`run_all_models.py`): Handled purely via `WeightedRandomSampler` (loss is unweighted).
+  - Proposed Model (`run_proposed_model.py`): Handled via `FocalLoss` alpha parameters (sadness x2.0, fear x1.2).
 
-**Code Modularity (`src/`)**
-- `src/models.py`: Centralized model definition. It contains `MODEL_CONFIGS` (a dictionary mapping model names to their architecture configs) and the factory function `get_model()`.
-- `src/dataset.py`: Handles data loading and augmentations (random flip, rotation, affine, color jitter, blur, random erasing), as well as the calculation of class weights for the sampler.
-- `src/train.py`: The main CLI entry point containing the PyTorch training loop for a single model.
-- `src/utils.py` & `src/losses.py`: Implements advanced training regularization components like MixUp, Exponential Moving Average (EMA), FocalLoss, LabelSmoothingCrossEntropy, and training metrics calculation. 
-- `src/evaluate.py`: Generates all outputs saved to the `results/` folder, including evaluation metrics JSONs, normalized confusion matrices, and comparison plots across models.
+**Code Structure**
+- There is NO shared module (`src/` has been deleted). `kaggle/run_all_models.py` and `kaggle/run_proposed_model.py` are monoliths that inline their own datasets, losses, models, and plotting logic. If a cross-cutting change is required (e.g., changing the dataset path or a transform), it must be manually applied to BOTH scripts.
 
-**Outputs**
-- All training and evaluation artifacts are saved in the `results/` directory, structured as `results/<model_name>/` for individual model metrics, weights, and plots, and `results/comparisons/` for global summary charts across all tested architectures.
+**Validation Strategy**
+- The project strictly uses **Stratified 5-Fold Cross Validation**. There are no explicit train/valid/test directories used during runtime; the script dynamically merges all splits from the disk and partitions them on the fly. 
+
+**Resumability**
+- The training loops write out-of-fold predictions to `.npy` files and use a `cv_metrics.json` / `cv_done.json` marker to track progress. If a run crashes or times out on Kaggle, re-running the script will instantly skip completed folds and resume from where it left off.
