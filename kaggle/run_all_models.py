@@ -22,7 +22,7 @@ OUTPUT_DIR after every fold. If a Kaggle session times out, just re-run
 the cell — already-completed (model, fold) pairs are skipped.
 """
 
-import os, sys, json, time, copy, math
+import os, sys, json, time, math
 from pathlib import Path
 from collections import Counter
 
@@ -48,7 +48,6 @@ from sklearn.metrics import (
 from sklearn.preprocessing import label_binarize
 from sklearn.model_selection import StratifiedKFold
 import pandas as pd
-from tqdm.auto import tqdm
 
 print("PyTorch:", torch.__version__)
 print("CUDA:", torch.cuda.is_available())
@@ -73,8 +72,6 @@ def seed_worker(worker_id):
     torch.manual_seed(SEED + worker_id)
 
 # ---- Paths (Kaggle default) ----
-_EXPECTED_CLASSES = ("anger", "fear", "joy", "natural", "sadness", "surprise")
-
 def find_dataset_dir(hardcoded):
     """Locate the dataset root containing train/valid/test class folders."""
     base = "/kaggle/input"
@@ -94,6 +91,56 @@ DATA_DIR   = find_dataset_dir("/kaggle/input/datasets/mrsohel/dataset-clean")
 OUTPUT_DIR = "/kaggle/working/results"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 print(f"[*] DATA_DIR = {DATA_DIR}")
+
+
+def restore_from_prior_session(output_dir):
+    """Copy checkpoint files from a prior session's Kaggle output into output_dir.
+
+    Workflow:
+      Session 1 finishes (or times out) → Kaggle saves /kaggle/working/ as
+      notebook output.  Before Session 2, the user adds that output as an
+      input dataset.  This function detects any such prior-output dataset
+      (it has cv_done.json at root or inside a 'results/' sub-folder) and
+      copies everything into output_dir so the in-session resume logic finds
+      it at the expected paths.
+    """
+    base = "/kaggle/input"
+    if not os.path.isdir(base):
+        return
+    for entry in os.listdir(base):
+        entry_path = os.path.join(base, entry)
+        if not os.path.isdir(entry_path):
+            continue
+        # Accept both flat layout (cv_done.json at root) and nested (results/cv_done.json)
+        candidate_roots = [entry_path, os.path.join(entry_path, "results")]
+        for croot in candidate_roots:
+            if os.path.exists(os.path.join(croot, "cv_done.json")):
+                print(f"[*] Found prior session output at {croot} — restoring to {output_dir}")
+                import shutil
+                for item in os.listdir(croot):
+                    src = os.path.join(croot, item)
+                    dst = os.path.join(output_dir, item)
+                    if os.path.isdir(src):
+                        if not os.path.exists(dst):
+                            shutil.copytree(src, dst)
+                        else:
+                            # Merge: only copy files that don't already exist
+                            for root, dirs, files in os.walk(src):
+                                rel = os.path.relpath(root, src)
+                                dest_root = os.path.join(dst, rel)
+                                os.makedirs(dest_root, exist_ok=True)
+                                for f in files:
+                                    dest_f = os.path.join(dest_root, f)
+                                    if not os.path.exists(dest_f):
+                                        shutil.copy2(os.path.join(root, f), dest_f)
+                    else:
+                        if not os.path.exists(dst):
+                            shutil.copy2(src, dst)
+                print(f"[*] Restore complete.")
+                return  # only restore from the first matching prior output
+
+
+restore_from_prior_session(OUTPUT_DIR)
 
 # ---- Hyperparameters ----
 IMG_SIZE = 224
@@ -409,6 +456,16 @@ def compute_metrics(y_true, y_pred):
     }
 
 
+def fold_mean(fold_metrics):
+    """Mean +/- std of a metric key across completed folds."""
+    mean = {}
+    for key in ("accuracy", "f1_macro", "precision_macro", "recall_macro"):
+        values = [f[key] for f in fold_metrics]
+        mean[key] = float(np.mean(values))
+        mean[key + "_std"] = float(np.std(values))
+    return mean
+
+
 # ==============================================================================
 # Resume support
 # ==============================================================================
@@ -541,7 +598,7 @@ def run_fold(name, exp, fold, train_idx, val_idx):
     gc.collect()
     torch.cuda.empty_cache()
 
-    return fold_m, preds, val_labels, probs, best_f1
+    return fold_m, preds, val_labels, probs
 
 
 # ==============================================================================
@@ -584,7 +641,7 @@ for exp in EXPERIMENTS:
             continue
         ran_any = True
 
-        fold_m, preds, val_labels, probs, best_f1 = run_fold(name, exp, fold, train_idx, val_idx)
+        fold_m, preds, val_labels, probs = run_fold(name, exp, fold, train_idx, val_idx)
         fold_metrics.append({"fold": fold, **fold_m})
         oof_preds = np.concatenate([oof_preds, np.array(preds, dtype=int)])
         oof_labels = np.concatenate([oof_labels, np.array(val_labels, dtype=int)])
@@ -605,13 +662,13 @@ for exp in EXPERIMENTS:
                                "results directory is inconsistent.")
         with open(metrics_path) as f:
             oof_m = json.load(f)
+        if "mean" not in oof_m:
+            # Session may have died before the final full write; recompute it.
+            oof_m["mean"] = fold_mean(fold_metrics)
+            oof_m["n_folds"] = len(fold_metrics)
     else:
         oof_m = compute_metrics(oof_labels.tolist(), oof_preds.tolist())
-        oof_m["mean"] = {}
-        for k in ("accuracy", "f1_macro", "precision_macro", "recall_macro"):
-            vals = [f[k] for f in fold_metrics]
-            oof_m["mean"][k] = float(np.mean(vals))
-            oof_m["mean"][k + "_std"] = float(np.std(vals))
+        oof_m["mean"] = fold_mean(fold_metrics)
         oof_m["n_folds"] = len(fold_metrics)
         oof_m["folds"] = fold_metrics
         oof_m["pipeline_version"] = PIPELINE_VERSION
@@ -674,7 +731,6 @@ df_metrics = pd.DataFrame(rows)
 fig1, ax1 = plt.subplots(figsize=(12, 6))
 sns.barplot(data=df_metrics, x="Model", y="Score", hue="Metric", palette="Set2", ax=ax1)
 # overlay std as error caps
-x_positions = []
 for i, metric in enumerate(["Accuracy", "F1-Macro", "Precision", "Recall"]):
     for j, m in enumerate(models_sorted):
         row = df_metrics[(df_metrics["Metric"] == metric) & (df_metrics["Model"] == m)].iloc[0]
@@ -711,14 +767,12 @@ plt.close(fig2)
 
 # 3. OOF macro ROC (top 5)
 fig3, ax3 = plt.subplots(figsize=(10, 8))
-global_labels = None
 for m in top_5:
     preds, probs, labels = load_oof(m)
     Y_bin = label_binarize(labels, classes=list(range(NUM_CLASSES)))
     fpr, tpr, _ = roc_curve(Y_bin.ravel(), probs.ravel())
     macro_auc = auc(fpr, tpr)
     ax3.plot(fpr, tpr, lw=2, label=f"{m} (AUC = {macro_auc:.3f})")
-    global_labels = labels
 ax3.plot([0, 1], [0, 1], 'k--', lw=2)
 ax3.set_xlabel("False Positive Rate"); ax3.set_ylabel("True Positive Rate")
 ax3.set_title("Macro-Average OOF ROC Curve (Top 5 Models)")

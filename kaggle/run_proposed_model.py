@@ -41,7 +41,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from PIL import Image
-import cv2
 
 import torch
 import torch.nn as nn
@@ -124,6 +123,61 @@ else:
 
 OUTPUT_DIR = "/kaggle/working/results/proposed_model_proposed" if os.path.exists("/kaggle") else "./results/proposed_model_proposed"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+# Also ensure the shared results root exists (fold_id_by_path.json lives there).
+_SHARED_RESULTS = "/kaggle/working/results" if os.path.exists("/kaggle") else "./results"
+os.makedirs(_SHARED_RESULTS, exist_ok=True)
+
+
+def restore_from_prior_session(output_dir, shared_results_dir):
+    """Copy checkpoint files from a prior session's Kaggle output into output_dir.
+
+    Workflow:
+      Session 1 finishes (or times out) → Kaggle saves /kaggle/working/ as
+      notebook output.  Before Session 2, the user adds that output as an
+      input dataset.  This function detects any such prior-output dataset
+      (it has proposed_model_proposed/cv_done.json) and copies everything
+      into output_dir so the in-session resume logic finds it at the expected
+      paths.  It also restores fold_id_by_path.json to the shared results dir.
+    """
+    base = "/kaggle/input"
+    if not os.path.isdir(base):
+        return
+    import shutil
+
+    def _merge_copy(src_dir, dst_dir):
+        """Copy src_dir → dst_dir, skipping files that already exist."""
+        os.makedirs(dst_dir, exist_ok=True)
+        for item in os.listdir(src_dir):
+            src = os.path.join(src_dir, item)
+            dst = os.path.join(dst_dir, item)
+            if os.path.isdir(src):
+                _merge_copy(src, dst)
+            elif not os.path.exists(dst):
+                shutil.copy2(src, dst)
+
+    for entry in os.listdir(base):
+        entry_path = os.path.join(base, entry)
+        if not os.path.isdir(entry_path):
+            continue
+        # Accept flat layout or nested results/ layout
+        for croot in [entry_path, os.path.join(entry_path, "results")]:
+            proposed_dir = os.path.join(croot, "proposed_model_proposed")
+            if os.path.exists(os.path.join(proposed_dir, "cv_done.json")):
+                print(f"[*] Found prior session output at {proposed_dir} — restoring to {output_dir}")
+                _merge_copy(proposed_dir, output_dir)
+                # Restore shared files (fold_id_by_path.json) from the parent results dir
+                for shared_file in ("fold_id_by_path.json",):
+                    src_shared = os.path.join(croot, shared_file)
+                    dst_shared = os.path.join(shared_results_dir, shared_file)
+                    if os.path.exists(src_shared) and not os.path.exists(dst_shared):
+                        shutil.copy2(src_shared, dst_shared)
+                        print(f"[*] Restored {shared_file} to {shared_results_dir}")
+                print(f"[*] Restore complete.")
+                return
+
+
+restore_from_prior_session(OUTPUT_DIR, _SHARED_RESULTS)
 
 # Bump when the training/eval methodology changes; warns if an old results dir is resumed.
 PIPELINE_VERSION = "v3-emabn"
@@ -437,7 +491,7 @@ def train_stage1(model, train_idx):
 
     scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=_lr_lambda)
     ema_model = ModelEMA(model, decay=EMA_DECAY)
-    scaler = GradScaler()
+    scaler = GradScaler(enabled=(device.type == "cuda"))
     return train_loader, optimizer, scheduler, ema_model, scaler
 
 
@@ -472,6 +526,56 @@ def evaluate_tta(model, val_ds):
     return preds, targets, all_probs
 
 
+def train_one_epoch(model, loader, optimizer, scaler, ema_model, clip_params):
+    """Run one training pass, return (avg_loss, accuracy)."""
+    model.train()
+    total_loss, correct, total = 0.0, 0, 0
+    for imgs, targets in loader:
+        imgs, targets = imgs.to(device), targets.to(device)
+        optimizer.zero_grad(set_to_none=True)
+        with autocast(device_type=device.type, dtype=torch.float16 if device.type == "cuda" else torch.bfloat16):
+            outputs = model(imgs)
+            loss = loss_fn(outputs, targets)
+        scaler.scale(loss).backward()
+        scaler.unscale_(optimizer)
+        clip_grad_norm_(clip_params, max_norm=5.0)
+        scaler.step(optimizer)
+        scaler.update()
+        ema_model.update(model)
+        total_loss += loss.item() * imgs.size(0)
+        correct += outputs.argmax(1).eq(targets).sum().item()
+        total += imgs.size(0)
+    return total_loss / total, correct / total
+
+
+@torch.no_grad()
+def evaluate_model(model, val_ds):
+    """Validate the EMA model on the fold's val split; return (loss, accuracy, macro-F1)."""
+    model.eval()
+    val_loss, correct, total = 0.0, 0, 0
+    preds, targets = [], []
+    loader = val_ds_transform_loader(val_ds)
+    for imgs, labels in loader:
+        imgs, labels = imgs.to(device), labels.to(device)
+        with autocast(device_type=device.type, dtype=torch.float16 if device.type == "cuda" else torch.bfloat16):
+            outputs = model(imgs)
+        val_loss += loss_fn(outputs, labels).item() * imgs.size(0)
+        out_preds = outputs.argmax(dim=1)
+        correct += (out_preds == labels).sum().item()
+        total += imgs.size(0)
+        preds.extend(out_preds.cpu().numpy())
+        targets.extend(labels.cpu().numpy())
+    f1 = f1_score(targets, preds, average="macro")
+    return val_loss / total, correct / total, f1
+
+
+def val_ds_transform_loader(val_ds):
+    loader = DataLoader(val_ds, batch_size=BATCH_SIZE, shuffle=False,
+                        num_workers=NUM_WORKERS, pin_memory=True,
+                        worker_init_fn=seed_worker, generator=DL_GENERATOR)
+    return loader
+
+
 def run_fold(fold, train_idx, val_idx):
     print(f"\n{'='*70}")
     print(f"  PROPOSED-MODEL | Fold {fold+1}/{N_FOLDS}")
@@ -490,44 +594,14 @@ def run_fold(fold, train_idx, val_idx):
     start = time.time()
 
     for epoch in range(1, NUM_EPOCHS + 1):
-        model.train()
-        running_loss, running_correct, total_train = 0.0, 0, 0
-        for imgs, targets in train_loader:
-            imgs, targets = imgs.to(device), targets.to(device)
-            optimizer.zero_grad(set_to_none=True)
-            with autocast(device_type=device.type, dtype=torch.float16 if device.type == "cuda" else torch.bfloat16):
-                outputs = model(imgs)
-                loss = loss_fn(outputs, targets)
-            scaler.scale(loss).backward()
-            scaler.unscale_(optimizer)
-            clip_grad_norm_(model.parameters(), max_norm=5.0)
-            scaler.step(optimizer)
-            scaler.update()
-            ema_model.update(model)
-            running_loss += loss.item() * imgs.size(0)
-            running_correct += outputs.argmax(1).eq(targets).sum().item()
-            total_train += imgs.size(0)
+        train_loss, train_acc = train_one_epoch(model, train_loader, optimizer, scaler,
+                                                ema_model, clip_params=model.parameters())
         scheduler.step()
+        _, val_acc, epoch_val_f1 = evaluate_model(ema_model.module, val_ds)
 
-        ema_model.module.eval()
-        val_loss, val_correct, total_val = 0.0, 0, 0
-        val_preds, val_targets = [], []
-        with torch.no_grad():
-            for imgs, targets in val_ds_transform_loader(val_ds):
-                imgs, targets = imgs.to(device), targets.to(device)
-                with autocast(device_type=device.type, dtype=torch.float16 if device.type == "cuda" else torch.bfloat16):
-                    outputs = ema_model.module(imgs)
-                val_loss += loss_fn(outputs, targets).item() * imgs.size(0)
-                preds = outputs.argmax(dim=1)
-                val_correct += (preds == targets).sum().item()
-                total_val += imgs.size(0)
-                val_preds.extend(preds.cpu().numpy())
-                val_targets.extend(targets.cpu().numpy())
-
-        epoch_val_f1 = f1_score(val_targets, val_preds, average="macro")
         elapsed = (time.time() - start) / 60
-        print(f"  Epoch {epoch:3d}/{NUM_EPOCHS} | TrL {running_loss/total_train:.4f} "
-              f"VaA {val_correct/total_val:.4f} F1 {epoch_val_f1:.4f} | {elapsed:.1f}min")
+        print(f"  Epoch {epoch:3d}/{NUM_EPOCHS} | TrL {train_loss:.4f} "
+              f"VaA {val_acc:.4f} F1 {epoch_val_f1:.4f} | {elapsed:.1f}min")
 
         if epoch_val_f1 > best_val_f1:
             best_val_f1 = epoch_val_f1
@@ -546,7 +620,7 @@ def run_fold(fold, train_idx, val_idx):
     print(f"[*] Stage 1 Complete in {(time.time()-start)/60:.1f} min | Best Val Macro F1: {best_val_f1:.4f}")
 
     # ---- Stage 2: frozen backbone, unfrozen head ----
-    checkpoint = torch.load(ckpt_path, map_location=device)
+    checkpoint = torch.load(ckpt_path, map_location=device, weights_only=False)
     model.load_state_dict(checkpoint["model_state_dict"])
     for name, param in model.named_parameters():
         param.requires_grad = "classifier" in name or "se_a" in name or "se_b" in name
@@ -554,7 +628,7 @@ def run_fold(fold, train_idx, val_idx):
 
     optimizer_stage2 = torch.optim.AdamW(head_params, lr=1e-4, weight_decay=WEIGHT_DECAY)
     ema_model_stage2 = ModelEMA(model, decay=EMA_DECAY)
-    scaler_s2 = GradScaler()
+    scaler_s2 = GradScaler(enabled=(device.type == "cuda"))
 
     # Balanced train loader for stage 2 (single weighting — sampler only, no loss weights here).
     # Cap the weight ratio, matching run_all_models.py, to avoid over-repeating rare classes.
@@ -574,41 +648,11 @@ def run_fold(fold, train_idx, val_idx):
     start_s2 = time.time()
 
     for epoch in range(1, STAGE2_EPOCHS + 1):
-        model.train()
-        running_loss, running_correct, total_train = 0.0, 0, 0
-        for imgs, targets in train_loader_s2:
-            imgs, targets = imgs.to(device), targets.to(device)
-            optimizer_stage2.zero_grad(set_to_none=True)
-            with autocast(device_type=device.type, dtype=torch.float16 if device.type == "cuda" else torch.bfloat16):
-                outputs = model(imgs)
-                loss = loss_fn(outputs, targets)
-            scaler_s2.scale(loss).backward()
-            scaler_s2.unscale_(optimizer_stage2)
-            clip_grad_norm_(head_params, max_norm=5.0)
-            scaler_s2.step(optimizer_stage2)
-            scaler_s2.update()
-            ema_model_stage2.update(model)
-            running_loss += loss.item() * imgs.size(0)
-            running_correct += outputs.argmax(1).eq(targets).sum().item()
-            total_train += imgs.size(0)
-
-        ema_model_stage2.module.eval()
-        val_correct, total_val = 0, 0
-        val_preds, val_targets = [], []
-        with torch.no_grad():
-            for imgs, targets in val_ds_transform_loader(val_ds):
-                imgs, targets = imgs.to(device), targets.to(device)
-                with autocast(device_type=device.type, dtype=torch.float16 if device.type == "cuda" else torch.bfloat16):
-                    outputs = ema_model_stage2.module(imgs)
-                preds = outputs.argmax(dim=1)
-                val_correct += (preds == targets).sum().item()
-                total_val += imgs.size(0)
-                val_preds.extend(preds.cpu().numpy())
-                val_targets.extend(targets.cpu().numpy())
-
-        epoch_val_f1 = f1_score(val_targets, val_preds, average="macro")
-        print(f"  Stage 2 Epoch {epoch:3d}/{STAGE2_EPOCHS} | TrL {running_loss/total_train:.4f} "
-              f"VaA {val_correct/total_val:.4f} F1 {epoch_val_f1:.4f}")
+        train_loss, _ = train_one_epoch(model, train_loader_s2, optimizer_stage2, scaler_s2,
+                                        ema_model_stage2, clip_params=head_params)
+        _, val_acc, epoch_val_f1 = evaluate_model(ema_model_stage2.module, val_ds)
+        print(f"  Stage 2 Epoch {epoch:3d}/{STAGE2_EPOCHS} | TrL {train_loss:.4f} "
+              f"VaA {val_acc:.4f} F1 {epoch_val_f1:.4f}")
 
         if epoch_val_f1 > best_f1_s2:
             best_f1_s2 = epoch_val_f1
@@ -627,7 +671,7 @@ def run_fold(fold, train_idx, val_idx):
     print(f"[*] Stage 2 Complete in {(time.time()-start_s2)/60:.1f} min | Final Best Val Macro F1: {best_f1_s2:.4f}")
 
     # ---- OOF evaluation with 5-view TTA ----
-    checkpoint = torch.load(ckpt_path, map_location=device)
+    checkpoint = torch.load(ckpt_path, map_location=device, weights_only=False)
     eval_model = CareFERModel(num_classes=NUM_CLASSES, pretrained=False).to(device)
     eval_model.load_state_dict(checkpoint["model_state_dict"])
     preds, targets, probs = evaluate_tta(eval_model, val_ds)
@@ -663,9 +707,9 @@ def _load_npy(path, empty_shape):
     return np.empty(empty_shape)
 
 
-oof_preds_all = _load_npy(os.path.join(OUTPUT_DIR, "oof_preds.npy"), (0,))
-oof_targets_all = _load_npy(os.path.join(OUTPUT_DIR, "oof_labels.npy"), (0,))
-oof_probs_all = _load_npy(os.path.join(OUTPUT_DIR, "oof_probs.npy"), (0, NUM_CLASSES))
+all_preds = _load_npy(os.path.join(OUTPUT_DIR, "oof_preds.npy"), (0,))
+all_labels = _load_npy(os.path.join(OUTPUT_DIR, "oof_labels.npy"), (0,))
+all_probs = _load_npy(os.path.join(OUTPUT_DIR, "oof_probs.npy"), (0, NUM_CLASSES))
 fold_metrics = []
 metrics_path = os.path.join(OUTPUT_DIR, "cv_metrics.json")
 if os.path.exists(metrics_path):
@@ -678,26 +722,26 @@ for fold, train_idx, val_idx in folds:
         continue
     fold_m, preds, targets, probs = run_fold(fold, train_idx, val_idx)
     fold_metrics.append(fold_m)
-    oof_preds_all = np.concatenate([oof_preds_all, np.array(preds, dtype=int)])
-    oof_targets_all = np.concatenate([oof_targets_all, np.array(targets, dtype=int)])
-    oof_probs_all = np.concatenate([oof_probs_all, probs], axis=0)
+    all_preds = np.concatenate([all_preds, np.array(preds, dtype=int)])
+    all_labels = np.concatenate([all_labels, np.array(targets, dtype=int)])
+    all_probs = np.concatenate([all_probs, probs], axis=0)
     mark_done(fold)
     # persist incrementally (safe across session timeouts)
     with open(metrics_path, "w") as f:
         json.dump(fold_metrics, f, indent=2)
-    np.save(os.path.join(OUTPUT_DIR, "oof_preds.npy"), oof_preds_all)
-    np.save(os.path.join(OUTPUT_DIR, "oof_labels.npy"), oof_targets_all)
-    np.save(os.path.join(OUTPUT_DIR, "oof_probs.npy"), oof_probs_all)
+    np.save(os.path.join(OUTPUT_DIR, "oof_preds.npy"), all_preds)
+    np.save(os.path.join(OUTPUT_DIR, "oof_labels.npy"), all_labels)
+    np.save(os.path.join(OUTPUT_DIR, "oof_probs.npy"), all_probs)
 
 # ==============================================================================
 # 9. AGGREGATE + CLINICAL EVALUATION
 # ==============================================================================
-if oof_preds_all.size == 0:
+if all_preds.size == 0:
     raise RuntimeError("No out-of-fold predictions available — check cv_done.json consistency.")
 
-test_preds = np.array(oof_preds_all)
-test_targets = np.array(oof_targets_all)
-test_probs = np.array(oof_probs_all)
+test_preds = np.array(all_preds)
+test_targets = np.array(all_labels)
+test_probs = np.array(all_probs)
 
 test_acc = accuracy_score(test_targets, test_preds)
 test_f1 = f1_score(test_targets, test_preds, average="macro")
