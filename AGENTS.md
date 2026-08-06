@@ -1,19 +1,20 @@
 # AGENTS.md
 
 ## What This Is
-Autism Facial Expression Recognition — 6-class classification (anger, fear, joy, natural, sadness, surprise). Comparative study: an 8-model baseline sweep vs. the proposed **Proposed-Model** dual-stream architecture. All real training code is self-contained scripts under `kaggle/`, designed to run on Kaggle GPUs (T4/P100).
+Autism Facial Expression Recognition — 6-class classification (anger, fear, joy, natural, sadness, surprise). Comparative study: a 10-model baseline sweep vs. the proposed **Proposed-Model** dual-stream architecture. All real training code is self-contained scripts under `kaggle/`, designed to run on Kaggle GPUs (T4/P100).
 
 ## Workflow (Kaggle, canonical)
 The full pipeline is `kaggle/autism-fer-model.ipynb` (3 cells, run in order):
 1. Markdown overview (methodology + how to run).
-2. `run_all_models.py` — train the 9 curated baselines (incl. `efficientnet_b0`) under Stratified 5-fold CV on **RAW** images.
+2. `run_all_models.py` — train the **10** curated baselines (the `EXPERIMENTS` list) under Stratified 5-fold CV on **RAW** images.
 3. `run_proposed_model.py` — train Proposed-Model on the **same** folds.
 
-There is NO preprocessing, augmentation-balancing, or `!pip install` cell — the notebook reads the raw uploaded dataset (`/kaggle/input/datasets/mrsohel/autism-dataset/dataset`) directly. Both scripts are resumable: per-fold `.npy` OOF files + `cv_metrics.json` / resume markers mean a timed-out Kaggle session just continues where it left off. Cell 2 must run before Cell 3 (Proposed-Model loads `fold_id_by_path.json` produced by Cell 2).
+There is NO preprocessing, augmentation-balancing, or `!pip install` cell — the notebook reads the raw uploaded dataset directly. Note the notebook's Markdown header still says "8 curated models" — stale; the code trains 10. Both scripts are resumable: per-fold `.npy` OOF files + `cv_done.json` / resume markers mean a timed-out Kaggle session just continues where it left off. Cell 2 must run before Cell 3 (Proposed-Model loads `fold_id_by_path.json` produced by Cell 2). Hardcoded Kaggle dataset paths differ per script (`run_all_models.py` → `/kaggle/input/datasets/mrsohel/dataset-clean`, `run_proposed_model.py` → `/kaggle/input/datasets/mrsohel/autism-dataset/dataset_clean`), but each auto-detects the dataset root under `/kaggle/input` by folder structure, so the slug rarely matters.
 
 ## Commands (local)
-- `python kaggle/run_all_models.py` — baselines + CV; Kaggle-only (hardcoded Kaggle input path)
-- `python kaggle/run_proposed_model.py` — Proposed-Model; falls back to local `dataset/`, outputs `results/proposed_model_proposed/`. Local runs are CPU (no XPU autocast path).
+- `python kaggle/run_all_models.py` — baselines + CV; **Kaggle-only**. No local fallback: on this machine the hardcoded `/kaggle/input/...` path doesn't exist, so `build_full_dataset` returns empty and `StratifiedKFold` raises.
+- `python kaggle/run_proposed_model.py` — Proposed-Model; falls back to local `dataset_clean/`, outputs `results/proposed_model_proposed/`. Local runs are CPU (no XPU autocast path).
+- `python kaggle/run_swin_tiny.py` — byte-for-byte copy of `run_all_models.py` with `EXPERIMENTS = [swin_tiny]` only. Used to add `swin_tiny` to an existing results run on Kaggle; writes to the same OUTPUT_DIR so `cv_done.json` / figures merge. If you edit `run_all_models.py`, port the change here too.
 - `python kaggle/preprocess_faces.py` / `python kaggle/offline_augmentation.py` — **legacy, NOT used by the notebook.** Kept for reference; MTCNN+CLAHE measurably hurt accuracy (vgg16 F1 0.548→0.528) and the offline-augmented set double-counted images.
 
 **`src/`, `run_experiments.py`, and `kaggle/SETUP.md` no longer exist.** README.md / CLAUDE.md describe that deleted architecture — treat them as stale. `python src/train.py ...` will not work.
@@ -44,12 +45,13 @@ There is NO preprocessing, augmentation-balancing, or `!pip install` cell — th
 ## Environment
 - Local machine: Python 3.14, PyTorch 2.12.0+xpu (Intel Arc), timm 1.0.28.
 - Kaggle scripts are **CUDA-only** (`cuda` else `cpu`); no XPU autocast path — they run on CPU on this machine.
-- `dataset/`, `results/`, `*.zip`, `*.log` are gitignored; root `*.zip`/`*.log` files are large experiment artifacts.
+- `dataset/`, `dataset_clean/`, `results/`, `*.zip`, `*.log` are gitignored; root `*.zip`/`*.log` files are large experiment artifacts.
 
 ## File Map
 - `kaggle/autism-fer-model.ipynb` — canonical Kaggle notebook orchestrating the 2 scripts
-- `kaggle/run_all_models.py` — 9-model baseline sweep + paper figures (`comparison.json`, `paper_figures/`); produces `fold_id_by_path.json`
-- `kaggle/run_proposed_model.py` — Proposed-Model proposed model + 5-view TTA + uncertainty guardrail + Grad-CAM
+- `kaggle/run_all_models.py` — 10-model baseline sweep + paper figures (`paper_figures/`); produces `fold_id_by_path.json` and per-model `cv_metrics.json`
+- `kaggle/run_proposed_model.py` — Proposed-Model + 5-view TTA + uncertainty guardrail + Grad-CAM
+- `kaggle/run_swin_tiny.py` — `run_all_models.py` restricted to `swin_tiny` only
 - `kaggle/preprocess_faces.py` — MTCNN + CLAHE offline preprocessing (legacy, unused)
 - `kaggle/offline_augmentation.py` — offline class balancing (legacy, unused)
 - `dataset/` — original 1988 raw images (leaky; NOT used by pipeline)
