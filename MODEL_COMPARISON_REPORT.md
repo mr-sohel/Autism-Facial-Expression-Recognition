@@ -1,4 +1,4 @@
-# Autism Facial Emotion Recognition:\
+# Autism Facial Emotion Recognition:
 Project Progress & Baseline Comparison
 
 ## 1. Project Overview
@@ -24,30 +24,47 @@ The unified corpus is aggregated from these 4 sources:
 | [Hasibur Rahman's Kaggle Dataset](https://www.kaggle.com/datasets/mdhasiburrahman12/augmented-autism-facial-emotion-recognition) | ASD facial expression samples |
 
 **Data Cleaning & Unique Raw Images:**
-We took only the unique, raw images from all the collected datasets and combined them to create a new, clean dataset (`dataset_clean/`). You can access our final merged dataset here: [Merged Dataset (Google Drive)](https://drive.google.com/file/d/1x7zQPdxqIzRn_UUlJplSoJ70XThYfAE2/view?usp=sharing).
-
-**Data Splitting:**
-The cleaned images were then unified and stratified into a **70/15/15** ratio (Train/Validation/Test).
+We took only the unique, raw images from all the collected datasets, removed duplicates and label conflicts, and combined them to create a new, clean dataset (`dataset_clean/`). You can access our final merged dataset here: [Merged Dataset (Google Drive)](https://drive.google.com/file/d/1x7zQPdxqIzRn_UUlJplSoJ70XThYfAE2/view?usp=sharing).
 
 <div style="page-break-inside: avoid;">
 
-**Final split** (`dataset/`):
+**Canonical Dataset Distribution** (`dataset_clean/`):
 
-| Split | anger | fear | joy | natural | sadness | surprise | Total |
-|-------|------:|-----:|----:|--------:|--------:|---------:|------:|
-| Train | 147 | 60 | 602 | 161 | 321 | 109 | **1,400** |
-| Valid | 31 | 13 | 129 | 34 | 69 | 23 | **299** |
-| Test | 32 | 14 | 130 | 35 | 69 | 24 | **304** |
+| Emotion | Count |
+|---------|------:|
+| Anger | 167 |
+| Fear | 68 |
+| Joy | 843 |
+| Natural | 201 |
+| Sadness | 404 |
+| Surprise | 125 |
+| **Total** | **1,808** |
 
-> **Class imbalance:** joy (602) vs fear (60) = 10:1 ratio. Mitigated via `WeightedRandomSampler` (loss is unweighted to avoid double-weighting).
+> **Class imbalance:** Joy (843) vs Fear (68) = ~12:1 ratio. Mitigated via `WeightedRandomSampler` and Stratified 5-Fold Cross-Validation.
 
 </div>
 
-## 3. Baseline Model Comparison
+## 3. Training Methodology & Handling Imbalance
 
-We evaluated 10 standard baseline models on the unaugmented raw dataset using a Stratified 5-Fold Cross-Validation approach to establish our benchmark.
+To ensure fair and accurate training, we implemented several best practices:
 
-### Summary Table
+* **Stratified 5-Fold Cross-Validation (The Great Merger):** Even though the `dataset_clean/` directory contains physical `train`, `valid`, and `test` folders, the training script completely ignores these boundaries. First, it merges every single image into one giant pool of 1,808 images in RAM. Then, it mathematically chops this pool into 5 equal chunks (folds). For each fold, it uses 4 chunks (80%) to train, and 1 chunk (20%) to evaluate.
+  * **Why no separate Test set?** Because we only have 68 "Fear" images, an 80/20 test split would leave us with just ~13 test images for Fear (which isn't statistically valid). Instead, the 5 evaluation folds combined become our ultimate Test set. By the time all 5 folds are finished, every single image was evaluated as an unseen "Out-of-Fold" (OOF) prediction exactly once. These 1,808 OOF predictions are glued together to calculate our final defensible metrics without needing a separate Test folder.
+* **Weighted Random Sampler:** To combat the class imbalance, the training loader samples the rare classes (like Fear and Surprise) much more frequently than common classes (like Joy). This forces the model to pay equal attention to all emotions.
+* **RAW Images:** We tested using MTCNN (face cropping) and CLAHE (contrast enhancement), but found they actually hurt accuracy because ASD faces sometimes have unusual poses that confuse crop algorithms. Therefore, we train directly on the RAW images.
+* **Careful Learning Rates:** We trained the pretrained backbone layers very slowly (10x slower than the classification head) to avoid losing their learned features.
+* **Stable Training:** We used mixed-precision (AMP) for faster GPU training and an Exponential Moving Average (EMA) to help the models generalize better.
+
+## 4. Evaluation & Results
+
+We do not judge these models on basic "Accuracy". In an imbalanced dataset where ~46% of the data is "Joy", a model could just guess "Joy" every time and get 46% accuracy without learning anything.
+
+Instead, we use **Macro F1-Score**, which calculates the performance for each class individually and averages them, treating "Fear" as equally important as "Joy".
+
+**The Key Finding so far:**
+VGG-16 proved to be the strongest baseline model (achieving ~72% Accuracy and ~62% Macro F1). Because VGG-16 is heavily texture-focused, it is particularly good at picking up the subtle pixel-level muscle twitches present in ASD facial expressions compared to deeper models like ResNet-50 which can overfit on small datasets.
+
+### Baseline Model Comparison (Summary Table)
 
 | Model | Accuracy | F1-Macro | Precision | Recall |
 |---|---|---|---|---|
@@ -68,7 +85,7 @@ We evaluated 10 standard baseline models on the unaugmented raw dataset using a 
 
 <div style="page-break-inside: avoid;">
 
-## 4. Key Charts and Takeaways
+## 5. Key Charts and Takeaways
 
 ### 1. Overall Performance
 ![Grouped Bar Metrics](results/results/paper_figures/1_cv_grouped_bar_metrics.png){width=450px}
@@ -125,14 +142,9 @@ We evaluated 10 standard baseline models on the unaugmented raw dataset using a 
 
 </div>
 
-## 5. Kaggle Training Implementation
+## 6. Kaggle Training Implementation
 
-We ran the baseline benchmarks on Kaggle GPUs using the standalone script `kaggle/run_all_models.py`. You can view and run the full experimental pipeline in our [Kaggle Notebook](https://www.kaggle.com/code/mrsohel/autism-fer-model). The training pipeline was customized for our dataset:
+We ran the baseline benchmarks on Kaggle GPUs using the standalone script `kaggle/run_all_models.py`. You can view and run the full experimental pipeline in our [Kaggle Notebook](https://www.kaggle.com/code/mrsohel/autism-fer-model). 
 
-* **5-Fold Cross-Validation:** We used Stratified 5-Fold CV on the raw images so every image is tested exactly once. This gives us reliable metrics even for rare emotions like "Fear".
-* **Careful Learning Rates:** We trained the pretrained backbone layers very slowly (10x slower than the classification head) to avoid losing their learned features. 
-* **Handling Imbalance:** To fix the severe class imbalance, we oversampled rare classes during training using a `WeightedRandomSampler` instead of heavily weighting the loss function.
-* **On-the-Fly Augmentation:** We applied lightweight, dynamic data augmentations (random flips, rotations, scaling, and color jitter) during training. Heavy augmentations (like MixUp) were intentionally excluded to preserve delicate facial features.
-* **Stable Training:** We used mixed-precision (AMP) for faster GPU training and an Exponential Moving Average (EMA) to help the models generalize better.
 * **Resumable:** Since Kaggle sessions often timeout, the script automatically saves its progress after every fold. If it crashes, restarting the script picks up exactly where it left off.
 * **Auto-Generated Charts:** Once finished, the script automatically generates all the performance charts (ROC, Radar, etc.) shown in this report.
