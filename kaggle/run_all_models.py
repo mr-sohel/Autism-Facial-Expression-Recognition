@@ -1,7 +1,7 @@
 """
 =============================================================
   Autism Facial Expression Recognition — Kaggle Pipeline
-  Train 9 curated models with Stratified K-Fold Cross-Validation
+  Train 12 curated models with Stratified K-Fold Cross-Validation
   on the RAW dataset (no face-crop / CLAHE preprocessing).
 =============================================================
 
@@ -22,7 +22,7 @@ OUTPUT_DIR after every fold. If a Kaggle session times out, just re-run
 the cell — already-completed (model, fold) pairs are skipped.
 """
 
-import os, sys, json, time, copy
+import os, sys, json, time, copy, math
 from pathlib import Path
 from collections import Counter
 
@@ -65,6 +65,13 @@ np.random.seed(SEED)
 torch.backends.cudnn.deterministic = False
 torch.backends.cudnn.benchmark = True
 
+DL_GENERATOR = torch.Generator().manual_seed(SEED)
+
+
+def seed_worker(worker_id):
+    np.random.seed(SEED + worker_id)
+    torch.manual_seed(SEED + worker_id)
+
 # ---- Paths (Kaggle default) ----
 _EXPECTED_CLASSES = ("anger", "fear", "joy", "natural", "sadness", "surprise")
 
@@ -98,27 +105,36 @@ WEIGHT_DECAY  = 1e-4
 PATIENCE      = 15
 EMA_DECAY     = 0.999
 NUM_WORKERS   = 2 if sys.platform == "linux" else 0  # Windows spawn breaks multiprocessing loaders
+# Bump when the OOF evaluation / training methodology changes. Persistent cv_metrics.json
+# written by an older version is incompatible and must be deleted before re-running.
+PIPELINE_VERSION = "v3-emabn"
 
 CLASS_NAMES = ["anger", "fear", "joy", "natural", "sadness", "surprise"]
 NUM_CLASSES = len(CLASS_NAMES)
 CLASS_TO_IDX = {c: i for i, c in enumerate(CLASS_NAMES)}
 
 # ---- Models to train ----
-# Curated 9-model set — one representative per architectural family
-# (selected from Run 1 results, see new new log.log).
+# Curated SOTA set for the supervisor comparison — one representative per
+# architectural family: classic CNNs, a modern CNN (ConvNeXt), ViTs/hybrids,
+# and existing CNN-ViT hybrids (MaxViT, EfficientFormer) that the Proposed
+# hybrid must beat. All run at 224 input for a fair comparison.
 EXPERIMENTS = [
     # Classic CNNs
-    {"model": "vgg16",                        "loss": "focal",     "lr": 1e-3},  # Run 1: F1=0.5477
-    {"model": "inception_v3",                 "loss": "focal",     "lr": 1e-3},  # Run 1: F1=0.5232
-    {"model": "densenet121",                  "loss": "focal",     "lr": 1e-3},  # Run 1: F1=0.5229
-    {"model": "efficientnet_b0",              "loss": "focal",     "lr": 1e-3},  # most-cited FER baseline (Run1 family: v2_s F1=0.511)
-    {"model": "mobilenetv2_100",              "loss": "focal",     "lr": 1e-3},  # Run 1: F1=0.4984
-    {"model": "resnet50",                     "loss": "focal",     "lr": 1e-3},  # Run 1: F1=0.4636
-    # Vision Transformers & Hybrids (need lower LR to prevent collapse)
-    {"model": "deit_small_patch16_224",       "loss": "ce_smooth", "lr": 1e-4},  # Run 1: F1=0.5437
-    {"model": "vit_base_patch16_224",         "loss": "ce_smooth", "lr": 1e-4},  # Run 1: F1=0.5352
-    {"model": "swin_base_patch4_window7_224", "loss": "ce_smooth", "lr": 1e-4},  # Run 1: F1=0.4937
+    {"model": "vgg16",                        "loss": "focal",     "lr": 1e-3},
+    {"model": "resnet50",                     "loss": "focal",     "lr": 1e-3},
+    {"model": "densenet121",                  "loss": "focal",     "lr": 1e-3},
+    {"model": "efficientnet_b0",              "loss": "focal",     "lr": 1e-3},
+    {"model": "mobilenetv2_100",              "loss": "focal",     "lr": 1e-3},
+    # Modern CNN (current SOTA dense family)
+    {"model": "convnext_tiny",                "loss": "focal",     "lr": 1e-3},
+    # Vision Transformers (lower LR to prevent collapse)
+    {"model": "deit_small_patch16_224",       "loss": "ce_smooth", "lr": 1e-4},
+    {"model": "vit_base_patch16_224",         "loss": "ce_smooth", "lr": 1e-4},
     {"model": "swin_tiny_patch4_window7_224", "loss": "ce_smooth", "lr": 1e-4},
+    {"model": "swin_base_patch4_window7_224", "loss": "ce_smooth", "lr": 1e-4},
+    # Existing CNN-ViT hybrids (motivates the Proposed hybrid architecture)
+    {"model": "maxvit_tiny_rw_224",           "loss": "ce_smooth", "lr": 1e-4},
+    {"model": "efficientformer_l1",           "loss": "ce_smooth", "lr": 1e-4},
 ]
 
 # ==============================================================================
@@ -157,9 +173,10 @@ def build_full_dataset(root_dir):
 
 
 def get_train_transforms(img_size=IMG_SIZE):
+    # Aspect-preserving: RandomResizedCrop replaces the old Resize((s,s)) squash.
     # MixUp / RandomErasing removed — too destructive on a small dataset.
     return transforms.Compose([
-        transforms.Resize((img_size, img_size)),
+        transforms.RandomResizedCrop(img_size, scale=(0.75, 1.0), ratio=(0.75, 1.333)),
         transforms.RandomHorizontalFlip(p=0.5),
         transforms.RandomRotation(10),
         transforms.RandomAffine(degrees=0, translate=(0.1, 0.1), scale=(0.9, 1.1)),
@@ -171,11 +188,33 @@ def get_train_transforms(img_size=IMG_SIZE):
 
 
 def get_val_transforms(img_size=IMG_SIZE):
+    # Preserve aspect ratio (resize long side, then center-crop) instead of the
+    # old Resize((s, s)) squash — matches ImageNet-style fine-tuning.
+    rs = int(img_size * 1.143)
     return transforms.Compose([
-        transforms.Resize((img_size, img_size)),
+        transforms.Resize(rs),
+        transforms.CenterCrop(img_size),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
+
+
+def get_tta_transforms(img_size=IMG_SIZE):
+    # 5-view TTA for the final OOF pass, so baselines get the same inference
+    # treatment as Proposed-Model (5-view TTA) and the comparison stays fair.
+    # All views are deterministic (no random sampling) so the reported OOF
+    # numbers are byte-stable across runs.
+    norm = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    rs = int(img_size * 1.143)
+    base = [transforms.Resize(rs), transforms.CenterCrop(img_size)]
+    zoom = int(img_size * 1.10)
+    return [
+        transforms.Compose(base + [transforms.ToTensor(), norm]),
+        transforms.Compose(base + [transforms.RandomHorizontalFlip(p=1.0), transforms.ToTensor(), norm]),
+        transforms.Compose([transforms.Resize((img_size, img_size)), transforms.ToTensor(), norm]),
+        transforms.Compose([transforms.Resize((img_size, img_size)), transforms.RandomHorizontalFlip(p=1.0), transforms.ToTensor(), norm]),
+        transforms.Compose([transforms.Resize(zoom), transforms.CenterCrop(img_size), transforms.ToTensor(), norm]),
+    ]
 
 
 def make_loaders(samples, labels, train_idx, val_idx, batch_size=BATCH_SIZE, img_size=IMG_SIZE):
@@ -189,15 +228,21 @@ def make_loaders(samples, labels, train_idx, val_idx, batch_size=BATCH_SIZE, img
                                        get_val_transforms(img_size))
 
     # SINGLE weighting mechanism: sampler only (no class weights in the loss).
+    # Cap the weight ratio so rare classes are still oversampled without being
+    # shown the same ~68 images many times per epoch (which caused overfitting).
     counts = Counter(train_ds.labels)
-    sample_weights = [1.0 / counts[label] for label in train_ds.labels]
+    inv_freq = [1.0 / counts[label] for label in train_ds.labels]
+    w_min = min(inv_freq)
+    sample_weights = [min(w, w_min * 9.0) for w in inv_freq]  # ~max 9x boost
     sampler = WeightedRandomSampler(sample_weights, len(train_ds), replacement=True)
 
     train_loader = DataLoader(train_ds, batch_size=batch_size, sampler=sampler,
-                              num_workers=NUM_WORKERS, pin_memory=True, drop_last=True)
+                              num_workers=NUM_WORKERS, pin_memory=True, drop_last=True,
+                              worker_init_fn=seed_worker, generator=DL_GENERATOR)
     val_loader   = DataLoader(val_ds, batch_size=batch_size, shuffle=False,
-                              num_workers=NUM_WORKERS, pin_memory=True)
-    return train_loader, val_loader
+                              num_workers=NUM_WORKERS, pin_memory=True,
+                              worker_init_fn=seed_worker, generator=DL_GENERATOR)
+    return train_loader, val_loader, val_ds
 
 
 # ==============================================================================
@@ -227,15 +272,17 @@ def get_loss_fn(loss_type):
 # ==============================================================================
 MODEL_CONFIGS = {
     "vgg16": {"timm": "vgg16_bn", "size": 224},
-    "inception_v3": {"timm": "inception_v3", "size": 299},
     "densenet121": {"timm": "densenet121", "size": 224},
     "efficientnet_b0": {"timm": "efficientnet_b0", "size": 224},
     "mobilenetv2_100": {"timm": "mobilenetv2_100", "size": 224},
     "resnet50": {"timm": "resnet50", "size": 224},
+    "convnext_tiny": {"timm": "convnext_tiny", "size": 224},
     "deit_small_patch16_224": {"timm": "deit_small_patch16_224", "size": 224},
     "vit_base_patch16_224": {"timm": "vit_base_patch16_224.augreg_in21k", "size": 224},
     "swin_base_patch4_window7_224": {"timm": "swin_base_patch4_window7_224", "size": 224},
     "swin_tiny_patch4_window7_224": {"timm": "swin_tiny_patch4_window7_224", "size": 224},
+    "maxvit_tiny_rw_224": {"timm": "maxvit_tiny_rw_224", "size": 224},
+    "efficientformer_l1": {"timm": "efficientformer_l1", "size": 224},
 }
 
 
@@ -327,6 +374,29 @@ def evaluate(model, loader, ema=None):
     return [int(p) for p in all_preds], [int(l) for l in all_labels], np.array(all_probs)
 
 
+@torch.no_grad()
+def evaluate_tta(dataset, model, device, tta_views, batch_size=BATCH_SIZE):
+    """Final OOF pass with multi-view TTA, mirroring Proposed-Model's inference.
+
+    Processes each view over the whole (batched) validation set so the forward
+    passes scale with len(views) instead of len(dataset) * len(views).
+    """
+    model.eval()
+    n = len(dataset)
+    all_probs = np.zeros((n, NUM_CLASSES), dtype=np.float64)
+    for view in tta_views:
+        for start in range(0, n, batch_size):
+            end = min(start + batch_size, n)
+            batch = torch.stack(
+                [view(Image.open(dataset.samples[i]).convert("RGB")) for i in range(start, end)]
+            ).to(device)
+            logits = model(batch)
+            all_probs[start:end] += F.softmax(logits, dim=1).cpu().numpy()
+    all_probs /= len(tta_views)
+    preds = all_probs.argmax(1).tolist()
+    return preds, [int(l) for l in dataset.labels], all_probs
+
+
 def compute_metrics(y_true, y_pred):
     labels_list = list(range(NUM_CLASSES))
     return {
@@ -391,7 +461,7 @@ def run_fold(name, exp, fold, train_idx, val_idx):
     model, input_size = get_model(name, pretrained=True)
     model = model.to(DEVICE)
 
-    train_loader, val_loader = make_loaders(samples, labels, train_idx, val_idx, img_size=input_size)
+    train_loader, val_loader, val_dataset = make_loaders(samples, labels, train_idx, val_idx, img_size=input_size)
 
     criterion = get_loss_fn(exp["loss"])
 
@@ -410,7 +480,17 @@ def run_fold(name, exp, fold, train_idx, val_idx):
         {"params": backbone, "lr": exp_lr * 0.1},
         {"params": head, "lr": exp_lr},
     ], weight_decay=WEIGHT_DECAY)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(optimizer, T_0=10, T_mult=2)
+    # Transformers collapse under CosineAnnealingWarmRestarts' periodic LR spikes —
+    # give them warmup + cosine (same schedule family as Proposed-Model).
+    if exp.get("loss") == "ce_smooth":
+        _warmup = 5
+        def _lr_lambda(ep):
+            if ep < _warmup:
+                return (ep + 1) / _warmup
+            return 0.5 * (1 + math.cos(math.pi * (ep - _warmup) / max(1, NUM_EPOCHS - _warmup)))
+        scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=_lr_lambda)
+    else:
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(optimizer, T_0=10, T_mult=2)
     scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
     ema = EMA(model, EMA_DECAY)
 
@@ -444,13 +524,15 @@ def run_fold(name, exp, fold, train_idx, val_idx):
                 print(f"    >> Early stopping at epoch {epoch}")
                 break
 
-    # --- Out-of-fold evaluation with the EMA weights ---
+    # --- Out-of-fold evaluation with the EMA weights + 5-view TTA ---
     ckpt = torch.load(ckpt_path, map_location=DEVICE, weights_only=False)
     model.load_state_dict(ckpt["state_dict"])
     ema.shadow = ckpt["ema"]
-    preds, val_labels, probs = evaluate(model, val_loader, ema)
+    ema.apply_shadow()
+    preds, val_labels, probs = evaluate_tta(val_dataset, model, DEVICE, get_tta_transforms(input_size))
+    ema.restore()
     fold_m = compute_metrics(val_labels, preds)
-    print(f"  FOLD {fold+1} OOF — Acc: {fold_m['accuracy']:.4f} | F1: {fold_m['f1_macro']:.4f}")
+    print(f"  FOLD {fold+1} OOF (TTA) — Acc: {fold_m['accuracy']:.4f} | F1: {fold_m['f1_macro']:.4f}")
 
     # Cleanup (Kaggle DataLoader worker leaks)
     del model, optimizer, scheduler, scaler, criterion, ema
@@ -487,7 +569,13 @@ for exp in EXPERIMENTS:
     metrics_path = f"{model_dir}/cv_metrics.json"
     if os.path.exists(metrics_path):
         with open(metrics_path) as f:
-            fold_metrics = json.load(f)["folds"]
+            _existing = json.load(f)
+        fold_metrics = _existing["folds"]
+        if _existing.get("pipeline_version") != PIPELINE_VERSION:
+            print(f"[!] {name}: existing cv_metrics.json was produced by another eval "
+                  f"pipeline (found '{_existing.get('pipeline_version', 'v1')}' != "
+                  f"'{PIPELINE_VERSION}'). Resmuming would MIX incompatible metrics — "
+                  f"delete {model_dir} before re-running or results will be invalid.")
 
     ran_any = False
     for fold, (train_idx, val_idx) in enumerate(folds):
@@ -526,6 +614,7 @@ for exp in EXPERIMENTS:
             oof_m["mean"][k + "_std"] = float(np.std(vals))
         oof_m["n_folds"] = len(fold_metrics)
         oof_m["folds"] = fold_metrics
+        oof_m["pipeline_version"] = PIPELINE_VERSION
         oof_m["params"] = sum(p.numel() for p in get_model(name, pretrained=False)[0].parameters())
         with open(metrics_path, "w") as f:
             json.dump(oof_m, f, indent=2)

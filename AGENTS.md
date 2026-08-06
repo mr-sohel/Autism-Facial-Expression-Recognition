@@ -1,21 +1,22 @@
 # AGENTS.md
 
 ## What This Is
-Autism Facial Expression Recognition — 6-class classification (anger, fear, joy, natural, sadness, surprise). Comparative study: a 10-model baseline sweep vs. the proposed **Proposed-Model** dual-stream architecture. All real training code is self-contained scripts under `kaggle/`, designed to run on Kaggle GPUs (T4/P100).
+Autism Facial Expression Recognition — 6-class classification (anger, fear, joy, natural, sadness, surprise). Comparative study: a 12-model baseline sweep vs. the proposed **Proposed-Model** dual-stream architecture. All real training code is self-contained scripts under `kaggle/`, designed to run on Kaggle GPUs (T4/P100).
 
 ## Workflow (Kaggle, canonical)
 The full pipeline is `kaggle/autism-fer-model.ipynb` (3 cells, run in order):
 1. Markdown overview (methodology + how to run).
-2. `run_all_models.py` — train the **10** curated baselines (the `EXPERIMENTS` list) under Stratified 5-fold CV on **RAW** images.
+2. `run_all_models.py` — train the **12** curated baselines (the `EXPERIMENTS` list) under Stratified 5-fold CV on **RAW** images.
 3. `run_proposed_model.py` — train Proposed-Model on the **same** folds.
 
-There is NO preprocessing, augmentation-balancing, or `!pip install` cell — the notebook reads the raw uploaded dataset directly. Note the notebook's Markdown header still says "8 curated models" — stale; the code trains 10. Both scripts are resumable: per-fold `.npy` OOF files + `cv_done.json` / resume markers mean a timed-out Kaggle session just continues where it left off. Cell 2 must run before Cell 3 (Proposed-Model loads `fold_id_by_path.json` produced by Cell 2). Hardcoded Kaggle dataset paths differ per script (`run_all_models.py` → `/kaggle/input/datasets/mrsohel/dataset-clean`, `run_proposed_model.py` → `/kaggle/input/datasets/mrsohel/autism-dataset/dataset_clean`), but each auto-detects the dataset root under `/kaggle/input` by folder structure, so the slug rarely matters.
+There is NO preprocessing, augmentation-balancing, or `!pip install` cell — the notebook reads the raw uploaded dataset directly. The two code cells are regenerated copies of the `.py` scripts — keep them in sync when editing either script. Both scripts are resumable: per-fold `.npy` OOF files + `cv_done.json` / resume markers mean a timed-out Kaggle session just continues where it left off. Cell 2 must run before Cell 3 (Proposed-Model loads `fold_id_by_path.json` produced by Cell 2). Hardcoded Kaggle dataset paths differ per script (`run_all_models.py` → `/kaggle/input/datasets/mrsohel/dataset-clean`, `run_proposed_model.py` → `/kaggle/input/datasets/mrsohel/autism-dataset/dataset_clean`), but each auto-detects the dataset root under `/kaggle/input` by folder structure, so the slug rarely matters.
 
 ## Commands (local)
 - `python kaggle/run_all_models.py` — baselines + CV; **Kaggle-only**. No local fallback: on this machine the hardcoded `/kaggle/input/...` path doesn't exist, so `build_full_dataset` returns empty and `StratifiedKFold` raises.
 - `python kaggle/run_proposed_model.py` — Proposed-Model; falls back to local `dataset_clean/`, outputs `results/proposed_model_proposed/`. Local runs are CPU (no XPU autocast path).
-- `python kaggle/run_swin_tiny.py` — byte-for-byte copy of `run_all_models.py` with `EXPERIMENTS = [swin_tiny]` only. Used to add `swin_tiny` to an existing results run on Kaggle; writes to the same OUTPUT_DIR so `cv_done.json` / figures merge. If you edit `run_all_models.py`, port the change here too.
 - `python kaggle/preprocess_faces.py` / `python kaggle/offline_augmentation.py` — **legacy, NOT used by the notebook.** Kept for reference; MTCNN+CLAHE measurably hurt accuracy (vgg16 F1 0.548→0.528) and the offline-augmented set double-counted images.
+
+**Eval-pipeline versioning:** both scripts write a `pipeline_version.json` / `pipeline_version` marker (`PIPELINE_VERSION`, currently `v3-emabn`) and WARN if a resumed results dir was produced by an older pipeline — but they do NOT auto-delete. Before a fresh authoritative run, wipe `results/` (and Kaggle `/kaggle/working/results`) or old non-TTA folds silently mix with new TTA metrics. **`v3-emabn`: `ModelEMA.update()` also EMA-decays BN running stats (floating-point buffers; copies int `num_batches_tracked`) — the deepcopy'd BN stats were previously frozen at init. Both scripts also seed DataLoader workers (`seed_worker` + a shared `Generator`) for reproducible sampling order. Any `v2-tta` results are NOT comparable — delete before re-running.**
 
 **`src/`, `run_experiments.py`, and `kaggle/SETUP.md` no longer exist.** README.md / CLAUDE.md describe that deleted architecture — treat them as stale. `python src/train.py ...` will not work.
 
@@ -28,12 +29,13 @@ There is NO preprocessing, augmentation-balancing, or `!pip install` cell — th
 
 ## Training Gotchas
 - **No shared module:** `run_all_models.py` and `run_proposed_model.py` each inline their own datasets/losses/EMA/plots. Cross-script changes must be made twice.
-- **`inception_v3` = 299 input** (all others 224). `MODEL_CONFIGS` carries per-model size; dataloaders are rebuilt per experiment.
+- **Identical-augmentation contract:** both scripts intentionally keep train/val transforms and the 5-view TTA pipeline identical (`RandomResizedCrop` train, `Resize(1.143×)+CenterCrop` val, deterministic 5-view TTA) so the head-to-head comparison stays fair. If you change transforms/TTA, change BOTH scripts.
+- **All 12 baselines run at 224 input** (inception_v3 was dropped — its 299 input made the comparison unfair). `MODEL_CONFIGS` carries per-model size; dataloaders are rebuilt per experiment.
 - `vit_base` uses timm tag `vit_base_patch16_224.augreg_in21k`.
 - **Differential LR:** backbone `lr*0.1`, head full `lr`. Head = params named `classifier`/`head`/`fc` (Proposed-Model adds `se_a`/`se_b`). CNNs train at `lr=1e-3` (focal loss); transformers at `lr=1e-4` (ce_smooth) — higher LR makes them collapse.
 - Proposed-Model uses warmup + cosine LambdaLR. Do NOT switch to CosineAnnealingWarmRestarts — periodic LR spikes destabilized DeiT.
 - Proposed-Model: VGG16-BN spatial features (forward_features + GAP, 512-d) + DeiT-S CLS token (384-d), dual SE blocks (r=16), head 896→512→256→6. Two stages: 160 ep (unbalanced shuffle loader), then 20 ep (frozen backbone + balanced sampler).
-- Proposed-Model EMA is a `deepcopy` (`ModelEMA`) — save/load the EMA weights, not the raw model.
+- Proposed-Model EMA is a `deepcopy` (`ModelEMA`) — save/load the EMA weights, not the raw model. Its `update()` decays both params AND BN running stats (otherwise the deepcopy's buffers are frozen at init).
 - Checkpoints are dicts (`state_dict`, `ema.shadow`, …) at `results/<name>/fold{k}_best.pth`; test eval applies EMA weights. Per-model OOF predictions/labels/probs are saved as incremental `.npy` files so a timed-out fold/session resumes without losing progress.
 - `get_model()` in run_all_models.py catches `TypeError` (some timm models reject `drop_rate`/`drop_path_rate`) and retries `pretrained=False` on missing-weights `RuntimeError`.
 
@@ -49,9 +51,8 @@ There is NO preprocessing, augmentation-balancing, or `!pip install` cell — th
 
 ## File Map
 - `kaggle/autism-fer-model.ipynb` — canonical Kaggle notebook orchestrating the 2 scripts
-- `kaggle/run_all_models.py` — 10-model baseline sweep + paper figures (`paper_figures/`); produces `fold_id_by_path.json` and per-model `cv_metrics.json`
+- `kaggle/run_all_models.py` — 12-model baseline sweep + paper figures (`paper_figures/`); produces `fold_id_by_path.json` and per-model `cv_metrics.json`
 - `kaggle/run_proposed_model.py` — Proposed-Model + 5-view TTA + uncertainty guardrail + Grad-CAM
-- `kaggle/run_swin_tiny.py` — `run_all_models.py` restricted to `swin_tiny` only
 - `kaggle/preprocess_faces.py` — MTCNN + CLAHE offline preprocessing (legacy, unused)
 - `kaggle/offline_augmentation.py` — offline class balancing (legacy, unused)
 - `dataset/` — original 1988 raw images (leaky; NOT used by pipeline)

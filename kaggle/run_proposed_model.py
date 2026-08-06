@@ -125,6 +125,19 @@ else:
 OUTPUT_DIR = "/kaggle/working/results/proposed_model_proposed" if os.path.exists("/kaggle") else "./results/proposed_model_proposed"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
+# Bump when the training/eval methodology changes; warns if an old results dir is resumed.
+PIPELINE_VERSION = "v3-emabn"
+_ver_path = os.path.join(OUTPUT_DIR, "pipeline_version.json")
+if os.path.exists(_ver_path):
+    with open(_ver_path) as f:
+        _old_ver = json.load(f).get("pipeline_version")
+    if _old_ver != PIPELINE_VERSION:
+        print(f"[!] {OUTPUT_DIR} was produced by pipeline '{_old_ver}' != "
+              f"'{PIPELINE_VERSION}'. Resuming would MIX incompatible metrics — "
+              "delete the results dir before re-running.")
+with open(_ver_path, "w") as f:
+    json.dump({"pipeline_version": PIPELINE_VERSION}, f, indent=2)
+
 CLASSES = ["anger", "fear", "joy", "natural", "sadness", "surprise"]
 NUM_CLASSES = len(CLASSES)
 CLASS_TO_IDX = {cls_name: i for i, cls_name in enumerate(CLASSES)}
@@ -142,6 +155,12 @@ def seed_everything(seed=42):
 
 
 seed_everything(SEED)
+DL_GENERATOR = torch.Generator().manual_seed(SEED)
+
+
+def seed_worker(worker_id):
+    np.random.seed(SEED + worker_id)
+    torch.manual_seed(SEED + worker_id)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"[*] Running on Device: {device} | Output Directory: {OUTPUT_DIR}")
 print(f"[*] Dataset Directory: {DATASET_DIR}")
@@ -186,7 +205,7 @@ def build_full_dataset(root_dir):
 
 # Identical augmentation as the baselines (fair head-to-head comparison).
 train_transform = transforms.Compose([
-    transforms.Resize((IMG_SIZE, IMG_SIZE)),
+    transforms.RandomResizedCrop(IMG_SIZE, scale=(0.75, 1.0), ratio=(0.75, 1.333)),
     transforms.RandomHorizontalFlip(p=0.5),
     transforms.RandomRotation(10),
     transforms.RandomAffine(degrees=0, translate=(0.1, 0.1), scale=(0.9, 1.1)),
@@ -197,23 +216,28 @@ train_transform = transforms.Compose([
 ])
 
 val_transform = transforms.Compose([
-    transforms.Resize((IMG_SIZE, IMG_SIZE)),
+    transforms.Resize(int(IMG_SIZE * 1.143)),
+    transforms.CenterCrop(IMG_SIZE),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
 ])
 
 
 def get_tta_transforms():
-    base_norm = [
+    # Deterministic 5-view TTA, identical to the baseline script.
+    norm = [
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ]
+    rs = int(IMG_SIZE * 1.143)
+    base = [transforms.Resize(rs), transforms.CenterCrop(IMG_SIZE)]
+    zoom = int(IMG_SIZE * 1.10)
     return [
-        transforms.Compose([transforms.Resize((IMG_SIZE, IMG_SIZE))] + base_norm),
-        transforms.Compose([transforms.Resize((IMG_SIZE, IMG_SIZE)), transforms.RandomHorizontalFlip(p=1.0)] + base_norm),
-        transforms.Compose([transforms.Resize((IMG_SIZE, IMG_SIZE)), transforms.RandomRotation((5, 5))] + base_norm),
-        transforms.Compose([transforms.Resize((IMG_SIZE, IMG_SIZE)), transforms.RandomRotation((-5, -5))] + base_norm),
-        transforms.Compose([transforms.Resize((int(IMG_SIZE * 1.08), int(IMG_SIZE * 1.08))), transforms.CenterCrop(IMG_SIZE)] + base_norm),
+        transforms.Compose(base + norm),
+        transforms.Compose(base + [transforms.RandomHorizontalFlip(p=1.0)] + norm),
+        transforms.Compose([transforms.Resize((IMG_SIZE, IMG_SIZE))] + norm),
+        transforms.Compose([transforms.Resize((IMG_SIZE, IMG_SIZE)), transforms.RandomHorizontalFlip(p=1.0)] + norm),
+        transforms.Compose([transforms.Resize(zoom), transforms.CenterCrop(IMG_SIZE)] + norm),
     ]
 
 
@@ -310,6 +334,13 @@ class ModelEMA:
         with torch.no_grad():
             for ema_param, model_param in zip(self.module.parameters(), model.parameters()):
                 ema_param.data.mul_(self.decay).add_(model_param.data, alpha=1 - self.decay)
+            # Decay BN running stats too — deepcopy'd buffers are frozen at init
+            # unless decayed, so eval would otherwise use untrained statistics.
+            for ema_buf, model_buf in zip(self.module.buffers(), model.buffers()):
+                if ema_buf.dtype.is_floating_point:
+                    ema_buf.data.mul_(self.decay).add_(model_buf.data, alpha=1 - self.decay)
+                else:
+                    ema_buf.data.copy_(model_buf.data)
 
 
 def compute_focal_alpha(labels):
@@ -381,7 +412,8 @@ def train_stage1(model, train_idx):
     train_ds = AutismFERDataset([samples[i] for i in train_idx],
                                 [labels[i] for i in train_idx], train_transform)
     train_loader = DataLoader(train_ds, batch_size=BATCH_SIZE, shuffle=True,
-                              num_workers=NUM_WORKERS, pin_memory=True, drop_last=True)
+                              num_workers=NUM_WORKERS, pin_memory=True, drop_last=True,
+                              worker_init_fn=seed_worker, generator=DL_GENERATOR)
 
     backbone_params, head_params = [], []
     for name, param in model.named_parameters():
@@ -411,27 +443,33 @@ def train_stage1(model, train_idx):
 
 @torch.no_grad()
 def evaluate_tta(model, val_ds):
-    """5-view TTA averaged probabilities over the validation subset."""
+    """5-view TTA averaged probabilities over the validation subset.
+
+    Batches each view over the dataset (mirrors run_all_models.evaluate_tta).
+    """
     model.eval()
     tta_transforms = get_tta_transforms()
-    preds, targets, probs = [], [], []
-    for idx in range(len(val_ds)):
-        raw_img, target = val_ds.samples[idx], val_ds.targets[idx]
-        try:
-            raw = Image.open(raw_img).convert("RGB")
-        except Exception:
-            raw = Image.new("RGB", (IMG_SIZE, IMG_SIZE), (0, 0, 0))
-        tta_probs = torch.zeros((1, NUM_CLASSES), device=device)
-        for t_form in tta_transforms:
-            t_img = t_form(raw).unsqueeze(0).to(device)
-            with autocast(device_type=device.type, dtype=torch.float16 if device.type == "cuda" else torch.bfloat16):
-                logits = model(t_img)
-                tta_probs += F.softmax(logits, dim=1)
-        tta_probs /= len(tta_transforms)
-        probs.append(tta_probs.cpu().numpy()[0])
-        preds.append(int(tta_probs.argmax(dim=1).item()))
-        targets.append(target)
-    return preds, targets, np.array(probs)
+    n = len(val_ds)
+    all_probs = np.zeros((n, NUM_CLASSES), dtype=np.float64)
+    for t_form in tta_transforms:
+        for start in range(0, n, BATCH_SIZE):
+            end = min(start + BATCH_SIZE, n)
+            batch = []
+            for idx in range(start, end):
+                try:
+                    raw = Image.open(val_ds.samples[idx]).convert("RGB")
+                except Exception:
+                    raw = Image.new("RGB", (IMG_SIZE, IMG_SIZE), (0, 0, 0))
+                batch.append(t_form(raw))
+            x = torch.stack(batch).to(device)
+            with autocast(device_type=device.type,
+                          dtype=torch.float16 if device.type == "cuda" else torch.bfloat16):
+                logits = model(x)
+            all_probs[start:end] += F.softmax(logits, dim=1).float().cpu().numpy()
+    all_probs /= len(tta_transforms)
+    preds = all_probs.argmax(1).tolist()
+    targets = [int(t) for t in val_ds.targets]
+    return preds, targets, all_probs
 
 
 def run_fold(fold, train_idx, val_idx):
@@ -518,14 +556,18 @@ def run_fold(fold, train_idx, val_idx):
     ema_model_stage2 = ModelEMA(model, decay=EMA_DECAY)
     scaler_s2 = GradScaler()
 
-    # Balanced train loader for stage 2 (single weighting — sampler only, no loss weights here)
+    # Balanced train loader for stage 2 (single weighting — sampler only, no loss weights here).
+    # Cap the weight ratio, matching run_all_models.py, to avoid over-repeating rare classes.
     train_ds_s2 = AutismFERDataset([samples[i] for i in train_idx],
                                    [labels[i] for i in train_idx], train_transform)
     counts = Counter(train_ds_s2.targets)
-    sample_weights = [1.0 / counts[t] for t in train_ds_s2.targets]
+    inv_freq = [1.0 / counts[t] for t in train_ds_s2.targets]
+    w_min = min(inv_freq)
+    sample_weights = [min(w, w_min * 9.0) for w in inv_freq]
     sampler_s2 = WeightedRandomSampler(sample_weights, len(train_ds_s2), replacement=True)
     train_loader_s2 = DataLoader(train_ds_s2, batch_size=BATCH_SIZE, sampler=sampler_s2,
-                                 num_workers=NUM_WORKERS, pin_memory=True, drop_last=True)
+                                 num_workers=NUM_WORKERS, pin_memory=True, drop_last=True,
+                                 worker_init_fn=seed_worker, generator=DL_GENERATOR)
 
     best_f1_s2 = best_val_f1
     patience_s2 = 0
@@ -606,7 +648,8 @@ def run_fold(fold, train_idx, val_idx):
 
 def val_ds_transform_loader(val_ds):
     loader = DataLoader(val_ds, batch_size=BATCH_SIZE, shuffle=False,
-                        num_workers=NUM_WORKERS, pin_memory=True)
+                        num_workers=NUM_WORKERS, pin_memory=True,
+                        worker_init_fn=seed_worker, generator=DL_GENERATOR)
     return loader
 
 
