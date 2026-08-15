@@ -1,0 +1,1536 @@
+7.7s 1 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+7.7s 2 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+7.7s 3 0.00s - to python to disable frozen modules.
+7.7s 4 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+8.3s 5 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+8.3s 6 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+8.3s 7 0.00s - to python to disable frozen modules.
+8.3s 8 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+11.7s 9 Found saved progress at: /kaggle/input/datasets/mrsohel/autism-fer-saved-results/results
+11.8s 10 Successfully copied progress (ignored massive .pth files)!
+30.9s 11 PyTorch: 2.10.0+cu128
+30.9s 12 CUDA: True
+30.9s 13 GPU: Tesla T4
+30.9s 14 [*] Auto-detected dataset at /kaggle/input/datasets/mrsohel/dataset-clean/dataset_clean
+30.9s 15 [*] DATA_DIR = /kaggle/input/datasets/mrsohel/dataset-clean/dataset_clean
+30.9s 16 [*] Found 9 model(s) with completed folds — resuming.
+30.9s 17 [*] Building full dataset (train+valid+test merged) ...
+30.9s 18 [*] Total images: 1808 | Per-class: {0: 167, 1: 68, 2: 843, 3: 201, 4: 404, 5: 125}
+31.1s 19 [*] Saved fold assignment to /kaggle/working/results/fold_id_by_path.json
+31.1s 20 
+31.1s 21 ######################################################################
+31.1s 22 # vgg16
+31.1s 23 ######################################################################
+31.1s 24 Fold 1 already done — skipping.
+31.1s 25 Fold 2 already done — skipping.
+31.1s 26 Fold 3 already done — skipping.
+31.1s 27 Fold 4 already done — skipping.
+31.1s 28 Fold 5 already done — skipping.
+31.1s 29 
+31.1s 30 vgg16 CV mean (5 folds) — Acc: 0.7135+/-0.0140 | F1: 0.6114+/-0.0173
+31.1s 31 
+31.1s 32 ######################################################################
+31.1s 33 # resnet50
+31.1s 34 ######################################################################
+31.1s 35 Fold 1 already done — skipping.
+31.1s 36 Fold 2 already done — skipping.
+31.1s 37 Fold 3 already done — skipping.
+31.1s 38 Fold 4 already done — skipping.
+31.1s 39 Fold 5 already done — skipping.
+31.1s 40 
+31.1s 41 resnet50 CV mean (5 folds) — Acc: 0.6620+/-0.0218 | F1: 0.5609+/-0.0312
+31.1s 42 
+31.1s 43 ######################################################################
+31.1s 44 # densenet121
+31.1s 45 ######################################################################
+31.1s 46 Fold 1 already done — skipping.
+31.1s 47 Fold 2 already done — skipping.
+31.1s 48 Fold 3 already done — skipping.
+31.1s 49 Fold 4 already done — skipping.
+31.1s 50 Fold 5 already done — skipping.
+31.1s 51 
+31.1s 52 densenet121 CV mean (5 folds) — Acc: 0.7091+/-0.0107 | F1: 0.5944+/-0.0196
+31.1s 53 
+31.1s 54 ######################################################################
+31.1s 55 # efficientnet_b0
+31.1s 56 ######################################################################
+31.1s 57 Fold 1 already done — skipping.
+31.1s 58 Fold 2 already done — skipping.
+31.1s 59 Fold 3 already done — skipping.
+31.1s 60 Fold 4 already done — skipping.
+31.1s 61 Fold 5 already done — skipping.
+31.1s 62 
+31.1s 63 efficientnet_b0 CV mean (5 folds) — Acc: 0.7074+/-0.0150 | F1: 0.5863+/-0.0326
+31.1s 64 
+31.1s 65 ######################################################################
+31.1s 66 # mobilenetv2_100
+31.1s 67 ######################################################################
+31.1s 68 Fold 1 already done — skipping.
+31.1s 69 Fold 2 already done — skipping.
+31.1s 70 Fold 3 already done — skipping.
+31.1s 71 Fold 4 already done — skipping.
+31.1s 72 Fold 5 already done — skipping.
+31.1s 73 
+31.1s 74 mobilenetv2_100 CV mean (5 folds) — Acc: 0.6980+/-0.0224 | F1: 0.5845+/-0.0338
+31.1s 75 
+31.1s 76 ######################################################################
+31.1s 77 # convnext_tiny
+31.1s 78 ######################################################################
+31.1s 79 Fold 1 already done — skipping.
+31.1s 80 Fold 2 already done — skipping.
+31.1s 81 Fold 3 already done — skipping.
+31.1s 82 Fold 4 already done — skipping.
+31.1s 83 Fold 5 already done — skipping.
+31.1s 84 
+31.1s 85 convnext_tiny CV mean (5 folds) — Acc: 0.2742+/-0.1648 | F1: 0.0761+/-0.0260
+31.1s 86 
+31.1s 87 ######################################################################
+31.1s 88 # deit_small_patch16_224
+31.1s 89 ######################################################################
+31.1s 90 Fold 1 already done — skipping.
+31.1s 91 Fold 2 already done — skipping.
+31.1s 92 Fold 3 already done — skipping.
+31.1s 93 Fold 4 already done — skipping.
+31.1s 94 Fold 5 already done — skipping.
+31.1s 95 
+31.1s 96 deit_small_patch16_224 CV mean (5 folds) — Acc: 0.7152+/-0.0116 | F1: 0.6015+/-0.0260
+31.1s 97 
+31.1s 98 ######################################################################
+31.1s 99 # vit_base_patch16_224
+31.1s 100 ######################################################################
+31.1s 101 Fold 1 already done — skipping.
+31.1s 102 Fold 2 already done — skipping.
+31.1s 103 Fold 3 already done — skipping.
+31.1s 104 Fold 4 already done — skipping.
+31.1s 105 Fold 5 already done — skipping.
+31.1s 106 
+31.1s 107 vit_base_patch16_224 CV mean (5 folds) — Acc: 0.7196+/-0.0091 | F1: 0.6037+/-0.0260
+31.1s 108 
+31.1s 109 ######################################################################
+31.1s 110 # swin_tiny_patch4_window7_224
+31.1s 111 ######################################################################
+31.1s 112 [!] swin_tiny_patch4_window7_224: existing cv_metrics.json was produced by another eval pipeline (found 'v1' != 'v3-emabn'). Resmuming would MIX incompatible metrics — delete /kaggle/working/results/swin_tiny_patch4_window7_224 before re-running or results will be invalid.
+31.1s 113 Fold 1 already done — skipping.
+31.1s 114 Fold 2 already done — skipping.
+31.1s 115 Fold 3 already done — skipping.
+31.1s 116 Fold 4 already done — skipping.
+31.1s 117 
+31.1s 118 ============================================================
+31.1s 119 swin_tiny_patch4_window7_224 | Loss: ce_smooth | Fold 5/5
+31.1s 120 ============================================================
+31.7s 121 Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+31.7s 122 
+31.7s 123 Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+34.8s 124 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+34.8s 125 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+34.8s 126 
+34.8s 127 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+34.8s 128 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+49.2s 129 Epoch [ 1/80] | Train Loss: 1.8123 | Train Acc:  18.6% | Val Acc:   9.7% | Val Macro-F1: 0.0685 | Time: 0.2m
+49.4s 130 >> New best fold F1: 0.0685
+61.5s 131 Epoch [ 2/80] | Train Loss: 1.6989 | Train Acc:  29.4% | Val Acc:  11.9% | Val Macro-F1: 0.0804 | Time: 0.4m
+61.7s 132 >> New best fold F1: 0.0804
+74.0s 133 Epoch [ 3/80] | Train Loss: 1.5453 | Train Acc:  39.9% | Val Acc:  16.6% | Val Macro-F1: 0.1047 | Time: 0.7m
+74.3s 134 >> New best fold F1: 0.1047
+86.8s 135 Epoch [ 4/80] | Train Loss: 1.4244 | Train Acc:  48.8% | Val Acc:  23.0% | Val Macro-F1: 0.1439 | Time: 0.9m
+87.0s 136 >> New best fold F1: 0.1439
+99.6s 137 Epoch [ 5/80] | Train Loss: 1.2637 | Train Acc:  59.4% | Val Acc:  29.4% | Val Macro-F1: 0.2218 | Time: 1.1m
+99.9s 138 >> New best fold F1: 0.2218
+112.9s 139 Epoch [ 6/80] | Train Loss: 1.1822 | Train Acc:  63.4% | Val Acc:  35.7% | Val Macro-F1: 0.2965 | Time: 1.3m
+113.2s 140 >> New best fold F1: 0.2965
+126.4s 141 Epoch [ 7/80] | Train Loss: 1.0918 | Train Acc:  67.2% | Val Acc:  44.6% | Val Macro-F1: 0.3580 | Time: 1.5m
+126.6s 142 >> New best fold F1: 0.3580
+140.3s 143 Epoch [ 8/80] | Train Loss: 1.0147 | Train Acc:  72.4% | Val Acc:  50.7% | Val Macro-F1: 0.4059 | Time: 1.8m
+140.5s 144 >> New best fold F1: 0.4059
+153.7s 145 Epoch [ 9/80] | Train Loss: 0.9883 | Train Acc:  72.8% | Val Acc:  55.1% | Val Macro-F1: 0.4468 | Time: 2.0m
+154.0s 146 >> New best fold F1: 0.4468
+166.9s 147 Epoch [10/80] | Train Loss: 0.9370 | Train Acc:  76.4% | Val Acc:  59.0% | Val Macro-F1: 0.4765 | Time: 2.2m
+167.2s 148 >> New best fold F1: 0.4765
+180.0s 149 Epoch [11/80] | Train Loss: 0.9714 | Train Acc:  73.8% | Val Acc:  60.4% | Val Macro-F1: 0.4994 | Time: 2.4m
+180.3s 150 >> New best fold F1: 0.4994
+193.3s 151 Epoch [12/80] | Train Loss: 0.8955 | Train Acc:  77.9% | Val Acc:  61.8% | Val Macro-F1: 0.5154 | Time: 2.6m
+193.6s 152 >> New best fold F1: 0.5154
+206.7s 153 Epoch [13/80] | Train Loss: 0.8460 | Train Acc:  79.7% | Val Acc:  64.0% | Val Macro-F1: 0.5504 | Time: 2.9m
+207.0s 154 >> New best fold F1: 0.5504
+220.1s 155 Epoch [14/80] | Train Loss: 0.8485 | Train Acc:  79.4% | Val Acc:  64.5% | Val Macro-F1: 0.5629 | Time: 3.1m
+220.4s 156 >> New best fold F1: 0.5629
+233.5s 157 Epoch [15/80] | Train Loss: 0.8394 | Train Acc:  79.3% | Val Acc:  65.4% | Val Macro-F1: 0.5797 | Time: 3.3m
+233.9s 158 >> New best fold F1: 0.5797
+247.0s 159 Epoch [16/80] | Train Loss: 0.8240 | Train Acc:  80.6% | Val Acc:  66.5% | Val Macro-F1: 0.6021 | Time: 3.5m
+247.3s 160 >> New best fold F1: 0.6021
+260.0s 161 Epoch [17/80] | Train Loss: 0.8002 | Train Acc:  83.3% | Val Acc:  66.2% | Val Macro-F1: 0.5974 | Time: 3.8m
+273.0s 162 Epoch [18/80] | Train Loss: 0.7602 | Train Acc:  84.1% | Val Acc:  67.0% | Val Macro-F1: 0.6091 | Time: 4.0m
+273.3s 163 >> New best fold F1: 0.6091
+286.3s 164 Epoch [19/80] | Train Loss: 0.7569 | Train Acc:  84.3% | Val Acc:  68.4% | Val Macro-F1: 0.6245 | Time: 4.2m
+286.5s 165 >> New best fold F1: 0.6245
+299.4s 166 Epoch [20/80] | Train Loss: 0.7615 | Train Acc:  83.8% | Val Acc:  68.4% | Val Macro-F1: 0.6236 | Time: 4.4m
+312.2s 167 Epoch [21/80] | Train Loss: 0.7468 | Train Acc:  84.7% | Val Acc:  67.9% | Val Macro-F1: 0.6139 | Time: 4.6m
+325.1s 168 Epoch [22/80] | Train Loss: 0.7713 | Train Acc:  83.1% | Val Acc:  67.3% | Val Macro-F1: 0.6082 | Time: 4.8m
+337.9s 169 Epoch [23/80] | Train Loss: 0.7554 | Train Acc:  84.2% | Val Acc:  67.3% | Val Macro-F1: 0.5997 | Time: 5.1m
+350.7s 170 Epoch [24/80] | Train Loss: 0.7490 | Train Acc:  84.2% | Val Acc:  67.9% | Val Macro-F1: 0.6023 | Time: 5.3m
+363.6s 171 Epoch [25/80] | Train Loss: 0.7318 | Train Acc:  85.3% | Val Acc:  68.1% | Val Macro-F1: 0.5976 | Time: 5.5m
+376.3s 172 Epoch [26/80] | Train Loss: 0.7213 | Train Acc:  86.1% | Val Acc:  69.0% | Val Macro-F1: 0.6055 | Time: 5.7m
+389.1s 173 Epoch [27/80] | Train Loss: 0.7144 | Train Acc:  85.8% | Val Acc:  68.7% | Val Macro-F1: 0.5905 | Time: 5.9m
+402.0s 174 Epoch [28/80] | Train Loss: 0.7006 | Train Acc:  86.7% | Val Acc:  69.3% | Val Macro-F1: 0.6008 | Time: 6.1m
+414.8s 175 Epoch [29/80] | Train Loss: 0.6908 | Train Acc:  87.3% | Val Acc:  69.0% | Val Macro-F1: 0.5983 | Time: 6.3m
+427.5s 176 Epoch [30/80] | Train Loss: 0.6773 | Train Acc:  87.2% | Val Acc:  69.0% | Val Macro-F1: 0.5983 | Time: 6.5m
+440.2s 177 Epoch [31/80] | Train Loss: 0.6840 | Train Acc:  86.9% | Val Acc:  69.0% | Val Macro-F1: 0.5983 | Time: 6.8m
+452.9s 178 Epoch [32/80] | Train Loss: 0.7115 | Train Acc:  84.7% | Val Acc:  69.0% | Val Macro-F1: 0.5983 | Time: 7.0m
+465.6s 179 Epoch [33/80] | Train Loss: 0.6831 | Train Acc:  87.4% | Val Acc:  69.0% | Val Macro-F1: 0.5983 | Time: 7.2m
+478.5s 180 Epoch [34/80] | Train Loss: 0.6994 | Train Acc:  86.0% | Val Acc:  69.3% | Val Macro-F1: 0.5993 | Time: 7.4m
+478.5s 181 >> Early stopping at epoch 34
+491.0s 182 FOLD 5 OOF (TTA) — Acc: 0.6870 | F1: 0.6289
+491.7s 183 
+491.7s 184 swin_tiny_patch4_window7_224 CV mean (5 folds) — Acc: 0.7057+/-0.0123 | F1: 0.5985+/-0.0212
+491.7s 185 
+491.7s 186 ######################################################################
+491.7s 187 # swin_base_patch4_window7_224
+491.7s 188 ######################################################################
+491.7s 189 
+491.7s 190 ============================================================
+491.7s 191 swin_base_patch4_window7_224 | Loss: ce_smooth | Fold 1/5
+491.7s 192 ============================================================
+497.7s 193 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+497.7s 194 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+497.7s 195 
+497.7s 196 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+497.7s 197 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+529.5s 198 Epoch [ 1/80] | Train Loss: 1.7784 | Train Acc:  23.2% | Val Acc:  21.0% | Val Macro-F1: 0.1283 | Time: 0.5m
+530.1s 199 >> New best fold F1: 0.1283
+560.9s 200 Epoch [ 2/80] | Train Loss: 1.5067 | Train Acc:  44.2% | Val Acc:  26.5% | Val Macro-F1: 0.1808 | Time: 1.1m
+562.0s 201 >> New best fold F1: 0.1808
+592.5s 202 Epoch [ 3/80] | Train Loss: 1.3651 | Train Acc:  51.5% | Val Acc:  33.7% | Val Macro-F1: 0.2378 | Time: 1.6m
+593.6s 203 >> New best fold F1: 0.2378
+624.8s 204 Epoch [ 4/80] | Train Loss: 1.2045 | Train Acc:  61.2% | Val Acc:  42.3% | Val Macro-F1: 0.2887 | Time: 2.1m
+625.9s 205 >> New best fold F1: 0.2887
+656.5s 206 Epoch [ 5/80] | Train Loss: 1.1485 | Train Acc:  64.4% | Val Acc:  48.3% | Val Macro-F1: 0.3372 | Time: 2.6m
+657.6s 207 >> New best fold F1: 0.3372
+688.5s 208 Epoch [ 6/80] | Train Loss: 1.0238 | Train Acc:  69.9% | Val Acc:  52.2% | Val Macro-F1: 0.3716 | Time: 3.2m
+689.6s 209 >> New best fold F1: 0.3716
+720.5s 210 Epoch [ 7/80] | Train Loss: 0.9232 | Train Acc:  76.0% | Val Acc:  55.2% | Val Macro-F1: 0.3959 | Time: 3.7m
+721.6s 211 >> New best fold F1: 0.3959
+752.4s 212 Epoch [ 8/80] | Train Loss: 0.9396 | Train Acc:  75.5% | Val Acc:  59.7% | Val Macro-F1: 0.4309 | Time: 4.2m
+753.5s 213 >> New best fold F1: 0.4309
+784.3s 214 Epoch [ 9/80] | Train Loss: 0.9072 | Train Acc:  78.1% | Val Acc:  62.2% | Val Macro-F1: 0.4660 | Time: 4.8m
+785.4s 215 >> New best fold F1: 0.4660
+816.3s 216 Epoch [10/80] | Train Loss: 0.7984 | Train Acc:  82.6% | Val Acc:  65.5% | Val Macro-F1: 0.5115 | Time: 5.3m
+817.5s 217 >> New best fold F1: 0.5115
+848.4s 218 Epoch [11/80] | Train Loss: 0.7906 | Train Acc:  83.8% | Val Acc:  66.0% | Val Macro-F1: 0.5169 | Time: 5.8m
+849.6s 219 >> New best fold F1: 0.5169
+880.5s 220 Epoch [12/80] | Train Loss: 0.8246 | Train Acc:  80.9% | Val Acc:  66.9% | Val Macro-F1: 0.5223 | Time: 6.4m
+881.7s 221 >> New best fold F1: 0.5223
+912.6s 222 Epoch [13/80] | Train Loss: 0.8213 | Train Acc:  81.7% | Val Acc:  68.0% | Val Macro-F1: 0.5393 | Time: 6.9m
+913.7s 223 >> New best fold F1: 0.5393
+944.2s 224 Epoch [14/80] | Train Loss: 0.7564 | Train Acc:  84.2% | Val Acc:  67.1% | Val Macro-F1: 0.5274 | Time: 7.4m
+974.9s 225 Epoch [15/80] | Train Loss: 0.7561 | Train Acc:  84.9% | Val Acc:  68.0% | Val Macro-F1: 0.5321 | Time: 8.0m
+1005.5s 226 Epoch [16/80] | Train Loss: 0.7338 | Train Acc:  86.0% | Val Acc:  68.0% | Val Macro-F1: 0.5336 | Time: 8.5m
+1036.3s 227 Epoch [17/80] | Train Loss: 0.7445 | Train Acc:  83.1% | Val Acc:  69.1% | Val Macro-F1: 0.5466 | Time: 9.0m
+1037.4s 228 >> New best fold F1: 0.5466
+1068.3s 229 Epoch [18/80] | Train Loss: 0.7333 | Train Acc:  85.6% | Val Acc:  69.1% | Val Macro-F1: 0.5549 | Time: 9.5m
+1069.4s 230 >> New best fold F1: 0.5549
+1100.2s 231 Epoch [19/80] | Train Loss: 0.7346 | Train Acc:  84.9% | Val Acc:  69.6% | Val Macro-F1: 0.5590 | Time: 10.0m
+1101.4s 232 >> New best fold F1: 0.5590
+1132.2s 233 Epoch [20/80] | Train Loss: 0.7000 | Train Acc:  87.4% | Val Acc:  69.6% | Val Macro-F1: 0.5604 | Time: 10.6m
+1133.4s 234 >> New best fold F1: 0.5604
+1164.1s 235 Epoch [21/80] | Train Loss: 0.6743 | Train Acc:  87.1% | Val Acc:  69.3% | Val Macro-F1: 0.5564 | Time: 11.1m
+1194.9s 236 Epoch [22/80] | Train Loss: 0.6824 | Train Acc:  88.2% | Val Acc:  69.9% | Val Macro-F1: 0.5609 | Time: 11.6m
+1196.0s 237 >> New best fold F1: 0.5609
+1226.8s 238 Epoch [23/80] | Train Loss: 0.7098 | Train Acc:  86.0% | Val Acc:  70.2% | Val Macro-F1: 0.5634 | Time: 12.1m
+1227.9s 239 >> New best fold F1: 0.5634
+1258.6s 240 Epoch [24/80] | Train Loss: 0.6818 | Train Acc:  87.9% | Val Acc:  69.9% | Val Macro-F1: 0.5599 | Time: 12.7m
+1289.2s 241 Epoch [25/80] | Train Loss: 0.6788 | Train Acc:  88.2% | Val Acc:  70.2% | Val Macro-F1: 0.5623 | Time: 13.2m
+1319.8s 242 Epoch [26/80] | Train Loss: 0.6555 | Train Acc:  89.0% | Val Acc:  70.4% | Val Macro-F1: 0.5668 | Time: 13.7m
+1321.1s 243 >> New best fold F1: 0.5668
+1351.9s 244 Epoch [27/80] | Train Loss: 0.6590 | Train Acc:  89.0% | Val Acc:  71.0% | Val Macro-F1: 0.5723 | Time: 14.2m
+1353.1s 245 >> New best fold F1: 0.5723
+1383.8s 246 Epoch [28/80] | Train Loss: 0.6512 | Train Acc:  89.4% | Val Acc:  70.7% | Val Macro-F1: 0.5707 | Time: 14.8m
+1414.5s 247 Epoch [29/80] | Train Loss: 0.6279 | Train Acc:  90.9% | Val Acc:  70.4% | Val Macro-F1: 0.5629 | Time: 15.3m
+1445.2s 248 Epoch [30/80] | Train Loss: 0.6474 | Train Acc:  89.1% | Val Acc:  70.4% | Val Macro-F1: 0.5629 | Time: 15.8m
+1475.8s 249 Epoch [31/80] | Train Loss: 0.6314 | Train Acc:  89.8% | Val Acc:  70.4% | Val Macro-F1: 0.5629 | Time: 16.3m
+1506.6s 250 Epoch [32/80] | Train Loss: 0.6317 | Train Acc:  89.9% | Val Acc:  71.3% | Val Macro-F1: 0.5756 | Time: 16.8m
+1507.7s 251 >> New best fold F1: 0.5756
+1538.3s 252 Epoch [33/80] | Train Loss: 0.6391 | Train Acc:  89.2% | Val Acc:  70.7% | Val Macro-F1: 0.5630 | Time: 17.3m
+1568.9s 253 Epoch [34/80] | Train Loss: 0.6280 | Train Acc:  90.3% | Val Acc:  70.2% | Val Macro-F1: 0.5575 | Time: 17.9m
+1599.4s 254 Epoch [35/80] | Train Loss: 0.6239 | Train Acc:  90.3% | Val Acc:  69.6% | Val Macro-F1: 0.5516 | Time: 18.4m
+1629.8s 255 Epoch [36/80] | Train Loss: 0.6156 | Train Acc:  90.8% | Val Acc:  69.6% | Val Macro-F1: 0.5516 | Time: 18.9m
+1660.4s 256 Epoch [37/80] | Train Loss: 0.6182 | Train Acc:  91.1% | Val Acc:  69.3% | Val Macro-F1: 0.5475 | Time: 19.4m
+1691.0s 257 Epoch [38/80] | Train Loss: 0.6334 | Train Acc:  89.6% | Val Acc:  69.3% | Val Macro-F1: 0.5475 | Time: 19.9m
+1721.5s 258 Epoch [39/80] | Train Loss: 0.6053 | Train Acc:  91.3% | Val Acc:  69.3% | Val Macro-F1: 0.5460 | Time: 20.4m
+1751.9s 259 Epoch [40/80] | Train Loss: 0.5755 | Train Acc:  92.8% | Val Acc:  69.6% | Val Macro-F1: 0.5497 | Time: 20.9m
+1782.3s 260 Epoch [41/80] | Train Loss: 0.5960 | Train Acc:  91.9% | Val Acc:  69.3% | Val Macro-F1: 0.5460 | Time: 21.4m
+1812.9s 261 Epoch [42/80] | Train Loss: 0.6160 | Train Acc:  90.6% | Val Acc:  69.1% | Val Macro-F1: 0.5442 | Time: 21.9m
+1843.5s 262 Epoch [43/80] | Train Loss: 0.5833 | Train Acc:  92.2% | Val Acc:  69.6% | Val Macro-F1: 0.5518 | Time: 22.4m
+1874.2s 263 Epoch [44/80] | Train Loss: 0.5833 | Train Acc:  92.4% | Val Acc:  69.6% | Val Macro-F1: 0.5518 | Time: 22.9m
+1904.8s 264 Epoch [45/80] | Train Loss: 0.5850 | Train Acc:  92.7% | Val Acc:  69.6% | Val Macro-F1: 0.5518 | Time: 23.5m
+1935.4s 265 Epoch [46/80] | Train Loss: 0.5859 | Train Acc:  92.0% | Val Acc:  69.6% | Val Macro-F1: 0.5459 | Time: 24.0m
+1966.1s 266 Epoch [47/80] | Train Loss: 0.5810 | Train Acc:  92.1% | Val Acc:  69.6% | Val Macro-F1: 0.5455 | Time: 24.5m
+1966.1s 267 >> Early stopping at epoch 47
+1995.8s 268 FOLD 1 OOF (TTA) — Acc: 0.7127 | F1: 0.5811
+1996.1s 269 
+1996.1s 270 ============================================================
+1996.1s 271 swin_base_patch4_window7_224 | Loss: ce_smooth | Fold 2/5
+1996.1s 272 ============================================================
+1997.4s 273 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+1997.4s 274 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+1997.4s 275 
+1997.4s 276 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+1997.4s 277 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+2028.1s 278 Epoch [ 1/80] | Train Loss: 1.7670 | Train Acc:  25.1% | Val Acc:  26.2% | Val Macro-F1: 0.1388 | Time: 0.5m
+2028.7s 279 >> New best fold F1: 0.1388
+2059.7s 280 Epoch [ 2/80] | Train Loss: 1.5515 | Train Acc:  40.4% | Val Acc:  32.9% | Val Macro-F1: 0.1789 | Time: 1.0m
+2060.6s 281 >> New best fold F1: 0.1789
+2091.5s 282 Epoch [ 3/80] | Train Loss: 1.3558 | Train Acc:  52.7% | Val Acc:  39.2% | Val Macro-F1: 0.2170 | Time: 1.6m
+2092.4s 283 >> New best fold F1: 0.2170
+2123.4s 284 Epoch [ 4/80] | Train Loss: 1.2257 | Train Acc:  59.9% | Val Acc:  44.8% | Val Macro-F1: 0.2584 | Time: 2.1m
+2124.3s 285 >> New best fold F1: 0.2584
+2155.2s 286 Epoch [ 5/80] | Train Loss: 1.1595 | Train Acc:  64.7% | Val Acc:  49.7% | Val Macro-F1: 0.3219 | Time: 2.6m
+2156.1s 287 >> New best fold F1: 0.3219
+2187.0s 288 Epoch [ 6/80] | Train Loss: 1.0483 | Train Acc:  71.1% | Val Acc:  56.9% | Val Macro-F1: 0.4064 | Time: 3.2m
+2188.0s 289 >> New best fold F1: 0.4064
+2219.0s 290 Epoch [ 7/80] | Train Loss: 0.9983 | Train Acc:  71.7% | Val Acc:  60.8% | Val Macro-F1: 0.4437 | Time: 3.7m
+2219.9s 291 >> New best fold F1: 0.4437
+2250.8s 292 Epoch [ 8/80] | Train Loss: 0.9199 | Train Acc:  76.6% | Val Acc:  62.7% | Val Macro-F1: 0.4670 | Time: 4.2m
+2251.7s 293 >> New best fold F1: 0.4670
+2282.6s 294 Epoch [ 9/80] | Train Loss: 0.8749 | Train Acc:  78.3% | Val Acc:  64.1% | Val Macro-F1: 0.4868 | Time: 4.8m
+2283.6s 295 >> New best fold F1: 0.4868
+2314.6s 296 Epoch [10/80] | Train Loss: 0.8105 | Train Acc:  82.4% | Val Acc:  65.5% | Val Macro-F1: 0.5061 | Time: 5.3m
+2315.5s 297 >> New best fold F1: 0.5061
+2346.2s 298 Epoch [11/80] | Train Loss: 0.8193 | Train Acc:  81.2% | Val Acc:  66.9% | Val Macro-F1: 0.5271 | Time: 5.8m
+2347.2s 299 >> New best fold F1: 0.5271
+2377.7s 300 Epoch [12/80] | Train Loss: 0.8067 | Train Acc:  82.1% | Val Acc:  66.0% | Val Macro-F1: 0.5258 | Time: 6.3m
+2408.6s 301 Epoch [13/80] | Train Loss: 0.7772 | Train Acc:  83.2% | Val Acc:  67.4% | Val Macro-F1: 0.5509 | Time: 6.9m
+2409.6s 302 >> New best fold F1: 0.5509
+2440.4s 303 Epoch [14/80] | Train Loss: 0.7283 | Train Acc:  85.7% | Val Acc:  68.0% | Val Macro-F1: 0.5538 | Time: 7.4m
+2441.4s 304 >> New best fold F1: 0.5538
+2472.1s 305 Epoch [15/80] | Train Loss: 0.7614 | Train Acc:  83.5% | Val Acc:  68.5% | Val Macro-F1: 0.5639 | Time: 7.9m
+2473.1s 306 >> New best fold F1: 0.5639
+2503.7s 307 Epoch [16/80] | Train Loss: 0.7625 | Train Acc:  83.8% | Val Acc:  68.2% | Val Macro-F1: 0.5536 | Time: 8.4m
+2534.6s 308 Epoch [17/80] | Train Loss: 0.7315 | Train Acc:  85.3% | Val Acc:  69.3% | Val Macro-F1: 0.5685 | Time: 8.9m
+2535.5s 309 >> New best fold F1: 0.5685
+2566.3s 310 Epoch [18/80] | Train Loss: 0.7230 | Train Acc:  85.2% | Val Acc:  69.9% | Val Macro-F1: 0.5768 | Time: 9.5m
+2567.3s 311 >> New best fold F1: 0.5768
+2598.0s 312 Epoch [19/80] | Train Loss: 0.7007 | Train Acc:  87.6% | Val Acc:  70.2% | Val Macro-F1: 0.5817 | Time: 10.0m
+2599.0s 313 >> New best fold F1: 0.5817
+2629.9s 314 Epoch [20/80] | Train Loss: 0.7192 | Train Acc:  84.8% | Val Acc:  70.7% | Val Macro-F1: 0.5870 | Time: 10.5m
+2630.8s 315 >> New best fold F1: 0.5870
+2661.7s 316 Epoch [21/80] | Train Loss: 0.7049 | Train Acc:  86.1% | Val Acc:  70.7% | Val Macro-F1: 0.5874 | Time: 11.1m
+2662.6s 317 >> New best fold F1: 0.5874
+2693.3s 318 Epoch [22/80] | Train Loss: 0.6757 | Train Acc:  88.7% | Val Acc:  70.4% | Val Macro-F1: 0.5844 | Time: 11.6m
+2724.0s 319 Epoch [23/80] | Train Loss: 0.6747 | Train Acc:  88.1% | Val Acc:  70.7% | Val Macro-F1: 0.5887 | Time: 12.1m
+2725.0s 320 >> New best fold F1: 0.5887
+2755.6s 321 Epoch [24/80] | Train Loss: 0.6914 | Train Acc:  86.5% | Val Acc:  70.2% | Val Macro-F1: 0.5824 | Time: 12.6m
+2786.1s 322 Epoch [25/80] | Train Loss: 0.6790 | Train Acc:  87.1% | Val Acc:  70.4% | Val Macro-F1: 0.5846 | Time: 13.1m
+2816.8s 323 Epoch [26/80] | Train Loss: 0.6625 | Train Acc:  88.0% | Val Acc:  70.7% | Val Macro-F1: 0.5879 | Time: 13.7m
+2847.6s 324 Epoch [27/80] | Train Loss: 0.6737 | Train Acc:  87.7% | Val Acc:  71.0% | Val Macro-F1: 0.5909 | Time: 14.2m
+2848.6s 325 >> New best fold F1: 0.5909
+2879.5s 326 Epoch [28/80] | Train Loss: 0.6653 | Train Acc:  88.3% | Val Acc:  71.0% | Val Macro-F1: 0.5922 | Time: 14.7m
+2880.4s 327 >> New best fold F1: 0.5922
+2911.4s 328 Epoch [29/80] | Train Loss: 0.6430 | Train Acc:  88.5% | Val Acc:  71.3% | Val Macro-F1: 0.5956 | Time: 15.2m
+2912.4s 329 >> New best fold F1: 0.5956
+2943.1s 330 Epoch [30/80] | Train Loss: 0.6379 | Train Acc:  89.7% | Val Acc:  71.3% | Val Macro-F1: 0.5917 | Time: 15.8m
+2973.8s 331 Epoch [31/80] | Train Loss: 0.6351 | Train Acc:  89.4% | Val Acc:  71.0% | Val Macro-F1: 0.5885 | Time: 16.3m
+3004.5s 332 Epoch [32/80] | Train Loss: 0.6546 | Train Acc:  88.3% | Val Acc:  71.0% | Val Macro-F1: 0.5885 | Time: 16.8m
+3035.1s 333 Epoch [33/80] | Train Loss: 0.6328 | Train Acc:  89.7% | Val Acc:  71.3% | Val Macro-F1: 0.5903 | Time: 17.3m
+3065.7s 334 Epoch [34/80] | Train Loss: 0.6233 | Train Acc:  89.6% | Val Acc:  71.0% | Val Macro-F1: 0.5869 | Time: 17.8m
+3096.3s 335 Epoch [35/80] | Train Loss: 0.6248 | Train Acc:  90.9% | Val Acc:  71.0% | Val Macro-F1: 0.5869 | Time: 18.3m
+3126.9s 336 Epoch [36/80] | Train Loss: 0.6044 | Train Acc:  91.6% | Val Acc:  71.0% | Val Macro-F1: 0.5869 | Time: 18.8m
+3157.5s 337 Epoch [37/80] | Train Loss: 0.6204 | Train Acc:  89.5% | Val Acc:  71.0% | Val Macro-F1: 0.5861 | Time: 19.3m
+3188.2s 338 Epoch [38/80] | Train Loss: 0.5850 | Train Acc:  92.4% | Val Acc:  71.0% | Val Macro-F1: 0.5861 | Time: 19.8m
+3218.9s 339 Epoch [39/80] | Train Loss: 0.5966 | Train Acc:  91.8% | Val Acc:  70.7% | Val Macro-F1: 0.5772 | Time: 20.4m
+3249.6s 340 Epoch [40/80] | Train Loss: 0.6138 | Train Acc:  90.6% | Val Acc:  70.4% | Val Macro-F1: 0.5736 | Time: 20.9m
+3280.3s 341 Epoch [41/80] | Train Loss: 0.5914 | Train Acc:  91.1% | Val Acc:  70.7% | Val Macro-F1: 0.5825 | Time: 21.4m
+3310.9s 342 Epoch [42/80] | Train Loss: 0.5885 | Train Acc:  92.6% | Val Acc:  71.0% | Val Macro-F1: 0.5860 | Time: 21.9m
+3341.7s 343 Epoch [43/80] | Train Loss: 0.6000 | Train Acc:  91.2% | Val Acc:  71.0% | Val Macro-F1: 0.5860 | Time: 22.4m
+3372.5s 344 Epoch [44/80] | Train Loss: 0.5761 | Train Acc:  92.1% | Val Acc:  71.0% | Val Macro-F1: 0.5860 | Time: 22.9m
+3372.5s 345 >> Early stopping at epoch 44
+3402.2s 346 FOLD 2 OOF (TTA) — Acc: 0.6989 | F1: 0.5696
+3402.5s 347 
+3402.5s 348 ============================================================
+3402.5s 349 swin_base_patch4_window7_224 | Loss: ce_smooth | Fold 3/5
+3402.5s 350 ============================================================
+3403.7s 351 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+3403.7s 352 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+3403.7s 353 
+3403.7s 354 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+3403.7s 355 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+3434.5s 356 Epoch [ 1/80] | Train Loss: 1.7744 | Train Acc:  23.9% | Val Acc:  16.9% | Val Macro-F1: 0.1214 | Time: 0.5m
+3435.0s 357 >> New best fold F1: 0.1214
+3466.1s 358 Epoch [ 2/80] | Train Loss: 1.5890 | Train Acc:  36.5% | Val Acc:  17.4% | Val Macro-F1: 0.1261 | Time: 1.0m
+3467.0s 359 >> New best fold F1: 0.1261
+3497.8s 360 Epoch [ 3/80] | Train Loss: 1.4124 | Train Acc:  50.1% | Val Acc:  17.4% | Val Macro-F1: 0.1340 | Time: 1.6m
+3498.7s 361 >> New best fold F1: 0.1340
+3529.5s 362 Epoch [ 4/80] | Train Loss: 1.2823 | Train Acc:  56.3% | Val Acc:  19.9% | Val Macro-F1: 0.1607 | Time: 2.1m
+3530.5s 363 >> New best fold F1: 0.1607
+3561.4s 364 Epoch [ 5/80] | Train Loss: 1.1773 | Train Acc:  61.4% | Val Acc:  26.5% | Val Macro-F1: 0.2182 | Time: 2.6m
+3562.4s 365 >> New best fold F1: 0.2182
+3593.1s 366 Epoch [ 6/80] | Train Loss: 1.1013 | Train Acc:  66.0% | Val Acc:  32.3% | Val Macro-F1: 0.2541 | Time: 3.2m
+3594.1s 367 >> New best fold F1: 0.2541
+3624.9s 368 Epoch [ 7/80] | Train Loss: 0.9695 | Train Acc:  73.5% | Val Acc:  42.5% | Val Macro-F1: 0.3198 | Time: 3.7m
+3625.8s 369 >> New best fold F1: 0.3198
+3656.8s 370 Epoch [ 8/80] | Train Loss: 0.9524 | Train Acc:  74.9% | Val Acc:  48.3% | Val Macro-F1: 0.3653 | Time: 4.2m
+3657.7s 371 >> New best fold F1: 0.3653
+3688.5s 372 Epoch [ 9/80] | Train Loss: 0.8857 | Train Acc:  78.5% | Val Acc:  53.9% | Val Macro-F1: 0.4111 | Time: 4.7m
+3689.4s 373 >> New best fold F1: 0.4111
+3720.2s 374 Epoch [10/80] | Train Loss: 0.8689 | Train Acc:  78.4% | Val Acc:  59.1% | Val Macro-F1: 0.4643 | Time: 5.3m
+3721.2s 375 >> New best fold F1: 0.4643
+3752.2s 376 Epoch [11/80] | Train Loss: 0.8310 | Train Acc:  80.8% | Val Acc:  62.2% | Val Macro-F1: 0.4998 | Time: 5.8m
+3753.1s 377 >> New best fold F1: 0.4998
+3783.9s 378 Epoch [12/80] | Train Loss: 0.7963 | Train Acc:  82.4% | Val Acc:  64.4% | Val Macro-F1: 0.5282 | Time: 6.3m
+3784.9s 379 >> New best fold F1: 0.5282
+3815.7s 380 Epoch [13/80] | Train Loss: 0.8122 | Train Acc:  82.4% | Val Acc:  65.5% | Val Macro-F1: 0.5443 | Time: 6.9m
+3816.6s 381 >> New best fold F1: 0.5443
+3847.5s 382 Epoch [14/80] | Train Loss: 0.7707 | Train Acc:  83.6% | Val Acc:  67.1% | Val Macro-F1: 0.5606 | Time: 7.4m
+3848.4s 383 >> New best fold F1: 0.5606
+3879.3s 384 Epoch [15/80] | Train Loss: 0.7868 | Train Acc:  82.4% | Val Acc:  68.5% | Val Macro-F1: 0.5738 | Time: 7.9m
+3880.2s 385 >> New best fold F1: 0.5738
+3911.1s 386 Epoch [16/80] | Train Loss: 0.7816 | Train Acc:  84.0% | Val Acc:  69.9% | Val Macro-F1: 0.5938 | Time: 8.5m
+3912.0s 387 >> New best fold F1: 0.5938
+3943.0s 388 Epoch [17/80] | Train Loss: 0.7699 | Train Acc:  82.7% | Val Acc:  71.3% | Val Macro-F1: 0.6064 | Time: 9.0m
+3943.9s 389 >> New best fold F1: 0.6064
+3974.8s 390 Epoch [18/80] | Train Loss: 0.7194 | Train Acc:  85.6% | Val Acc:  71.8% | Val Macro-F1: 0.6151 | Time: 9.5m
+3975.7s 391 >> New best fold F1: 0.6151
+4006.4s 392 Epoch [19/80] | Train Loss: 0.7352 | Train Acc:  84.9% | Val Acc:  71.5% | Val Macro-F1: 0.6120 | Time: 10.0m
+4037.1s 393 Epoch [20/80] | Train Loss: 0.7359 | Train Acc:  84.8% | Val Acc:  71.8% | Val Macro-F1: 0.6148 | Time: 10.6m
+4068.0s 394 Epoch [21/80] | Train Loss: 0.7159 | Train Acc:  84.7% | Val Acc:  72.1% | Val Macro-F1: 0.6176 | Time: 11.1m
+4069.0s 395 >> New best fold F1: 0.6176
+4099.8s 396 Epoch [22/80] | Train Loss: 0.6816 | Train Acc:  87.4% | Val Acc:  72.4% | Val Macro-F1: 0.6196 | Time: 11.6m
+4100.8s 397 >> New best fold F1: 0.6196
+4131.5s 398 Epoch [23/80] | Train Loss: 0.6931 | Train Acc:  86.5% | Val Acc:  72.1% | Val Macro-F1: 0.6120 | Time: 12.1m
+4162.1s 399 Epoch [24/80] | Train Loss: 0.7001 | Train Acc:  86.6% | Val Acc:  71.8% | Val Macro-F1: 0.6091 | Time: 12.6m
+4192.7s 400 Epoch [25/80] | Train Loss: 0.7067 | Train Acc:  87.0% | Val Acc:  72.1% | Val Macro-F1: 0.6109 | Time: 13.2m
+4223.5s 401 Epoch [26/80] | Train Loss: 0.6728 | Train Acc:  87.2% | Val Acc:  72.4% | Val Macro-F1: 0.6224 | Time: 13.7m
+4224.5s 402 >> New best fold F1: 0.6224
+4255.5s 403 Epoch [27/80] | Train Loss: 0.6809 | Train Acc:  86.8% | Val Acc:  72.9% | Val Macro-F1: 0.6266 | Time: 14.2m
+4256.4s 404 >> New best fold F1: 0.6266
+4287.3s 405 Epoch [28/80] | Train Loss: 0.6491 | Train Acc:  88.7% | Val Acc:  73.8% | Val Macro-F1: 0.6362 | Time: 14.7m
+4288.3s 406 >> New best fold F1: 0.6362
+4319.0s 407 Epoch [29/80] | Train Loss: 0.6553 | Train Acc:  88.6% | Val Acc:  73.8% | Val Macro-F1: 0.6360 | Time: 15.3m
+4349.9s 408 Epoch [30/80] | Train Loss: 0.6614 | Train Acc:  88.1% | Val Acc:  74.3% | Val Macro-F1: 0.6426 | Time: 15.8m
+4350.9s 409 >> New best fold F1: 0.6426
+4381.8s 410 Epoch [31/80] | Train Loss: 0.6607 | Train Acc:  89.0% | Val Acc:  74.3% | Val Macro-F1: 0.6440 | Time: 16.3m
+4382.7s 411 >> New best fold F1: 0.6440
+4413.6s 412 Epoch [32/80] | Train Loss: 0.6428 | Train Acc:  89.9% | Val Acc:  74.3% | Val Macro-F1: 0.6448 | Time: 16.8m
+4414.6s 413 >> New best fold F1: 0.6448
+4445.3s 414 Epoch [33/80] | Train Loss: 0.6569 | Train Acc:  88.4% | Val Acc:  74.9% | Val Macro-F1: 0.6511 | Time: 17.4m
+4446.3s 415 >> New best fold F1: 0.6511
+4476.8s 416 Epoch [34/80] | Train Loss: 0.6603 | Train Acc:  87.2% | Val Acc:  74.0% | Val Macro-F1: 0.6394 | Time: 17.9m
+4507.5s 417 Epoch [35/80] | Train Loss: 0.6410 | Train Acc:  88.9% | Val Acc:  74.0% | Val Macro-F1: 0.6402 | Time: 18.4m
+4538.2s 418 Epoch [36/80] | Train Loss: 0.6456 | Train Acc:  87.8% | Val Acc:  73.5% | Val Macro-F1: 0.6276 | Time: 18.9m
+4569.0s 419 Epoch [37/80] | Train Loss: 0.6232 | Train Acc:  89.9% | Val Acc:  73.5% | Val Macro-F1: 0.6276 | Time: 19.4m
+4599.6s 420 Epoch [38/80] | Train Loss: 0.6443 | Train Acc:  88.7% | Val Acc:  73.5% | Val Macro-F1: 0.6253 | Time: 19.9m
+4630.3s 421 Epoch [39/80] | Train Loss: 0.6605 | Train Acc:  87.8% | Val Acc:  73.5% | Val Macro-F1: 0.6253 | Time: 20.4m
+4660.9s 422 Epoch [40/80] | Train Loss: 0.5940 | Train Acc:  91.5% | Val Acc:  73.5% | Val Macro-F1: 0.6253 | Time: 21.0m
+4691.7s 423 Epoch [41/80] | Train Loss: 0.5967 | Train Acc:  91.1% | Val Acc:  73.2% | Val Macro-F1: 0.6212 | Time: 21.5m
+4722.2s 424 Epoch [42/80] | Train Loss: 0.6249 | Train Acc:  89.4% | Val Acc:  73.5% | Val Macro-F1: 0.6236 | Time: 22.0m
+4752.8s 425 Epoch [43/80] | Train Loss: 0.6015 | Train Acc:  91.2% | Val Acc:  73.5% | Val Macro-F1: 0.6236 | Time: 22.5m
+4783.6s 426 Epoch [44/80] | Train Loss: 0.6096 | Train Acc:  89.9% | Val Acc:  73.5% | Val Macro-F1: 0.6236 | Time: 23.0m
+4814.2s 427 Epoch [45/80] | Train Loss: 0.6006 | Train Acc:  91.4% | Val Acc:  73.5% | Val Macro-F1: 0.6236 | Time: 23.5m
+4844.9s 428 Epoch [46/80] | Train Loss: 0.5943 | Train Acc:  91.9% | Val Acc:  73.5% | Val Macro-F1: 0.6236 | Time: 24.0m
+4875.5s 429 Epoch [47/80] | Train Loss: 0.5947 | Train Acc:  90.8% | Val Acc:  73.2% | Val Macro-F1: 0.6206 | Time: 24.5m
+4906.3s 430 Epoch [48/80] | Train Loss: 0.5908 | Train Acc:  91.7% | Val Acc:  72.9% | Val Macro-F1: 0.6129 | Time: 25.0m
+4906.3s 431 >> Early stopping at epoch 48
+4936.3s 432 FOLD 3 OOF (TTA) — Acc: 0.7348 | F1: 0.6367
+4936.6s 433 
+4936.6s 434 ============================================================
+4936.6s 435 swin_base_patch4_window7_224 | Loss: ce_smooth | Fold 4/5
+4936.6s 436 ============================================================
+4937.8s 437 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+4937.8s 438 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+4937.8s 439 
+4937.8s 440 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+4937.8s 441 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+4968.6s 442 Epoch [ 1/80] | Train Loss: 1.7768 | Train Acc:  22.4% | Val Acc:  14.4% | Val Macro-F1: 0.1004 | Time: 0.5m
+4969.1s 443 >> New best fold F1: 0.1004
+5000.1s 444 Epoch [ 2/80] | Train Loss: 1.5372 | Train Acc:  41.7% | Val Acc:  17.2% | Val Macro-F1: 0.1181 | Time: 1.0m
+5001.1s 445 >> New best fold F1: 0.1181
+5031.9s 446 Epoch [ 3/80] | Train Loss: 1.3374 | Train Acc:  53.3% | Val Acc:  21.6% | Val Macro-F1: 0.1489 | Time: 1.6m
+5032.8s 447 >> New best fold F1: 0.1489
+5063.5s 448 Epoch [ 4/80] | Train Loss: 1.2405 | Train Acc:  59.2% | Val Acc:  27.4% | Val Macro-F1: 0.2085 | Time: 2.1m
+5064.4s 449 >> New best fold F1: 0.2085
+5095.3s 450 Epoch [ 5/80] | Train Loss: 1.1307 | Train Acc:  66.0% | Val Acc:  36.8% | Val Macro-F1: 0.2900 | Time: 2.6m
+5096.2s 451 >> New best fold F1: 0.2900
+5127.0s 452 Epoch [ 6/80] | Train Loss: 1.0396 | Train Acc:  70.8% | Val Acc:  44.3% | Val Macro-F1: 0.3419 | Time: 3.2m
+5127.9s 453 >> New best fold F1: 0.3419
+5158.6s 454 Epoch [ 7/80] | Train Loss: 0.9454 | Train Acc:  75.1% | Val Acc:  51.2% | Val Macro-F1: 0.3950 | Time: 3.7m
+5159.6s 455 >> New best fold F1: 0.3950
+5190.4s 456 Epoch [ 8/80] | Train Loss: 0.9208 | Train Acc:  76.6% | Val Acc:  55.7% | Val Macro-F1: 0.4371 | Time: 4.2m
+5191.4s 457 >> New best fold F1: 0.4371
+5222.1s 458 Epoch [ 9/80] | Train Loss: 0.8869 | Train Acc:  77.4% | Val Acc:  56.2% | Val Macro-F1: 0.4334 | Time: 4.7m
+5252.9s 459 Epoch [10/80] | Train Loss: 0.8255 | Train Acc:  79.9% | Val Acc:  58.4% | Val Macro-F1: 0.4513 | Time: 5.2m
+5253.8s 460 >> New best fold F1: 0.4513
+5284.6s 461 Epoch [11/80] | Train Loss: 0.8014 | Train Acc:  81.7% | Val Acc:  61.2% | Val Macro-F1: 0.4787 | Time: 5.8m
+5285.5s 462 >> New best fold F1: 0.4787
+5316.4s 463 Epoch [12/80] | Train Loss: 0.8094 | Train Acc:  82.1% | Val Acc:  63.2% | Val Macro-F1: 0.4942 | Time: 6.3m
+5317.4s 464 >> New best fold F1: 0.4942
+5348.2s 465 Epoch [13/80] | Train Loss: 0.7836 | Train Acc:  83.2% | Val Acc:  64.5% | Val Macro-F1: 0.5090 | Time: 6.8m
+5349.1s 466 >> New best fold F1: 0.5090
+5379.9s 467 Epoch [14/80] | Train Loss: 0.7841 | Train Acc:  82.9% | Val Acc:  65.7% | Val Macro-F1: 0.5236 | Time: 7.4m
+5380.8s 468 >> New best fold F1: 0.5236
+5411.6s 469 Epoch [15/80] | Train Loss: 0.7517 | Train Acc:  84.7% | Val Acc:  67.3% | Val Macro-F1: 0.5457 | Time: 7.9m
+5412.6s 470 >> New best fold F1: 0.5457
+5443.5s 471 Epoch [16/80] | Train Loss: 0.7420 | Train Acc:  85.6% | Val Acc:  68.1% | Val Macro-F1: 0.5498 | Time: 8.4m
+5444.4s 472 >> New best fold F1: 0.5498
+5475.2s 473 Epoch [17/80] | Train Loss: 0.7450 | Train Acc:  84.3% | Val Acc:  68.4% | Val Macro-F1: 0.5532 | Time: 9.0m
+5476.2s 474 >> New best fold F1: 0.5532
+5507.0s 475 Epoch [18/80] | Train Loss: 0.7297 | Train Acc:  85.6% | Val Acc:  69.0% | Val Macro-F1: 0.5597 | Time: 9.5m
+5507.9s 476 >> New best fold F1: 0.5597
+5538.8s 477 Epoch [19/80] | Train Loss: 0.7100 | Train Acc:  86.7% | Val Acc:  69.0% | Val Macro-F1: 0.5618 | Time: 10.0m
+5539.8s 478 >> New best fold F1: 0.5618
+5570.6s 479 Epoch [20/80] | Train Loss: 0.7127 | Train Acc:  85.5% | Val Acc:  69.8% | Val Macro-F1: 0.5732 | Time: 10.5m
+5571.6s 480 >> New best fold F1: 0.5732
+5602.4s 481 Epoch [21/80] | Train Loss: 0.6759 | Train Acc:  88.3% | Val Acc:  70.4% | Val Macro-F1: 0.5836 | Time: 11.1m
+5603.3s 482 >> New best fold F1: 0.5836
+5634.1s 483 Epoch [22/80] | Train Loss: 0.7203 | Train Acc:  85.6% | Val Acc:  70.6% | Val Macro-F1: 0.5902 | Time: 11.6m
+5635.1s 484 >> New best fold F1: 0.5902
+5665.7s 485 Epoch [23/80] | Train Loss: 0.6993 | Train Acc:  86.9% | Val Acc:  70.6% | Val Macro-F1: 0.5902 | Time: 12.1m
+5696.5s 486 Epoch [24/80] | Train Loss: 0.6646 | Train Acc:  87.4% | Val Acc:  71.2% | Val Macro-F1: 0.5981 | Time: 12.6m
+5697.4s 487 >> New best fold F1: 0.5981
+5728.0s 488 Epoch [25/80] | Train Loss: 0.6895 | Train Acc:  87.1% | Val Acc:  70.9% | Val Macro-F1: 0.5905 | Time: 13.2m
+5758.7s 489 Epoch [26/80] | Train Loss: 0.6763 | Train Acc:  88.1% | Val Acc:  71.2% | Val Macro-F1: 0.5934 | Time: 13.7m
+5789.3s 490 Epoch [27/80] | Train Loss: 0.6525 | Train Acc:  89.0% | Val Acc:  71.5% | Val Macro-F1: 0.5960 | Time: 14.2m
+5820.1s 491 Epoch [28/80] | Train Loss: 0.6755 | Train Acc:  87.8% | Val Acc:  71.7% | Val Macro-F1: 0.6041 | Time: 14.7m
+5821.1s 492 >> New best fold F1: 0.6041
+5851.7s 493 Epoch [29/80] | Train Loss: 0.6346 | Train Acc:  89.9% | Val Acc:  71.7% | Val Macro-F1: 0.5993 | Time: 15.2m
+5882.3s 494 Epoch [30/80] | Train Loss: 0.6529 | Train Acc:  89.4% | Val Acc:  72.0% | Val Macro-F1: 0.6026 | Time: 15.7m
+5912.7s 495 Epoch [31/80] | Train Loss: 0.6777 | Train Acc:  86.7% | Val Acc:  72.0% | Val Macro-F1: 0.5990 | Time: 16.2m
+5943.2s 496 Epoch [32/80] | Train Loss: 0.6563 | Train Acc:  88.3% | Val Acc:  72.3% | Val Macro-F1: 0.6036 | Time: 16.8m
+5973.9s 497 Epoch [33/80] | Train Loss: 0.6370 | Train Acc:  89.4% | Val Acc:  73.1% | Val Macro-F1: 0.6117 | Time: 17.3m
+5974.8s 498 >> New best fold F1: 0.6117
+6005.6s 499 Epoch [34/80] | Train Loss: 0.6218 | Train Acc:  90.6% | Val Acc:  73.1% | Val Macro-F1: 0.6164 | Time: 17.8m
+6006.6s 500 >> New best fold F1: 0.6164
+6037.2s 501 Epoch [35/80] | Train Loss: 0.6343 | Train Acc:  89.5% | Val Acc:  72.9% | Val Macro-F1: 0.6131 | Time: 18.3m
+6067.8s 502 Epoch [36/80] | Train Loss: 0.6287 | Train Acc:  89.3% | Val Acc:  73.1% | Val Macro-F1: 0.6159 | Time: 18.8m
+6098.4s 503 Epoch [37/80] | Train Loss: 0.6222 | Train Acc:  90.3% | Val Acc:  72.9% | Val Macro-F1: 0.6073 | Time: 19.3m
+6129.0s 504 Epoch [38/80] | Train Loss: 0.6235 | Train Acc:  89.7% | Val Acc:  72.9% | Val Macro-F1: 0.6076 | Time: 19.9m
+6159.7s 505 Epoch [39/80] | Train Loss: 0.6205 | Train Acc:  90.6% | Val Acc:  72.6% | Val Macro-F1: 0.5951 | Time: 20.4m
+6190.3s 506 Epoch [40/80] | Train Loss: 0.6197 | Train Acc:  90.1% | Val Acc:  73.1% | Val Macro-F1: 0.6006 | Time: 20.9m
+6220.9s 507 Epoch [41/80] | Train Loss: 0.6380 | Train Acc:  89.4% | Val Acc:  72.3% | Val Macro-F1: 0.5908 | Time: 21.4m
+6251.4s 508 Epoch [42/80] | Train Loss: 0.6004 | Train Acc:  90.8% | Val Acc:  72.9% | Val Macro-F1: 0.5979 | Time: 21.9m
+6281.8s 509 Epoch [43/80] | Train Loss: 0.5947 | Train Acc:  91.8% | Val Acc:  73.1% | Val Macro-F1: 0.6010 | Time: 22.4m
+6312.4s 510 Epoch [44/80] | Train Loss: 0.5914 | Train Acc:  91.8% | Val Acc:  73.1% | Val Macro-F1: 0.6015 | Time: 22.9m
+6343.0s 511 Epoch [45/80] | Train Loss: 0.5957 | Train Acc:  91.3% | Val Acc:  72.9% | Val Macro-F1: 0.5980 | Time: 23.4m
+6373.6s 512 Epoch [46/80] | Train Loss: 0.6079 | Train Acc:  90.3% | Val Acc:  72.9% | Val Macro-F1: 0.5980 | Time: 23.9m
+6404.2s 513 Epoch [47/80] | Train Loss: 0.5864 | Train Acc:  91.9% | Val Acc:  72.3% | Val Macro-F1: 0.5902 | Time: 24.4m
+6434.9s 514 Epoch [48/80] | Train Loss: 0.6046 | Train Acc:  92.0% | Val Acc:  72.0% | Val Macro-F1: 0.5865 | Time: 25.0m
+6465.8s 515 Epoch [49/80] | Train Loss: 0.5830 | Train Acc:  92.2% | Val Acc:  72.0% | Val Macro-F1: 0.5854 | Time: 25.5m
+6465.8s 516 >> Early stopping at epoch 49
+6495.3s 517 FOLD 4 OOF (TTA) — Acc: 0.7285 | F1: 0.6084
+6495.6s 518 
+6495.6s 519 ============================================================
+6495.6s 520 swin_base_patch4_window7_224 | Loss: ce_smooth | Fold 5/5
+6495.6s 521 ============================================================
+6496.8s 522 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+6496.8s 523 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+6496.8s 524 
+6496.8s 525 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+6496.8s 526 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+6527.6s 527 Epoch [ 1/80] | Train Loss: 1.7693 | Train Acc:  23.7% | Val Acc:  18.8% | Val Macro-F1: 0.1579 | Time: 0.5m
+6528.2s 528 >> New best fold F1: 0.1579
+6559.2s 529 Epoch [ 2/80] | Train Loss: 1.5633 | Train Acc:  40.4% | Val Acc:  22.2% | Val Macro-F1: 0.1931 | Time: 1.0m
+6560.1s 530 >> New best fold F1: 0.1931
+6590.8s 531 Epoch [ 3/80] | Train Loss: 1.3931 | Train Acc:  51.9% | Val Acc:  28.0% | Val Macro-F1: 0.2328 | Time: 1.6m
+6591.8s 532 >> New best fold F1: 0.2328
+6622.6s 533 Epoch [ 4/80] | Train Loss: 1.2666 | Train Acc:  57.3% | Val Acc:  34.6% | Val Macro-F1: 0.2709 | Time: 2.1m
+6623.5s 534 >> New best fold F1: 0.2709
+6654.3s 535 Epoch [ 5/80] | Train Loss: 1.1891 | Train Acc:  62.2% | Val Acc:  40.7% | Val Macro-F1: 0.2961 | Time: 2.6m
+6655.2s 536 >> New best fold F1: 0.2961
+6686.2s 537 Epoch [ 6/80] | Train Loss: 1.0330 | Train Acc:  69.8% | Val Acc:  46.5% | Val Macro-F1: 0.3318 | Time: 3.2m
+6687.2s 538 >> New best fold F1: 0.3318
+6718.0s 539 Epoch [ 7/80] | Train Loss: 0.9835 | Train Acc:  72.4% | Val Acc:  51.2% | Val Macro-F1: 0.3782 | Time: 3.7m
+6719.0s 540 >> New best fold F1: 0.3782
+6749.9s 541 Epoch [ 8/80] | Train Loss: 0.9258 | Train Acc:  74.7% | Val Acc:  56.0% | Val Macro-F1: 0.4277 | Time: 4.2m
+6750.8s 542 >> New best fold F1: 0.4277
+6781.7s 543 Epoch [ 9/80] | Train Loss: 0.8733 | Train Acc:  78.7% | Val Acc:  60.9% | Val Macro-F1: 0.4840 | Time: 4.7m
+6782.6s 544 >> New best fold F1: 0.4840
+6813.4s 545 Epoch [10/80] | Train Loss: 0.8575 | Train Acc:  77.8% | Val Acc:  63.7% | Val Macro-F1: 0.5192 | Time: 5.3m
+6814.3s 546 >> New best fold F1: 0.5192
+6845.2s 547 Epoch [11/80] | Train Loss: 0.8217 | Train Acc:  81.1% | Val Acc:  65.1% | Val Macro-F1: 0.5422 | Time: 5.8m
+6846.1s 548 >> New best fold F1: 0.5422
+6877.0s 549 Epoch [12/80] | Train Loss: 0.8054 | Train Acc:  80.5% | Val Acc:  66.8% | Val Macro-F1: 0.5617 | Time: 6.3m
+6877.9s 550 >> New best fold F1: 0.5617
+6908.6s 551 Epoch [13/80] | Train Loss: 0.7972 | Train Acc:  83.0% | Val Acc:  67.3% | Val Macro-F1: 0.5579 | Time: 6.9m
+6939.2s 552 Epoch [14/80] | Train Loss: 0.7651 | Train Acc:  83.1% | Val Acc:  67.6% | Val Macro-F1: 0.5598 | Time: 7.4m
+6970.0s 553 Epoch [15/80] | Train Loss: 0.7653 | Train Acc:  83.7% | Val Acc:  68.7% | Val Macro-F1: 0.5813 | Time: 7.9m
+6971.0s 554 >> New best fold F1: 0.5813
+7001.9s 555 Epoch [16/80] | Train Loss: 0.7488 | Train Acc:  84.1% | Val Acc:  69.0% | Val Macro-F1: 0.5847 | Time: 8.4m
+7002.8s 556 >> New best fold F1: 0.5847
+7033.5s 557 Epoch [17/80] | Train Loss: 0.7614 | Train Acc:  82.7% | Val Acc:  69.0% | Val Macro-F1: 0.5843 | Time: 8.9m
+7064.4s 558 Epoch [18/80] | Train Loss: 0.7412 | Train Acc:  83.3% | Val Acc:  70.1% | Val Macro-F1: 0.5969 | Time: 9.5m
+7065.3s 559 >> New best fold F1: 0.5969
+7096.1s 560 Epoch [19/80] | Train Loss: 0.6961 | Train Acc:  87.0% | Val Acc:  70.9% | Val Macro-F1: 0.6085 | Time: 10.0m
+7097.1s 561 >> New best fold F1: 0.6085
+7128.0s 562 Epoch [20/80] | Train Loss: 0.7325 | Train Acc:  85.4% | Val Acc:  71.2% | Val Macro-F1: 0.6161 | Time: 10.5m
+7128.9s 563 >> New best fold F1: 0.6161
+7159.5s 564 Epoch [21/80] | Train Loss: 0.7220 | Train Acc:  84.2% | Val Acc:  70.9% | Val Macro-F1: 0.6115 | Time: 11.0m
+7190.2s 565 Epoch [22/80] | Train Loss: 0.6920 | Train Acc:  87.0% | Val Acc:  70.1% | Val Macro-F1: 0.5940 | Time: 11.6m
+7221.0s 566 Epoch [23/80] | Train Loss: 0.6882 | Train Acc:  87.4% | Val Acc:  71.5% | Val Macro-F1: 0.6255 | Time: 12.1m
+7222.0s 567 >> New best fold F1: 0.6255
+7252.7s 568 Epoch [24/80] | Train Loss: 0.6872 | Train Acc:  88.6% | Val Acc:  71.5% | Val Macro-F1: 0.6287 | Time: 12.6m
+7253.7s 569 >> New best fold F1: 0.6287
+7284.5s 570 Epoch [25/80] | Train Loss: 0.6878 | Train Acc:  86.7% | Val Acc:  71.5% | Val Macro-F1: 0.6300 | Time: 13.1m
+7285.5s 571 >> New best fold F1: 0.6300
+7316.3s 572 Epoch [26/80] | Train Loss: 0.6684 | Train Acc:  88.8% | Val Acc:  71.5% | Val Macro-F1: 0.6322 | Time: 13.7m
+7317.3s 573 >> New best fold F1: 0.6322
+7348.0s 574 Epoch [27/80] | Train Loss: 0.6682 | Train Acc:  88.4% | Val Acc:  71.5% | Val Macro-F1: 0.6329 | Time: 14.2m
+7348.9s 575 >> New best fold F1: 0.6329
+7379.5s 576 Epoch [28/80] | Train Loss: 0.6620 | Train Acc:  88.4% | Val Acc:  71.5% | Val Macro-F1: 0.6281 | Time: 14.7m
+7410.4s 577 Epoch [29/80] | Train Loss: 0.6676 | Train Acc:  87.6% | Val Acc:  71.7% | Val Macro-F1: 0.6339 | Time: 15.2m
+7411.4s 578 >> New best fold F1: 0.6339
+7441.9s 579 Epoch [30/80] | Train Loss: 0.6524 | Train Acc:  89.2% | Val Acc:  71.2% | Val Macro-F1: 0.6267 | Time: 15.8m
+7472.5s 580 Epoch [31/80] | Train Loss: 0.6323 | Train Acc:  89.5% | Val Acc:  71.5% | Val Macro-F1: 0.6284 | Time: 16.3m
+7503.2s 581 Epoch [32/80] | Train Loss: 0.6396 | Train Acc:  88.5% | Val Acc:  70.9% | Val Macro-F1: 0.6231 | Time: 16.8m
+7533.8s 582 Epoch [33/80] | Train Loss: 0.6158 | Train Acc:  90.8% | Val Acc:  71.2% | Val Macro-F1: 0.6270 | Time: 17.3m
+7564.5s 583 Epoch [34/80] | Train Loss: 0.6424 | Train Acc:  89.0% | Val Acc:  70.6% | Val Macro-F1: 0.6146 | Time: 17.8m
+7595.1s 584 Epoch [35/80] | Train Loss: 0.6360 | Train Acc:  89.8% | Val Acc:  70.6% | Val Macro-F1: 0.6146 | Time: 18.3m
+7625.8s 585 Epoch [36/80] | Train Loss: 0.6155 | Train Acc:  90.1% | Val Acc:  70.6% | Val Macro-F1: 0.6160 | Time: 18.8m
+7656.4s 586 Epoch [37/80] | Train Loss: 0.6098 | Train Acc:  90.9% | Val Acc:  70.9% | Val Macro-F1: 0.6205 | Time: 19.3m
+7687.1s 587 Epoch [38/80] | Train Loss: 0.6096 | Train Acc:  90.7% | Val Acc:  70.9% | Val Macro-F1: 0.6195 | Time: 19.8m
+7717.7s 588 Epoch [39/80] | Train Loss: 0.5988 | Train Acc:  92.1% | Val Acc:  71.2% | Val Macro-F1: 0.6198 | Time: 20.3m
+7748.4s 589 Epoch [40/80] | Train Loss: 0.5864 | Train Acc:  92.6% | Val Acc:  71.5% | Val Macro-F1: 0.6257 | Time: 20.9m
+7779.0s 590 Epoch [41/80] | Train Loss: 0.6177 | Train Acc:  90.0% | Val Acc:  71.2% | Val Macro-F1: 0.6166 | Time: 21.4m
+7809.6s 591 Epoch [42/80] | Train Loss: 0.5823 | Train Acc:  92.5% | Val Acc:  71.2% | Val Macro-F1: 0.6166 | Time: 21.9m
+7840.1s 592 Epoch [43/80] | Train Loss: 0.5833 | Train Acc:  92.1% | Val Acc:  70.9% | Val Macro-F1: 0.6069 | Time: 22.4m
+7870.9s 593 Epoch [44/80] | Train Loss: 0.5918 | Train Acc:  91.3% | Val Acc:  71.2% | Val Macro-F1: 0.6181 | Time: 22.9m
+7870.9s 594 >> Early stopping at epoch 44
+7900.6s 595 FOLD 5 OOF (TTA) — Acc: 0.7258 | F1: 0.6361
+7902.0s 596 
+7902.0s 597 swin_base_patch4_window7_224 CV mean (5 folds) — Acc: 0.7201+/-0.0128 | F1: 0.6064+/-0.0276
+7902.0s 598 
+7902.0s 599 ######################################################################
+7902.0s 600 # maxvit_tiny_rw_224
+7902.0s 601 ######################################################################
+7902.0s 602 
+7902.0s 603 ============================================================
+7902.0s 604 maxvit_tiny_rw_224 | Loss: ce_smooth | Fold 1/5
+7902.0s 605 ============================================================
+7905.3s 606 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+7905.3s 607 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+7905.3s 608 
+7905.3s 609 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+7905.3s 610 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+7954.1s 611 Epoch [ 1/80] | Train Loss: 1.8831 | Train Acc:  19.9% | Val Acc:   9.1% | Val Macro-F1: 0.0965 | Time: 0.8m
+7954.2s 612 >> New best fold F1: 0.0965
+7975.3s 613 Epoch [ 2/80] | Train Loss: 1.8086 | Train Acc:  20.3% | Val Acc:  11.3% | Val Macro-F1: 0.1119 | Time: 1.2m
+7975.6s 614 >> New best fold F1: 0.1119
+7995.7s 615 Epoch [ 3/80] | Train Loss: 1.7495 | Train Acc:  25.9% | Val Acc:   9.7% | Val Macro-F1: 0.0997 | Time: 1.5m
+8015.8s 616 Epoch [ 4/80] | Train Loss: 1.5438 | Train Acc:  41.8% | Val Acc:  11.3% | Val Macro-F1: 0.1024 | Time: 1.8m
+8036.2s 617 Epoch [ 5/80] | Train Loss: 1.3935 | Train Acc:  50.2% | Val Acc:  14.4% | Val Macro-F1: 0.1274 | Time: 2.2m
+8036.4s 618 >> New best fold F1: 0.1274
+8057.0s 619 Epoch [ 6/80] | Train Loss: 1.2881 | Train Acc:  56.2% | Val Acc:  20.2% | Val Macro-F1: 0.1924 | Time: 2.5m
+8057.2s 620 >> New best fold F1: 0.1924
+8077.7s 621 Epoch [ 7/80] | Train Loss: 1.1521 | Train Acc:  65.6% | Val Acc:  29.6% | Val Macro-F1: 0.2377 | Time: 2.9m
+8077.9s 622 >> New best fold F1: 0.2377
+8098.3s 623 Epoch [ 8/80] | Train Loss: 1.0451 | Train Acc:  69.5% | Val Acc:  38.1% | Val Macro-F1: 0.3176 | Time: 3.2m
+8098.5s 624 >> New best fold F1: 0.3176
+8118.9s 625 Epoch [ 9/80] | Train Loss: 0.9959 | Train Acc:  70.7% | Val Acc:  42.0% | Val Macro-F1: 0.3233 | Time: 3.6m
+8119.1s 626 >> New best fold F1: 0.3233
+8139.8s 627 Epoch [10/80] | Train Loss: 0.9349 | Train Acc:  75.7% | Val Acc:  49.2% | Val Macro-F1: 0.3709 | Time: 3.9m
+8140.1s 628 >> New best fold F1: 0.3709
+8160.5s 629 Epoch [11/80] | Train Loss: 0.9191 | Train Acc:  76.7% | Val Acc:  55.5% | Val Macro-F1: 0.3912 | Time: 4.2m
+8160.7s 630 >> New best fold F1: 0.3912
+8181.1s 631 Epoch [12/80] | Train Loss: 0.8978 | Train Acc:  77.9% | Val Acc:  56.6% | Val Macro-F1: 0.4152 | Time: 4.6m
+8181.4s 632 >> New best fold F1: 0.4152
+8202.0s 633 Epoch [13/80] | Train Loss: 0.8292 | Train Acc:  80.0% | Val Acc:  62.2% | Val Macro-F1: 0.4824 | Time: 4.9m
+8202.3s 634 >> New best fold F1: 0.4824
+8222.7s 635 Epoch [14/80] | Train Loss: 0.8542 | Train Acc:  78.1% | Val Acc:  61.3% | Val Macro-F1: 0.4919 | Time: 5.3m
+8223.0s 636 >> New best fold F1: 0.4919
+8243.5s 637 Epoch [15/80] | Train Loss: 0.8426 | Train Acc:  79.5% | Val Acc:  64.6% | Val Macro-F1: 0.5113 | Time: 5.6m
+8243.8s 638 >> New best fold F1: 0.5113
+8264.0s 639 Epoch [16/80] | Train Loss: 0.8144 | Train Acc:  80.3% | Val Acc:  63.3% | Val Macro-F1: 0.5017 | Time: 6.0m
+8284.4s 640 Epoch [17/80] | Train Loss: 0.7496 | Train Acc:  84.1% | Val Acc:  66.9% | Val Macro-F1: 0.5439 | Time: 6.3m
+8284.6s 641 >> New best fold F1: 0.5439
+8304.8s 642 Epoch [18/80] | Train Loss: 0.7579 | Train Acc:  85.1% | Val Acc:  66.9% | Val Macro-F1: 0.5395 | Time: 6.7m
+8325.3s 643 Epoch [19/80] | Train Loss: 0.7474 | Train Acc:  84.5% | Val Acc:  68.8% | Val Macro-F1: 0.5571 | Time: 7.0m
+8325.6s 644 >> New best fold F1: 0.5571
+8345.9s 645 Epoch [20/80] | Train Loss: 0.7345 | Train Acc:  85.5% | Val Acc:  68.2% | Val Macro-F1: 0.5468 | Time: 7.3m
+8366.1s 646 Epoch [21/80] | Train Loss: 0.6957 | Train Acc:  87.6% | Val Acc:  68.2% | Val Macro-F1: 0.5476 | Time: 7.7m
+8386.6s 647 Epoch [22/80] | Train Loss: 0.7062 | Train Acc:  87.4% | Val Acc:  68.0% | Val Macro-F1: 0.5434 | Time: 8.0m
+8406.8s 648 Epoch [23/80] | Train Loss: 0.7019 | Train Acc:  87.4% | Val Acc:  68.2% | Val Macro-F1: 0.5510 | Time: 8.4m
+8426.8s 649 Epoch [24/80] | Train Loss: 0.7420 | Train Acc:  84.7% | Val Acc:  67.7% | Val Macro-F1: 0.5429 | Time: 8.7m
+8447.1s 650 Epoch [25/80] | Train Loss: 0.7085 | Train Acc:  85.3% | Val Acc:  68.8% | Val Macro-F1: 0.5523 | Time: 9.0m
+8467.2s 651 Epoch [26/80] | Train Loss: 0.6884 | Train Acc:  88.1% | Val Acc:  68.0% | Val Macro-F1: 0.5396 | Time: 9.4m
+8487.4s 652 Epoch [27/80] | Train Loss: 0.6852 | Train Acc:  87.3% | Val Acc:  68.0% | Val Macro-F1: 0.5419 | Time: 9.7m
+8507.6s 653 Epoch [28/80] | Train Loss: 0.6776 | Train Acc:  86.7% | Val Acc:  69.1% | Val Macro-F1: 0.5512 | Time: 10.0m
+8528.0s 654 Epoch [29/80] | Train Loss: 0.6769 | Train Acc:  87.5% | Val Acc:  69.3% | Val Macro-F1: 0.5582 | Time: 10.4m
+8528.2s 655 >> New best fold F1: 0.5582
+8548.5s 656 Epoch [30/80] | Train Loss: 0.6850 | Train Acc:  86.4% | Val Acc:  68.8% | Val Macro-F1: 0.5467 | Time: 10.7m
+8568.9s 657 Epoch [31/80] | Train Loss: 0.6714 | Train Acc:  88.5% | Val Acc:  69.6% | Val Macro-F1: 0.5591 | Time: 11.1m
+8569.3s 658 >> New best fold F1: 0.5591
+8589.8s 659 Epoch [32/80] | Train Loss: 0.6541 | Train Acc:  88.8% | Val Acc:  70.2% | Val Macro-F1: 0.5642 | Time: 11.4m
+8590.1s 660 >> New best fold F1: 0.5642
+8610.6s 661 Epoch [33/80] | Train Loss: 0.6446 | Train Acc:  89.5% | Val Acc:  70.2% | Val Macro-F1: 0.5653 | Time: 11.8m
+8611.0s 662 >> New best fold F1: 0.5653
+8631.6s 663 Epoch [34/80] | Train Loss: 0.6606 | Train Acc:  88.1% | Val Acc:  69.6% | Val Macro-F1: 0.5524 | Time: 12.1m
+8651.8s 664 Epoch [35/80] | Train Loss: 0.6577 | Train Acc:  88.8% | Val Acc:  69.6% | Val Macro-F1: 0.5485 | Time: 12.4m
+8672.1s 665 Epoch [36/80] | Train Loss: 0.6540 | Train Acc:  89.4% | Val Acc:  69.1% | Val Macro-F1: 0.5415 | Time: 12.8m
+8692.5s 666 Epoch [37/80] | Train Loss: 0.6332 | Train Acc:  89.8% | Val Acc:  70.7% | Val Macro-F1: 0.5740 | Time: 13.1m
+8692.8s 667 >> New best fold F1: 0.5740
+8712.9s 668 Epoch [38/80] | Train Loss: 0.6561 | Train Acc:  89.0% | Val Acc:  70.4% | Val Macro-F1: 0.5564 | Time: 13.5m
+8733.2s 669 Epoch [39/80] | Train Loss: 0.6467 | Train Acc:  88.4% | Val Acc:  69.3% | Val Macro-F1: 0.5439 | Time: 13.8m
+8753.4s 670 Epoch [40/80] | Train Loss: 0.6458 | Train Acc:  89.0% | Val Acc:  70.4% | Val Macro-F1: 0.5557 | Time: 14.1m
+8773.6s 671 Epoch [41/80] | Train Loss: 0.6254 | Train Acc:  90.4% | Val Acc:  69.9% | Val Macro-F1: 0.5537 | Time: 14.5m
+8793.7s 672 Epoch [42/80] | Train Loss: 0.6381 | Train Acc:  89.4% | Val Acc:  70.4% | Val Macro-F1: 0.5551 | Time: 14.8m
+8814.0s 673 Epoch [43/80] | Train Loss: 0.6171 | Train Acc:  90.3% | Val Acc:  69.9% | Val Macro-F1: 0.5487 | Time: 15.1m
+8834.1s 674 Epoch [44/80] | Train Loss: 0.5772 | Train Acc:  92.5% | Val Acc:  69.9% | Val Macro-F1: 0.5488 | Time: 15.5m
+8854.4s 675 Epoch [45/80] | Train Loss: 0.6254 | Train Acc:  89.9% | Val Acc:  70.2% | Val Macro-F1: 0.5533 | Time: 15.8m
+8875.0s 676 Epoch [46/80] | Train Loss: 0.5998 | Train Acc:  90.6% | Val Acc:  70.4% | Val Macro-F1: 0.5531 | Time: 16.2m
+8895.3s 677 Epoch [47/80] | Train Loss: 0.5946 | Train Acc:  91.9% | Val Acc:  70.2% | Val Macro-F1: 0.5499 | Time: 16.5m
+8915.6s 678 Epoch [48/80] | Train Loss: 0.6159 | Train Acc:  90.8% | Val Acc:  70.4% | Val Macro-F1: 0.5543 | Time: 16.8m
+8935.8s 679 Epoch [49/80] | Train Loss: 0.6038 | Train Acc:  91.2% | Val Acc:  70.7% | Val Macro-F1: 0.5563 | Time: 17.2m
+8956.0s 680 Epoch [50/80] | Train Loss: 0.6005 | Train Acc:  91.8% | Val Acc:  70.4% | Val Macro-F1: 0.5534 | Time: 17.5m
+8976.2s 681 Epoch [51/80] | Train Loss: 0.5940 | Train Acc:  91.6% | Val Acc:  70.7% | Val Macro-F1: 0.5573 | Time: 17.8m
+8996.6s 682 Epoch [52/80] | Train Loss: 0.5966 | Train Acc:  91.0% | Val Acc:  71.0% | Val Macro-F1: 0.5623 | Time: 18.2m
+8996.6s 683 >> Early stopping at epoch 52
+9013.1s 684 FOLD 1 OOF (TTA) — Acc: 0.7017 | F1: 0.5669
+9013.4s 685 
+9013.4s 686 ============================================================
+9013.4s 687 maxvit_tiny_rw_224 | Loss: ce_smooth | Fold 2/5
+9013.4s 688 ============================================================
+9013.9s 689 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+9013.9s 690 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+9013.9s 691 
+9013.9s 692 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+9013.9s 693 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+9034.3s 694 Epoch [ 1/80] | Train Loss: 1.8882 | Train Acc:  16.1% | Val Acc:  17.1% | Val Macro-F1: 0.1186 | Time: 0.3m
+9034.4s 695 >> New best fold F1: 0.1186
+9054.9s 696 Epoch [ 2/80] | Train Loss: 1.7879 | Train Acc:  22.1% | Val Acc:  16.0% | Val Macro-F1: 0.1141 | Time: 0.7m
+9075.5s 697 Epoch [ 3/80] | Train Loss: 1.6546 | Train Acc:  34.4% | Val Acc:  24.0% | Val Macro-F1: 0.1546 | Time: 1.0m
+9075.8s 698 >> New best fold F1: 0.1546
+9096.3s 699 Epoch [ 4/80] | Train Loss: 1.4976 | Train Acc:  43.2% | Val Acc:  26.0% | Val Macro-F1: 0.1847 | Time: 1.4m
+9096.5s 700 >> New best fold F1: 0.1847
+9117.0s 701 Epoch [ 5/80] | Train Loss: 1.3301 | Train Acc:  53.8% | Val Acc:  31.5% | Val Macro-F1: 0.2314 | Time: 1.7m
+9117.3s 702 >> New best fold F1: 0.2314
+9137.7s 703 Epoch [ 6/80] | Train Loss: 1.1821 | Train Acc:  62.0% | Val Acc:  35.9% | Val Macro-F1: 0.2665 | Time: 2.1m
+9138.0s 704 >> New best fold F1: 0.2665
+9158.4s 705 Epoch [ 7/80] | Train Loss: 1.0451 | Train Acc:  69.6% | Val Acc:  43.6% | Val Macro-F1: 0.3355 | Time: 2.4m
+9158.7s 706 >> New best fold F1: 0.3355
+9179.1s 707 Epoch [ 8/80] | Train Loss: 1.0164 | Train Acc:  71.9% | Val Acc:  49.2% | Val Macro-F1: 0.3733 | Time: 2.8m
+9179.4s 708 >> New best fold F1: 0.3733
+9200.1s 709 Epoch [ 9/80] | Train Loss: 0.9804 | Train Acc:  73.1% | Val Acc:  57.2% | Val Macro-F1: 0.4295 | Time: 3.1m
+9200.4s 710 >> New best fold F1: 0.4295
+9220.9s 711 Epoch [10/80] | Train Loss: 0.9364 | Train Acc:  75.7% | Val Acc:  57.7% | Val Macro-F1: 0.4589 | Time: 3.4m
+9221.1s 712 >> New best fold F1: 0.4589
+9241.6s 713 Epoch [11/80] | Train Loss: 0.8892 | Train Acc:  77.4% | Val Acc:  60.5% | Val Macro-F1: 0.4700 | Time: 3.8m
+9241.9s 714 >> New best fold F1: 0.4700
+9262.4s 715 Epoch [12/80] | Train Loss: 0.8579 | Train Acc:  78.8% | Val Acc:  62.2% | Val Macro-F1: 0.4889 | Time: 4.1m
+9262.6s 716 >> New best fold F1: 0.4889
+9282.9s 717 Epoch [13/80] | Train Loss: 0.8264 | Train Acc:  81.0% | Val Acc:  64.6% | Val Macro-F1: 0.5215 | Time: 4.5m
+9283.2s 718 >> New best fold F1: 0.5215
+9303.5s 719 Epoch [14/80] | Train Loss: 0.8124 | Train Acc:  81.5% | Val Acc:  65.2% | Val Macro-F1: 0.5190 | Time: 4.8m
+9323.7s 720 Epoch [15/80] | Train Loss: 0.7667 | Train Acc:  84.6% | Val Acc:  65.2% | Val Macro-F1: 0.5143 | Time: 5.2m
+9344.0s 721 Epoch [16/80] | Train Loss: 0.7720 | Train Acc:  85.1% | Val Acc:  66.0% | Val Macro-F1: 0.5135 | Time: 5.5m
+9364.3s 722 Epoch [17/80] | Train Loss: 0.7659 | Train Acc:  84.6% | Val Acc:  67.1% | Val Macro-F1: 0.5335 | Time: 5.8m
+9364.5s 723 >> New best fold F1: 0.5335
+9384.7s 724 Epoch [18/80] | Train Loss: 0.7483 | Train Acc:  84.7% | Val Acc:  66.9% | Val Macro-F1: 0.5271 | Time: 6.2m
+9405.1s 725 Epoch [19/80] | Train Loss: 0.7338 | Train Acc:  86.0% | Val Acc:  67.7% | Val Macro-F1: 0.5360 | Time: 6.5m
+9405.3s 726 >> New best fold F1: 0.5360
+9425.7s 727 Epoch [20/80] | Train Loss: 0.7315 | Train Acc:  85.1% | Val Acc:  68.8% | Val Macro-F1: 0.5610 | Time: 6.9m
+9426.0s 728 >> New best fold F1: 0.5610
+9446.5s 729 Epoch [21/80] | Train Loss: 0.7250 | Train Acc:  85.0% | Val Acc:  66.6% | Val Macro-F1: 0.5320 | Time: 7.2m
+9466.8s 730 Epoch [22/80] | Train Loss: 0.7225 | Train Acc:  86.0% | Val Acc:  68.2% | Val Macro-F1: 0.5599 | Time: 7.5m
+9487.0s 731 Epoch [23/80] | Train Loss: 0.6951 | Train Acc:  88.1% | Val Acc:  67.7% | Val Macro-F1: 0.5562 | Time: 7.9m
+9507.6s 732 Epoch [24/80] | Train Loss: 0.6926 | Train Acc:  87.7% | Val Acc:  69.6% | Val Macro-F1: 0.5726 | Time: 8.2m
+9507.9s 733 >> New best fold F1: 0.5726
+9528.2s 734 Epoch [25/80] | Train Loss: 0.6884 | Train Acc:  87.2% | Val Acc:  69.3% | Val Macro-F1: 0.5704 | Time: 8.6m
+9548.8s 735 Epoch [26/80] | Train Loss: 0.6763 | Train Acc:  87.9% | Val Acc:  69.3% | Val Macro-F1: 0.5729 | Time: 8.9m
+9549.1s 736 >> New best fold F1: 0.5729
+9569.6s 737 Epoch [27/80] | Train Loss: 0.6725 | Train Acc:  88.2% | Val Acc:  69.9% | Val Macro-F1: 0.5757 | Time: 9.3m
+9569.9s 738 >> New best fold F1: 0.5757
+9590.4s 739 Epoch [28/80] | Train Loss: 0.6817 | Train Acc:  86.5% | Val Acc:  70.7% | Val Macro-F1: 0.5804 | Time: 9.6m
+9590.6s 740 >> New best fold F1: 0.5804
+9610.9s 741 Epoch [29/80] | Train Loss: 0.6741 | Train Acc:  87.8% | Val Acc:  69.9% | Val Macro-F1: 0.5800 | Time: 10.0m
+9631.5s 742 Epoch [30/80] | Train Loss: 0.6764 | Train Acc:  87.7% | Val Acc:  70.2% | Val Macro-F1: 0.5833 | Time: 10.3m
+9631.8s 743 >> New best fold F1: 0.5833
+9652.0s 744 Epoch [31/80] | Train Loss: 0.6540 | Train Acc:  89.0% | Val Acc:  69.6% | Val Macro-F1: 0.5769 | Time: 10.6m
+9672.5s 745 Epoch [32/80] | Train Loss: 0.6566 | Train Acc:  88.5% | Val Acc:  69.1% | Val Macro-F1: 0.5764 | Time: 11.0m
+9693.1s 746 Epoch [33/80] | Train Loss: 0.6648 | Train Acc:  88.1% | Val Acc:  70.2% | Val Macro-F1: 0.5811 | Time: 11.3m
+9713.6s 747 Epoch [34/80] | Train Loss: 0.6729 | Train Acc:  88.4% | Val Acc:  70.7% | Val Macro-F1: 0.5870 | Time: 11.7m
+9713.8s 748 >> New best fold F1: 0.5870
+9734.3s 749 Epoch [35/80] | Train Loss: 0.6396 | Train Acc:  89.4% | Val Acc:  70.2% | Val Macro-F1: 0.5854 | Time: 12.0m
+9754.7s 750 Epoch [36/80] | Train Loss: 0.6484 | Train Acc:  88.1% | Val Acc:  69.9% | Val Macro-F1: 0.5787 | Time: 12.3m
+9775.0s 751 Epoch [37/80] | Train Loss: 0.6288 | Train Acc:  90.1% | Val Acc:  70.4% | Val Macro-F1: 0.5862 | Time: 12.7m
+9795.4s 752 Epoch [38/80] | Train Loss: 0.6408 | Train Acc:  88.7% | Val Acc:  70.4% | Val Macro-F1: 0.5860 | Time: 13.0m
+9815.8s 753 Epoch [39/80] | Train Loss: 0.6203 | Train Acc:  90.1% | Val Acc:  70.4% | Val Macro-F1: 0.5860 | Time: 13.4m
+9836.2s 754 Epoch [40/80] | Train Loss: 0.6436 | Train Acc:  89.2% | Val Acc:  70.7% | Val Macro-F1: 0.5856 | Time: 13.7m
+9856.7s 755 Epoch [41/80] | Train Loss: 0.6063 | Train Acc:  91.2% | Val Acc:  70.2% | Val Macro-F1: 0.5792 | Time: 14.0m
+9877.0s 756 Epoch [42/80] | Train Loss: 0.6360 | Train Acc:  89.4% | Val Acc:  70.7% | Val Macro-F1: 0.5801 | Time: 14.4m
+9897.2s 757 Epoch [43/80] | Train Loss: 0.6160 | Train Acc:  90.7% | Val Acc:  70.4% | Val Macro-F1: 0.5779 | Time: 14.7m
+9917.5s 758 Epoch [44/80] | Train Loss: 0.6214 | Train Acc:  90.6% | Val Acc:  70.4% | Val Macro-F1: 0.5792 | Time: 15.1m
+9938.1s 759 Epoch [45/80] | Train Loss: 0.6380 | Train Acc:  89.4% | Val Acc:  70.7% | Val Macro-F1: 0.5817 | Time: 15.4m
+9958.5s 760 Epoch [46/80] | Train Loss: 0.6351 | Train Acc:  89.7% | Val Acc:  71.0% | Val Macro-F1: 0.5822 | Time: 15.7m
+9978.6s 761 Epoch [47/80] | Train Loss: 0.5977 | Train Acc:  91.2% | Val Acc:  70.4% | Val Macro-F1: 0.5751 | Time: 16.1m
+9999.0s 762 Epoch [48/80] | Train Loss: 0.5883 | Train Acc:  92.0% | Val Acc:  70.4% | Val Macro-F1: 0.5751 | Time: 16.4m
+10019.6s 763 Epoch [49/80] | Train Loss: 0.6145 | Train Acc:  90.6% | Val Acc:  70.7% | Val Macro-F1: 0.5782 | Time: 16.8m
+10019.6s 764 >> Early stopping at epoch 49
+10036.1s 765 FOLD 2 OOF (TTA) — Acc: 0.7017 | F1: 0.5761
+10036.3s 766 
+10036.3s 767 ============================================================
+10036.3s 768 maxvit_tiny_rw_224 | Loss: ce_smooth | Fold 3/5
+10036.3s 769 ============================================================
+10036.8s 770 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+10036.8s 771 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+10036.8s 772 
+10036.8s 773 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+10036.8s 774 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+10057.3s 775 Epoch [ 1/80] | Train Loss: 1.8887 | Train Acc:  19.9% | Val Acc:  23.5% | Val Macro-F1: 0.1274 | Time: 0.3m
+10057.4s 776 >> New best fold F1: 0.1274
+10078.0s 777 Epoch [ 2/80] | Train Loss: 1.7635 | Train Acc:  23.5% | Val Acc:  16.0% | Val Macro-F1: 0.0948 | Time: 0.7m
+10098.5s 778 Epoch [ 3/80] | Train Loss: 1.6542 | Train Acc:  33.6% | Val Acc:  29.0% | Val Macro-F1: 0.1727 | Time: 1.0m
+10098.7s 779 >> New best fold F1: 0.1727
+10119.3s 780 Epoch [ 4/80] | Train Loss: 1.4670 | Train Acc:  47.4% | Val Acc:  37.6% | Val Macro-F1: 0.1799 | Time: 1.4m
+10119.5s 781 >> New best fold F1: 0.1799
+10140.0s 782 Epoch [ 5/80] | Train Loss: 1.3875 | Train Acc:  50.2% | Val Acc:  36.5% | Val Macro-F1: 0.1979 | Time: 1.7m
+10140.3s 783 >> New best fold F1: 0.1979
+10161.0s 784 Epoch [ 6/80] | Train Loss: 1.2272 | Train Acc:  59.2% | Val Acc:  41.7% | Val Macro-F1: 0.2404 | Time: 2.1m
+10161.3s 785 >> New best fold F1: 0.2404
+10181.7s 786 Epoch [ 7/80] | Train Loss: 1.1128 | Train Acc:  66.1% | Val Acc:  43.9% | Val Macro-F1: 0.2560 | Time: 2.4m
+10182.0s 787 >> New best fold F1: 0.2560
+10202.5s 788 Epoch [ 8/80] | Train Loss: 1.0569 | Train Acc:  68.2% | Val Acc:  48.1% | Val Macro-F1: 0.2805 | Time: 2.8m
+10202.7s 789 >> New best fold F1: 0.2805
+10223.4s 790 Epoch [ 9/80] | Train Loss: 0.9963 | Train Acc:  72.6% | Val Acc:  50.8% | Val Macro-F1: 0.3323 | Time: 3.1m
+10223.7s 791 >> New best fold F1: 0.3323
+10244.3s 792 Epoch [10/80] | Train Loss: 0.9460 | Train Acc:  74.9% | Val Acc:  55.0% | Val Macro-F1: 0.4020 | Time: 3.5m
+10244.5s 793 >> New best fold F1: 0.4020
+10264.9s 794 Epoch [11/80] | Train Loss: 0.8938 | Train Acc:  77.9% | Val Acc:  57.7% | Val Macro-F1: 0.4130 | Time: 3.8m
+10265.2s 795 >> New best fold F1: 0.4130
+10285.6s 796 Epoch [12/80] | Train Loss: 0.8658 | Train Acc:  79.4% | Val Acc:  58.0% | Val Macro-F1: 0.4395 | Time: 4.1m
+10285.9s 797 >> New best fold F1: 0.4395
+10306.3s 798 Epoch [13/80] | Train Loss: 0.8286 | Train Acc:  81.6% | Val Acc:  63.8% | Val Macro-F1: 0.5007 | Time: 4.5m
+10306.6s 799 >> New best fold F1: 0.5007
+10327.0s 800 Epoch [14/80] | Train Loss: 0.8114 | Train Acc:  81.8% | Val Acc:  64.1% | Val Macro-F1: 0.5161 | Time: 4.8m
+10327.3s 801 >> New best fold F1: 0.5161
+10348.0s 802 Epoch [15/80] | Train Loss: 0.7723 | Train Acc:  83.4% | Val Acc:  65.2% | Val Macro-F1: 0.5327 | Time: 5.2m
+10348.3s 803 >> New best fold F1: 0.5327
+10368.6s 804 Epoch [16/80] | Train Loss: 0.7789 | Train Acc:  83.4% | Val Acc:  65.7% | Val Macro-F1: 0.5323 | Time: 5.5m
+10389.2s 805 Epoch [17/80] | Train Loss: 0.7568 | Train Acc:  83.2% | Val Acc:  67.4% | Val Macro-F1: 0.5522 | Time: 5.9m
+10389.4s 806 >> New best fold F1: 0.5522
+10410.0s 807 Epoch [18/80] | Train Loss: 0.7515 | Train Acc:  84.0% | Val Acc:  69.1% | Val Macro-F1: 0.5758 | Time: 6.2m
+10410.3s 808 >> New best fold F1: 0.5758
+10431.1s 809 Epoch [19/80] | Train Loss: 0.7633 | Train Acc:  83.5% | Val Acc:  69.6% | Val Macro-F1: 0.5920 | Time: 6.6m
+10431.4s 810 >> New best fold F1: 0.5920
+10451.8s 811 Epoch [20/80] | Train Loss: 0.7419 | Train Acc:  84.7% | Val Acc:  69.9% | Val Macro-F1: 0.5790 | Time: 6.9m
+10472.6s 812 Epoch [21/80] | Train Loss: 0.7038 | Train Acc:  86.5% | Val Acc:  70.7% | Val Macro-F1: 0.5980 | Time: 7.3m
+10472.9s 813 >> New best fold F1: 0.5980
+10493.3s 814 Epoch [22/80] | Train Loss: 0.6960 | Train Acc:  87.2% | Val Acc:  70.2% | Val Macro-F1: 0.5890 | Time: 7.6m
+10513.8s 815 Epoch [23/80] | Train Loss: 0.7081 | Train Acc:  85.8% | Val Acc:  69.9% | Val Macro-F1: 0.5809 | Time: 7.9m
+10534.2s 816 Epoch [24/80] | Train Loss: 0.6906 | Train Acc:  87.6% | Val Acc:  70.7% | Val Macro-F1: 0.5916 | Time: 8.3m
+10554.5s 817 Epoch [25/80] | Train Loss: 0.6944 | Train Acc:  86.7% | Val Acc:  70.7% | Val Macro-F1: 0.5874 | Time: 8.6m
+10575.0s 818 Epoch [26/80] | Train Loss: 0.6949 | Train Acc:  85.9% | Val Acc:  71.3% | Val Macro-F1: 0.5966 | Time: 9.0m
+10595.6s 819 Epoch [27/80] | Train Loss: 0.6853 | Train Acc:  86.9% | Val Acc:  71.0% | Val Macro-F1: 0.5997 | Time: 9.3m
+10595.9s 820 >> New best fold F1: 0.5997
+10616.3s 821 Epoch [28/80] | Train Loss: 0.6738 | Train Acc:  87.8% | Val Acc:  71.3% | Val Macro-F1: 0.5987 | Time: 9.7m
+10636.6s 822 Epoch [29/80] | Train Loss: 0.6690 | Train Acc:  87.8% | Val Acc:  70.7% | Val Macro-F1: 0.5924 | Time: 10.0m
+10657.3s 823 Epoch [30/80] | Train Loss: 0.6698 | Train Acc:  87.8% | Val Acc:  72.4% | Val Macro-F1: 0.6120 | Time: 10.3m
+10657.5s 824 >> New best fold F1: 0.6120
+10677.9s 825 Epoch [31/80] | Train Loss: 0.6281 | Train Acc:  91.0% | Val Acc:  72.1% | Val Macro-F1: 0.6051 | Time: 10.7m
+10698.3s 826 Epoch [32/80] | Train Loss: 0.6733 | Train Acc:  87.6% | Val Acc:  72.4% | Val Macro-F1: 0.6113 | Time: 11.0m
+10719.2s 827 Epoch [33/80] | Train Loss: 0.6533 | Train Acc:  89.6% | Val Acc:  71.3% | Val Macro-F1: 0.5928 | Time: 11.4m
+10739.5s 828 Epoch [34/80] | Train Loss: 0.6469 | Train Acc:  88.4% | Val Acc:  72.1% | Val Macro-F1: 0.6040 | Time: 11.7m
+10759.8s 829 Epoch [35/80] | Train Loss: 0.6484 | Train Acc:  89.0% | Val Acc:  72.4% | Val Macro-F1: 0.6030 | Time: 12.1m
+10780.4s 830 Epoch [36/80] | Train Loss: 0.6324 | Train Acc:  89.6% | Val Acc:  73.2% | Val Macro-F1: 0.6184 | Time: 12.4m
+10780.6s 831 >> New best fold F1: 0.6184
+10801.0s 832 Epoch [37/80] | Train Loss: 0.6628 | Train Acc:  88.2% | Val Acc:  72.9% | Val Macro-F1: 0.6130 | Time: 12.7m
+10821.5s 833 Epoch [38/80] | Train Loss: 0.6607 | Train Acc:  87.0% | Val Acc:  73.5% | Val Macro-F1: 0.6115 | Time: 13.1m
+10841.9s 834 Epoch [39/80] | Train Loss: 0.6573 | Train Acc:  87.5% | Val Acc:  73.8% | Val Macro-F1: 0.6233 | Time: 13.4m
+10842.2s 835 >> New best fold F1: 0.6233
+10862.7s 836 Epoch [40/80] | Train Loss: 0.6307 | Train Acc:  89.2% | Val Acc:  72.9% | Val Macro-F1: 0.6074 | Time: 13.8m
+10882.9s 837 Epoch [41/80] | Train Loss: 0.6256 | Train Acc:  89.9% | Val Acc:  73.8% | Val Macro-F1: 0.6226 | Time: 14.1m
+10903.2s 838 Epoch [42/80] | Train Loss: 0.6385 | Train Acc:  89.0% | Val Acc:  73.2% | Val Macro-F1: 0.6108 | Time: 14.4m
+10923.4s 839 Epoch [43/80] | Train Loss: 0.6242 | Train Acc:  89.7% | Val Acc:  73.2% | Val Macro-F1: 0.6104 | Time: 14.8m
+10943.8s 840 Epoch [44/80] | Train Loss: 0.6149 | Train Acc:  90.0% | Val Acc:  73.5% | Val Macro-F1: 0.6136 | Time: 15.1m
+10964.7s 841 Epoch [45/80] | Train Loss: 0.6247 | Train Acc:  90.6% | Val Acc:  73.5% | Val Macro-F1: 0.6127 | Time: 15.5m
+10985.1s 842 Epoch [46/80] | Train Loss: 0.6184 | Train Acc:  89.9% | Val Acc:  73.5% | Val Macro-F1: 0.6147 | Time: 15.8m
+11005.4s 843 Epoch [47/80] | Train Loss: 0.6142 | Train Acc:  90.0% | Val Acc:  72.7% | Val Macro-F1: 0.6035 | Time: 16.1m
+11025.7s 844 Epoch [48/80] | Train Loss: 0.6146 | Train Acc:  89.9% | Val Acc:  72.7% | Val Macro-F1: 0.6092 | Time: 16.5m
+11046.2s 845 Epoch [49/80] | Train Loss: 0.6021 | Train Acc:  91.2% | Val Acc:  72.1% | Val Macro-F1: 0.5960 | Time: 16.8m
+11066.6s 846 Epoch [50/80] | Train Loss: 0.6079 | Train Acc:  90.6% | Val Acc:  71.8% | Val Macro-F1: 0.5923 | Time: 17.2m
+11087.1s 847 Epoch [51/80] | Train Loss: 0.6179 | Train Acc:  90.0% | Val Acc:  72.1% | Val Macro-F1: 0.5956 | Time: 17.5m
+11107.4s 848 Epoch [52/80] | Train Loss: 0.5958 | Train Acc:  91.7% | Val Acc:  72.1% | Val Macro-F1: 0.5898 | Time: 17.8m
+11127.8s 849 Epoch [53/80] | Train Loss: 0.5902 | Train Acc:  91.4% | Val Acc:  71.8% | Val Macro-F1: 0.5945 | Time: 18.2m
+11148.4s 850 Epoch [54/80] | Train Loss: 0.5963 | Train Acc:  91.0% | Val Acc:  72.4% | Val Macro-F1: 0.5974 | Time: 18.5m
+11148.4s 851 >> Early stopping at epoch 54
+11165.0s 852 FOLD 3 OOF (TTA) — Acc: 0.7265 | F1: 0.6160
+11165.3s 853 
+11165.3s 854 ============================================================
+11165.3s 855 maxvit_tiny_rw_224 | Loss: ce_smooth | Fold 4/5
+11165.3s 856 ============================================================
+11165.8s 857 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+11165.8s 858 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+11165.8s 859 
+11165.8s 860 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+11165.8s 861 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+11186.7s 862 Epoch [ 1/80] | Train Loss: 1.8865 | Train Acc:  17.4% | Val Acc:  17.5% | Val Macro-F1: 0.0963 | Time: 0.3m
+11186.8s 863 >> New best fold F1: 0.0963
+11207.6s 864 Epoch [ 2/80] | Train Loss: 1.8099 | Train Acc:  21.0% | Val Acc:  17.7% | Val Macro-F1: 0.0980 | Time: 0.7m
+11207.9s 865 >> New best fold F1: 0.0980
+11228.5s 866 Epoch [ 3/80] | Train Loss: 1.6580 | Train Acc:  31.9% | Val Acc:  17.7% | Val Macro-F1: 0.1016 | Time: 1.0m
+11228.7s 867 >> New best fold F1: 0.1016
+11249.3s 868 Epoch [ 4/80] | Train Loss: 1.5180 | Train Acc:  42.6% | Val Acc:  30.7% | Val Macro-F1: 0.1722 | Time: 1.4m
+11249.6s 869 >> New best fold F1: 0.1722
+11270.2s 870 Epoch [ 5/80] | Train Loss: 1.3807 | Train Acc:  50.9% | Val Acc:  33.5% | Val Macro-F1: 0.1850 | Time: 1.7m
+11270.4s 871 >> New best fold F1: 0.1850
+11290.9s 872 Epoch [ 6/80] | Train Loss: 1.2478 | Train Acc:  60.0% | Val Acc:  41.8% | Val Macro-F1: 0.2054 | Time: 2.1m
+11291.2s 873 >> New best fold F1: 0.2054
+11311.8s 874 Epoch [ 7/80] | Train Loss: 1.1503 | Train Acc:  64.2% | Val Acc:  45.4% | Val Macro-F1: 0.2641 | Time: 2.4m
+11312.0s 875 >> New best fold F1: 0.2641
+11332.7s 876 Epoch [ 8/80] | Train Loss: 1.0610 | Train Acc:  66.9% | Val Acc:  47.1% | Val Macro-F1: 0.2853 | Time: 2.8m
+11333.0s 877 >> New best fold F1: 0.2853
+11353.6s 878 Epoch [ 9/80] | Train Loss: 0.9695 | Train Acc:  73.6% | Val Acc:  51.2% | Val Macro-F1: 0.3336 | Time: 3.1m
+11353.8s 879 >> New best fold F1: 0.3336
+11374.4s 880 Epoch [10/80] | Train Loss: 0.9561 | Train Acc:  73.7% | Val Acc:  52.9% | Val Macro-F1: 0.3473 | Time: 3.5m
+11374.7s 881 >> New best fold F1: 0.3473
+11395.6s 882 Epoch [11/80] | Train Loss: 0.8845 | Train Acc:  78.5% | Val Acc:  55.7% | Val Macro-F1: 0.3869 | Time: 3.8m
+11395.9s 883 >> New best fold F1: 0.3869
+11416.5s 884 Epoch [12/80] | Train Loss: 0.8706 | Train Acc:  79.5% | Val Acc:  58.7% | Val Macro-F1: 0.4172 | Time: 4.2m
+11416.8s 885 >> New best fold F1: 0.4172
+11437.4s 886 Epoch [13/80] | Train Loss: 0.8717 | Train Acc:  78.9% | Val Acc:  60.9% | Val Macro-F1: 0.4580 | Time: 4.5m
+11437.7s 887 >> New best fold F1: 0.4580
+11458.5s 888 Epoch [14/80] | Train Loss: 0.8331 | Train Acc:  79.0% | Val Acc:  63.7% | Val Macro-F1: 0.4988 | Time: 4.9m
+11458.7s 889 >> New best fold F1: 0.4988
+11479.0s 890 Epoch [15/80] | Train Loss: 0.7991 | Train Acc:  82.4% | Val Acc:  63.2% | Val Macro-F1: 0.4975 | Time: 5.2m
+11499.5s 891 Epoch [16/80] | Train Loss: 0.7849 | Train Acc:  82.4% | Val Acc:  64.8% | Val Macro-F1: 0.5295 | Time: 5.6m
+11499.8s 892 >> New best fold F1: 0.5295
+11520.3s 893 Epoch [17/80] | Train Loss: 0.7628 | Train Acc:  84.2% | Val Acc:  65.9% | Val Macro-F1: 0.5449 | Time: 5.9m
+11520.6s 894 >> New best fold F1: 0.5449
+11541.1s 895 Epoch [18/80] | Train Loss: 0.7466 | Train Acc:  84.6% | Val Acc:  68.4% | Val Macro-F1: 0.5838 | Time: 6.3m
+11541.4s 896 >> New best fold F1: 0.5838
+11561.9s 897 Epoch [19/80] | Train Loss: 0.7385 | Train Acc:  85.5% | Val Acc:  68.1% | Val Macro-F1: 0.5667 | Time: 6.6m
+11582.2s 898 Epoch [20/80] | Train Loss: 0.7466 | Train Acc:  84.6% | Val Acc:  68.1% | Val Macro-F1: 0.5748 | Time: 6.9m
+11602.5s 899 Epoch [21/80] | Train Loss: 0.7592 | Train Acc:  83.1% | Val Acc:  69.0% | Val Macro-F1: 0.5800 | Time: 7.3m
+11623.3s 900 Epoch [22/80] | Train Loss: 0.7149 | Train Acc:  86.0% | Val Acc:  68.1% | Val Macro-F1: 0.5711 | Time: 7.6m
+11643.7s 901 Epoch [23/80] | Train Loss: 0.7122 | Train Acc:  86.5% | Val Acc:  68.7% | Val Macro-F1: 0.5702 | Time: 8.0m
+11664.2s 902 Epoch [24/80] | Train Loss: 0.6923 | Train Acc:  87.6% | Val Acc:  70.1% | Val Macro-F1: 0.5917 | Time: 8.3m
+11664.4s 903 >> New best fold F1: 0.5917
+11684.8s 904 Epoch [25/80] | Train Loss: 0.7114 | Train Acc:  86.0% | Val Acc:  69.0% | Val Macro-F1: 0.5746 | Time: 8.7m
+11705.2s 905 Epoch [26/80] | Train Loss: 0.6740 | Train Acc:  87.8% | Val Acc:  69.5% | Val Macro-F1: 0.5893 | Time: 9.0m
+11725.6s 906 Epoch [27/80] | Train Loss: 0.6468 | Train Acc:  89.6% | Val Acc:  70.1% | Val Macro-F1: 0.5783 | Time: 9.3m
+11746.1s 907 Epoch [28/80] | Train Loss: 0.6932 | Train Acc:  85.7% | Val Acc:  69.5% | Val Macro-F1: 0.5809 | Time: 9.7m
+11766.7s 908 Epoch [29/80] | Train Loss: 0.6921 | Train Acc:  86.5% | Val Acc:  71.2% | Val Macro-F1: 0.5985 | Time: 10.0m
+11767.0s 909 >> New best fold F1: 0.5985
+11787.7s 910 Epoch [30/80] | Train Loss: 0.6671 | Train Acc:  87.6% | Val Acc:  70.6% | Val Macro-F1: 0.5991 | Time: 10.4m
+11787.9s 911 >> New best fold F1: 0.5991
+11808.4s 912 Epoch [31/80] | Train Loss: 0.6966 | Train Acc:  86.3% | Val Acc:  70.4% | Val Macro-F1: 0.5834 | Time: 10.7m
+11828.7s 913 Epoch [32/80] | Train Loss: 0.6682 | Train Acc:  88.3% | Val Acc:  70.6% | Val Macro-F1: 0.5827 | Time: 11.0m
+11849.1s 914 Epoch [33/80] | Train Loss: 0.6649 | Train Acc:  88.2% | Val Acc:  70.1% | Val Macro-F1: 0.5806 | Time: 11.4m
+11869.8s 915 Epoch [34/80] | Train Loss: 0.6828 | Train Acc:  86.6% | Val Acc:  70.9% | Val Macro-F1: 0.5889 | Time: 11.7m
+11890.2s 916 Epoch [35/80] | Train Loss: 0.6274 | Train Acc:  89.9% | Val Acc:  70.4% | Val Macro-F1: 0.5843 | Time: 12.1m
+11910.5s 917 Epoch [36/80] | Train Loss: 0.6504 | Train Acc:  89.3% | Val Acc:  70.4% | Val Macro-F1: 0.5790 | Time: 12.4m
+11931.0s 918 Epoch [37/80] | Train Loss: 0.6578 | Train Acc:  87.8% | Val Acc:  70.4% | Val Macro-F1: 0.5847 | Time: 12.8m
+11951.5s 919 Epoch [38/80] | Train Loss: 0.6407 | Train Acc:  89.2% | Val Acc:  70.1% | Val Macro-F1: 0.5782 | Time: 13.1m
+11971.9s 920 Epoch [39/80] | Train Loss: 0.6520 | Train Acc:  88.3% | Val Acc:  70.1% | Val Macro-F1: 0.5797 | Time: 13.4m
+11992.3s 921 Epoch [40/80] | Train Loss: 0.6502 | Train Acc:  89.0% | Val Acc:  70.4% | Val Macro-F1: 0.5814 | Time: 13.8m
+12012.8s 922 Epoch [41/80] | Train Loss: 0.6358 | Train Acc:  89.1% | Val Acc:  70.6% | Val Macro-F1: 0.5868 | Time: 14.1m
+12033.2s 923 Epoch [42/80] | Train Loss: 0.6232 | Train Acc:  90.1% | Val Acc:  70.4% | Val Macro-F1: 0.5849 | Time: 14.5m
+12053.7s 924 Epoch [43/80] | Train Loss: 0.6142 | Train Acc:  90.8% | Val Acc:  70.1% | Val Macro-F1: 0.5783 | Time: 14.8m
+12074.2s 925 Epoch [44/80] | Train Loss: 0.6406 | Train Acc:  89.0% | Val Acc:  69.5% | Val Macro-F1: 0.5654 | Time: 15.1m
+12094.8s 926 Epoch [45/80] | Train Loss: 0.6057 | Train Acc:  91.4% | Val Acc:  70.6% | Val Macro-F1: 0.5848 | Time: 15.5m
+12094.8s 927 >> Early stopping at epoch 45
+12111.0s 928 FOLD 4 OOF (TTA) — Acc: 0.7119 | F1: 0.6076
+12111.3s 929 
+12111.3s 930 ============================================================
+12111.3s 931 maxvit_tiny_rw_224 | Loss: ce_smooth | Fold 5/5
+12111.3s 932 ============================================================
+12111.9s 933 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+12111.9s 934 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+12111.9s 935 
+12111.9s 936 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+12111.9s 937 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+12132.5s 938 Epoch [ 1/80] | Train Loss: 1.8896 | Train Acc:  17.7% | Val Acc:  21.3% | Val Macro-F1: 0.1457 | Time: 0.3m
+12132.6s 939 >> New best fold F1: 0.1457
+12153.2s 940 Epoch [ 2/80] | Train Loss: 1.8138 | Train Acc:  21.2% | Val Acc:  20.8% | Val Macro-F1: 0.1557 | Time: 0.7m
+12153.5s 941 >> New best fold F1: 0.1557
+12174.0s 942 Epoch [ 3/80] | Train Loss: 1.7049 | Train Acc:  30.3% | Val Acc:  22.2% | Val Macro-F1: 0.1517 | Time: 1.0m
+12194.7s 943 Epoch [ 4/80] | Train Loss: 1.5635 | Train Acc:  39.5% | Val Acc:  29.9% | Val Macro-F1: 0.1910 | Time: 1.4m
+12194.9s 944 >> New best fold F1: 0.1910
+12215.6s 945 Epoch [ 5/80] | Train Loss: 1.3871 | Train Acc:  51.5% | Val Acc:  32.7% | Val Macro-F1: 0.2102 | Time: 1.7m
+12215.8s 946 >> New best fold F1: 0.2102
+12236.6s 947 Epoch [ 6/80] | Train Loss: 1.2661 | Train Acc:  56.9% | Val Acc:  42.7% | Val Macro-F1: 0.2300 | Time: 2.1m
+12236.8s 948 >> New best fold F1: 0.2300
+12257.6s 949 Epoch [ 7/80] | Train Loss: 1.1291 | Train Acc:  65.8% | Val Acc:  45.7% | Val Macro-F1: 0.2545 | Time: 2.4m
+12257.8s 950 >> New best fold F1: 0.2545
+12278.4s 951 Epoch [ 8/80] | Train Loss: 1.0870 | Train Acc:  67.9% | Val Acc:  49.3% | Val Macro-F1: 0.2991 | Time: 2.8m
+12278.7s 952 >> New best fold F1: 0.2991
+12299.6s 953 Epoch [ 9/80] | Train Loss: 0.9731 | Train Acc:  73.2% | Val Acc:  53.7% | Val Macro-F1: 0.3488 | Time: 3.1m
+12299.9s 954 >> New best fold F1: 0.3488
+12320.5s 955 Epoch [10/80] | Train Loss: 0.9412 | Train Acc:  75.3% | Val Acc:  58.4% | Val Macro-F1: 0.3924 | Time: 3.5m
+12320.8s 956 >> New best fold F1: 0.3924
+12341.5s 957 Epoch [11/80] | Train Loss: 0.8932 | Train Acc:  77.9% | Val Acc:  60.4% | Val Macro-F1: 0.4092 | Time: 3.8m
+12341.8s 958 >> New best fold F1: 0.4092
+12362.2s 959 Epoch [12/80] | Train Loss: 0.8776 | Train Acc:  77.1% | Val Acc:  61.2% | Val Macro-F1: 0.4574 | Time: 4.2m
+12362.5s 960 >> New best fold F1: 0.4574
+12383.1s 961 Epoch [13/80] | Train Loss: 0.8506 | Train Acc:  79.4% | Val Acc:  63.4% | Val Macro-F1: 0.4869 | Time: 4.5m
+12383.3s 962 >> New best fold F1: 0.4869
+12403.9s 963 Epoch [14/80] | Train Loss: 0.8216 | Train Acc:  81.0% | Val Acc:  64.0% | Val Macro-F1: 0.5226 | Time: 4.9m
+12404.1s 964 >> New best fold F1: 0.5226
+12424.7s 965 Epoch [15/80] | Train Loss: 0.8080 | Train Acc:  80.9% | Val Acc:  65.7% | Val Macro-F1: 0.5525 | Time: 5.2m
+12424.9s 966 >> New best fold F1: 0.5525
+12445.5s 967 Epoch [16/80] | Train Loss: 0.8029 | Train Acc:  81.0% | Val Acc:  67.3% | Val Macro-F1: 0.5817 | Time: 5.6m
+12445.8s 968 >> New best fold F1: 0.5817
+12466.4s 969 Epoch [17/80] | Train Loss: 0.7697 | Train Acc:  82.5% | Val Acc:  69.8% | Val Macro-F1: 0.6121 | Time: 5.9m
+12466.6s 970 >> New best fold F1: 0.6121
+12487.3s 971 Epoch [18/80] | Train Loss: 0.7599 | Train Acc:  84.2% | Val Acc:  70.1% | Val Macro-F1: 0.6129 | Time: 6.3m
+12487.6s 972 >> New best fold F1: 0.6129
+12508.7s 973 Epoch [19/80] | Train Loss: 0.7627 | Train Acc:  83.5% | Val Acc:  69.5% | Val Macro-F1: 0.6038 | Time: 6.6m
+12529.3s 974 Epoch [20/80] | Train Loss: 0.7331 | Train Acc:  85.2% | Val Acc:  69.3% | Val Macro-F1: 0.6005 | Time: 7.0m
+12549.9s 975 Epoch [21/80] | Train Loss: 0.7488 | Train Acc:  84.2% | Val Acc:  68.7% | Val Macro-F1: 0.6112 | Time: 7.3m
+12570.5s 976 Epoch [22/80] | Train Loss: 0.7233 | Train Acc:  85.8% | Val Acc:  69.3% | Val Macro-F1: 0.6203 | Time: 7.6m
+12570.8s 977 >> New best fold F1: 0.6203
+12591.4s 978 Epoch [23/80] | Train Loss: 0.7223 | Train Acc:  85.6% | Val Acc:  69.5% | Val Macro-F1: 0.6097 | Time: 8.0m
+12611.9s 979 Epoch [24/80] | Train Loss: 0.7083 | Train Acc:  85.4% | Val Acc:  69.8% | Val Macro-F1: 0.6237 | Time: 8.3m
+12612.2s 980 >> New best fold F1: 0.6237
+12632.9s 981 Epoch [25/80] | Train Loss: 0.6981 | Train Acc:  86.4% | Val Acc:  69.5% | Val Macro-F1: 0.6158 | Time: 8.7m
+12653.1s 982 Epoch [26/80] | Train Loss: 0.6854 | Train Acc:  87.4% | Val Acc:  69.5% | Val Macro-F1: 0.6221 | Time: 9.0m
+12673.4s 983 Epoch [27/80] | Train Loss: 0.6795 | Train Acc:  87.6% | Val Acc:  69.5% | Val Macro-F1: 0.6127 | Time: 9.4m
+12693.7s 984 Epoch [28/80] | Train Loss: 0.6814 | Train Acc:  87.5% | Val Acc:  70.4% | Val Macro-F1: 0.6117 | Time: 9.7m
+12714.1s 985 Epoch [29/80] | Train Loss: 0.6752 | Train Acc:  87.7% | Val Acc:  70.1% | Val Macro-F1: 0.6140 | Time: 10.0m
+12734.4s 986 Epoch [30/80] | Train Loss: 0.6616 | Train Acc:  89.0% | Val Acc:  70.4% | Val Macro-F1: 0.6230 | Time: 10.4m
+12755.3s 987 Epoch [31/80] | Train Loss: 0.6300 | Train Acc:  89.7% | Val Acc:  70.4% | Val Macro-F1: 0.6189 | Time: 10.7m
+12775.7s 988 Epoch [32/80] | Train Loss: 0.6333 | Train Acc:  90.3% | Val Acc:  70.9% | Val Macro-F1: 0.6181 | Time: 11.1m
+12796.1s 989 Epoch [33/80] | Train Loss: 0.6442 | Train Acc:  88.8% | Val Acc:  70.9% | Val Macro-F1: 0.6181 | Time: 11.4m
+12816.5s 990 Epoch [34/80] | Train Loss: 0.6717 | Train Acc:  88.5% | Val Acc:  70.6% | Val Macro-F1: 0.6122 | Time: 11.7m
+12837.1s 991 Epoch [35/80] | Train Loss: 0.6483 | Train Acc:  88.7% | Val Acc:  69.5% | Val Macro-F1: 0.6003 | Time: 12.1m
+12857.5s 992 Epoch [36/80] | Train Loss: 0.6305 | Train Acc:  89.7% | Val Acc:  70.4% | Val Macro-F1: 0.6104 | Time: 12.4m
+12877.8s 993 Epoch [37/80] | Train Loss: 0.6517 | Train Acc:  88.2% | Val Acc:  70.6% | Val Macro-F1: 0.6217 | Time: 12.8m
+12898.1s 994 Epoch [38/80] | Train Loss: 0.6310 | Train Acc:  89.0% | Val Acc:  71.2% | Val Macro-F1: 0.6214 | Time: 13.1m
+12918.7s 995 Epoch [39/80] | Train Loss: 0.6322 | Train Acc:  90.2% | Val Acc:  70.9% | Val Macro-F1: 0.6125 | Time: 13.4m
+12918.7s 996 >> Early stopping at epoch 39
+12935.3s 997 FOLD 5 OOF (TTA) — Acc: 0.7064 | F1: 0.6364
+12936.1s 998 
+12936.1s 999 maxvit_tiny_rw_224 CV mean (5 folds) — Acc: 0.7096+/-0.0093 | F1: 0.6006+/-0.0257
+12936.1s 1000 
+12936.1s 1001 ######################################################################
+12936.1s 1002 # efficientformer_l1
+12936.1s 1003 ######################################################################
+12936.1s 1004 
+12936.1s 1005 ============================================================
+12936.1s 1006 efficientformer_l1 | Loss: ce_smooth | Fold 1/5
+12936.1s 1007 ============================================================
+12937.5s 1008 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+12937.5s 1009 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+12937.5s 1010 
+12937.5s 1011 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+12937.5s 1012 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+12951.7s 1013 Epoch [ 1/80] | Train Loss: 1.8323 | Train Acc:  18.2% | Val Acc:  12.2% | Val Macro-F1: 0.0706 | Time: 0.2m
+12951.7s 1014 >> New best fold F1: 0.0706
+12961.7s 1015 Epoch [ 2/80] | Train Loss: 1.8238 | Train Acc:  18.5% | Val Acc:  16.9% | Val Macro-F1: 0.1194 | Time: 0.4m
+12961.7s 1016 >> New best fold F1: 0.1194
+12971.7s 1017 Epoch [ 3/80] | Train Loss: 1.8086 | Train Acc:  18.3% | Val Acc:  11.0% | Val Macro-F1: 0.0332 | Time: 0.6m
+12981.5s 1018 Epoch [ 4/80] | Train Loss: 1.7892 | Train Acc:  23.5% | Val Acc:  11.3% | Val Macro-F1: 0.0542 | Time: 0.7m
+12991.1s 1019 Epoch [ 5/80] | Train Loss: 1.7889 | Train Acc:  21.8% | Val Acc:   7.5% | Val Macro-F1: 0.0364 | Time: 0.9m
+13000.4s 1020 Epoch [ 6/80] | Train Loss: 1.7458 | Train Acc:  26.7% | Val Acc:   8.6% | Val Macro-F1: 0.0344 | Time: 1.0m
+13009.9s 1021 Epoch [ 7/80] | Train Loss: 1.7212 | Train Acc:  25.8% | Val Acc:  14.1% | Val Macro-F1: 0.0956 | Time: 1.2m
+13019.2s 1022 Epoch [ 8/80] | Train Loss: 1.6831 | Train Acc:  31.7% | Val Acc:   9.4% | Val Macro-F1: 0.0286 | Time: 1.4m
+13028.7s 1023 Epoch [ 9/80] | Train Loss: 1.6454 | Train Acc:  34.5% | Val Acc:   3.9% | Val Macro-F1: 0.0209 | Time: 1.5m
+13038.1s 1024 Epoch [10/80] | Train Loss: 1.6122 | Train Acc:  38.4% | Val Acc:   3.3% | Val Macro-F1: 0.0107 | Time: 1.7m
+13047.7s 1025 Epoch [11/80] | Train Loss: 1.5663 | Train Acc:  40.1% | Val Acc:   5.0% | Val Macro-F1: 0.0308 | Time: 1.8m
+13057.4s 1026 Epoch [12/80] | Train Loss: 1.5543 | Train Acc:  40.4% | Val Acc:   3.6% | Val Macro-F1: 0.0116 | Time: 2.0m
+13066.9s 1027 Epoch [13/80] | Train Loss: 1.5156 | Train Acc:  44.2% | Val Acc:   9.7% | Val Macro-F1: 0.0812 | Time: 2.2m
+13076.3s 1028 Epoch [14/80] | Train Loss: 1.4781 | Train Acc:  45.3% | Val Acc:   6.4% | Val Macro-F1: 0.0200 | Time: 2.3m
+13085.8s 1029 Epoch [15/80] | Train Loss: 1.4425 | Train Acc:  48.0% | Val Acc:   4.1% | Val Macro-F1: 0.0269 | Time: 2.5m
+13095.3s 1030 Epoch [16/80] | Train Loss: 1.4187 | Train Acc:  48.7% | Val Acc:   7.2% | Val Macro-F1: 0.0468 | Time: 2.6m
+13105.0s 1031 Epoch [17/80] | Train Loss: 1.4050 | Train Acc:  46.3% | Val Acc:  11.0% | Val Macro-F1: 0.0894 | Time: 2.8m
+13105.0s 1032 >> Early stopping at epoch 17
+13112.8s 1033 FOLD 1 OOF (TTA) — Acc: 0.1878 | F1: 0.1337
+13113.0s 1034 
+13113.0s 1035 ============================================================
+13113.0s 1036 efficientformer_l1 | Loss: ce_smooth | Fold 2/5
+13113.0s 1037 ============================================================
+13113.1s 1038 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+13113.1s 1039 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+13113.1s 1040 
+13113.1s 1041 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+13113.1s 1042 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+13122.9s 1043 Epoch [ 1/80] | Train Loss: 1.8521 | Train Acc:  16.1% | Val Acc:   4.7% | Val Macro-F1: 0.0326 | Time: 0.2m
+13122.9s 1044 >> New best fold F1: 0.0326
+13132.6s 1045 Epoch [ 2/80] | Train Loss: 1.8351 | Train Acc:  17.4% | Val Acc:   9.9% | Val Macro-F1: 0.0631 | Time: 0.3m
+13132.6s 1046 >> New best fold F1: 0.0631
+13142.2s 1047 Epoch [ 3/80] | Train Loss: 1.8283 | Train Acc:  18.3% | Val Acc:  39.0% | Val Macro-F1: 0.1396 | Time: 0.5m
+13142.2s 1048 >> New best fold F1: 0.1396
+13151.5s 1049 Epoch [ 4/80] | Train Loss: 1.8121 | Train Acc:  19.7% | Val Acc:  15.7% | Val Macro-F1: 0.0872 | Time: 0.6m
+13160.9s 1050 Epoch [ 5/80] | Train Loss: 1.7726 | Train Acc:  22.3% | Val Acc:  11.0% | Val Macro-F1: 0.0636 | Time: 0.8m
+13170.3s 1051 Epoch [ 6/80] | Train Loss: 1.7636 | Train Acc:  25.3% | Val Acc:  30.7% | Val Macro-F1: 0.1100 | Time: 1.0m
+13180.0s 1052 Epoch [ 7/80] | Train Loss: 1.7206 | Train Acc:  30.9% | Val Acc:   6.9% | Val Macro-F1: 0.0215 | Time: 1.1m
+13189.4s 1053 Epoch [ 8/80] | Train Loss: 1.6960 | Train Acc:  31.3% | Val Acc:   6.9% | Val Macro-F1: 0.0215 | Time: 1.3m
+13198.9s 1054 Epoch [ 9/80] | Train Loss: 1.6500 | Train Acc:  32.3% | Val Acc:   6.9% | Val Macro-F1: 0.0215 | Time: 1.4m
+13208.3s 1055 Epoch [10/80] | Train Loss: 1.5848 | Train Acc:  38.6% | Val Acc:   6.9% | Val Macro-F1: 0.0251 | Time: 1.6m
+13217.9s 1056 Epoch [11/80] | Train Loss: 1.5468 | Train Acc:  40.8% | Val Acc:   7.5% | Val Macro-F1: 0.0413 | Time: 1.7m
+13227.4s 1057 Epoch [12/80] | Train Loss: 1.4925 | Train Acc:  44.4% | Val Acc:   6.9% | Val Macro-F1: 0.0215 | Time: 1.9m
+13236.8s 1058 Epoch [13/80] | Train Loss: 1.4631 | Train Acc:  46.5% | Val Acc:  14.6% | Val Macro-F1: 0.0922 | Time: 2.1m
+13246.4s 1059 Epoch [14/80] | Train Loss: 1.4042 | Train Acc:  50.0% | Val Acc:   7.5% | Val Macro-F1: 0.0495 | Time: 2.2m
+13255.9s 1060 Epoch [15/80] | Train Loss: 1.4151 | Train Acc:  49.7% | Val Acc:   9.7% | Val Macro-F1: 0.0470 | Time: 2.4m
+13265.4s 1061 Epoch [16/80] | Train Loss: 1.4045 | Train Acc:  50.6% | Val Acc:  11.0% | Val Macro-F1: 0.0332 | Time: 2.5m
+13274.8s 1062 Epoch [17/80] | Train Loss: 1.3364 | Train Acc:  54.3% | Val Acc:  21.0% | Val Macro-F1: 0.1262 | Time: 2.7m
+13284.4s 1063 Epoch [18/80] | Train Loss: 1.3408 | Train Acc:  53.7% | Val Acc:  22.7% | Val Macro-F1: 0.1454 | Time: 2.9m
+13284.4s 1064 >> New best fold F1: 0.1454
+13293.9s 1065 Epoch [19/80] | Train Loss: 1.2644 | Train Acc:  57.6% | Val Acc:  11.6% | Val Macro-F1: 0.0678 | Time: 3.0m
+13303.4s 1066 Epoch [20/80] | Train Loss: 1.2274 | Train Acc:  59.4% | Val Acc:  10.8% | Val Macro-F1: 0.0962 | Time: 3.2m
+13313.2s 1067 Epoch [21/80] | Train Loss: 1.2289 | Train Acc:  60.4% | Val Acc:  34.0% | Val Macro-F1: 0.2330 | Time: 3.3m
+13313.2s 1068 >> New best fold F1: 0.2330
+13322.6s 1069 Epoch [22/80] | Train Loss: 1.2108 | Train Acc:  60.3% | Val Acc:  28.7% | Val Macro-F1: 0.1462 | Time: 3.5m
+13332.5s 1070 Epoch [23/80] | Train Loss: 1.1960 | Train Acc:  62.9% | Val Acc:  53.9% | Val Macro-F1: 0.3598 | Time: 3.7m
+13332.5s 1071 >> New best fold F1: 0.3598
+13341.8s 1072 Epoch [24/80] | Train Loss: 1.1757 | Train Acc:  63.6% | Val Acc:  29.0% | Val Macro-F1: 0.2124 | Time: 3.8m
+13351.1s 1073 Epoch [25/80] | Train Loss: 1.1600 | Train Acc:  62.6% | Val Acc:  18.2% | Val Macro-F1: 0.1521 | Time: 4.0m
+13360.7s 1074 Epoch [26/80] | Train Loss: 1.1541 | Train Acc:  63.1% | Val Acc:  43.9% | Val Macro-F1: 0.2908 | Time: 4.1m
+13370.3s 1075 Epoch [27/80] | Train Loss: 1.1105 | Train Acc:  66.5% | Val Acc:  24.9% | Val Macro-F1: 0.2402 | Time: 4.3m
+13379.9s 1076 Epoch [28/80] | Train Loss: 1.0931 | Train Acc:  65.8% | Val Acc:  17.4% | Val Macro-F1: 0.1277 | Time: 4.4m
+13389.3s 1077 Epoch [29/80] | Train Loss: 1.0490 | Train Acc:  69.7% | Val Acc:  33.4% | Val Macro-F1: 0.2241 | Time: 4.6m
+13398.9s 1078 Epoch [30/80] | Train Loss: 1.1027 | Train Acc:  66.1% | Val Acc:  18.5% | Val Macro-F1: 0.1549 | Time: 4.8m
+13408.1s 1079 Epoch [31/80] | Train Loss: 1.0843 | Train Acc:  66.9% | Val Acc:  55.0% | Val Macro-F1: 0.3131 | Time: 4.9m
+13417.7s 1080 Epoch [32/80] | Train Loss: 1.0768 | Train Acc:  66.1% | Val Acc:  56.6% | Val Macro-F1: 0.4104 | Time: 5.1m
+13417.7s 1081 >> New best fold F1: 0.4104
+13427.1s 1082 Epoch [33/80] | Train Loss: 1.0527 | Train Acc:  67.8% | Val Acc:  48.1% | Val Macro-F1: 0.3436 | Time: 5.2m
+13436.5s 1083 Epoch [34/80] | Train Loss: 1.0174 | Train Acc:  72.2% | Val Acc:  58.6% | Val Macro-F1: 0.4130 | Time: 5.4m
+13436.5s 1084 >> New best fold F1: 0.4130
+13445.9s 1085 Epoch [35/80] | Train Loss: 1.0352 | Train Acc:  69.4% | Val Acc:  59.7% | Val Macro-F1: 0.3796 | Time: 5.5m
+13455.2s 1086 Epoch [36/80] | Train Loss: 0.9899 | Train Acc:  72.8% | Val Acc:  51.4% | Val Macro-F1: 0.3501 | Time: 5.7m
+13464.8s 1087 Epoch [37/80] | Train Loss: 1.0460 | Train Acc:  69.7% | Val Acc:  64.4% | Val Macro-F1: 0.4804 | Time: 5.9m
+13464.8s 1088 >> New best fold F1: 0.4804
+13474.3s 1089 Epoch [38/80] | Train Loss: 1.0221 | Train Acc:  71.2% | Val Acc:  53.0% | Val Macro-F1: 0.4096 | Time: 6.0m
+13484.0s 1090 Epoch [39/80] | Train Loss: 1.0181 | Train Acc:  69.6% | Val Acc:  62.2% | Val Macro-F1: 0.4951 | Time: 6.2m
+13484.0s 1091 >> New best fold F1: 0.4951
+13493.8s 1092 Epoch [40/80] | Train Loss: 0.9883 | Train Acc:  73.4% | Val Acc:  65.7% | Val Macro-F1: 0.4967 | Time: 6.3m
+13493.8s 1093 >> New best fold F1: 0.4967
+13503.3s 1094 Epoch [41/80] | Train Loss: 0.9786 | Train Acc:  72.2% | Val Acc:  48.1% | Val Macro-F1: 0.4187 | Time: 6.5m
+13512.8s 1095 Epoch [42/80] | Train Loss: 0.9627 | Train Acc:  73.3% | Val Acc:  64.6% | Val Macro-F1: 0.4891 | Time: 6.7m
+13522.4s 1096 Epoch [43/80] | Train Loss: 0.9681 | Train Acc:  74.0% | Val Acc:  56.9% | Val Macro-F1: 0.4164 | Time: 6.8m
+13532.0s 1097 Epoch [44/80] | Train Loss: 0.9566 | Train Acc:  75.3% | Val Acc:  62.2% | Val Macro-F1: 0.5043 | Time: 7.0m
+13532.0s 1098 >> New best fold F1: 0.5043
+13541.6s 1099 Epoch [45/80] | Train Loss: 0.9740 | Train Acc:  73.7% | Val Acc:  64.1% | Val Macro-F1: 0.5036 | Time: 7.1m
+13550.9s 1100 Epoch [46/80] | Train Loss: 0.9544 | Train Acc:  74.9% | Val Acc:  57.2% | Val Macro-F1: 0.4580 | Time: 7.3m
+13560.3s 1101 Epoch [47/80] | Train Loss: 0.9552 | Train Acc:  75.1% | Val Acc:  56.4% | Val Macro-F1: 0.4443 | Time: 7.5m
+13569.5s 1102 Epoch [48/80] | Train Loss: 0.9119 | Train Acc:  76.1% | Val Acc:  56.4% | Val Macro-F1: 0.4628 | Time: 7.6m
+13578.9s 1103 Epoch [49/80] | Train Loss: 0.9381 | Train Acc:  76.1% | Val Acc:  63.5% | Val Macro-F1: 0.4652 | Time: 7.8m
+13588.3s 1104 Epoch [50/80] | Train Loss: 0.9546 | Train Acc:  74.1% | Val Acc:  63.0% | Val Macro-F1: 0.4591 | Time: 7.9m
+13598.1s 1105 Epoch [51/80] | Train Loss: 0.9307 | Train Acc:  76.3% | Val Acc:  68.8% | Val Macro-F1: 0.5682 | Time: 8.1m
+13598.1s 1106 >> New best fold F1: 0.5682
+13607.3s 1107 Epoch [52/80] | Train Loss: 0.9398 | Train Acc:  75.3% | Val Acc:  67.4% | Val Macro-F1: 0.5444 | Time: 8.2m
+13616.8s 1108 Epoch [53/80] | Train Loss: 0.9188 | Train Acc:  76.6% | Val Acc:  68.8% | Val Macro-F1: 0.5692 | Time: 8.4m
+13616.8s 1109 >> New best fold F1: 0.5692
+13626.2s 1110 Epoch [54/80] | Train Loss: 0.9139 | Train Acc:  76.0% | Val Acc:  61.9% | Val Macro-F1: 0.5193 | Time: 8.6m
+13635.8s 1111 Epoch [55/80] | Train Loss: 0.9166 | Train Acc:  76.9% | Val Acc:  62.2% | Val Macro-F1: 0.4905 | Time: 8.7m
+13645.2s 1112 Epoch [56/80] | Train Loss: 0.9126 | Train Acc:  76.2% | Val Acc:  66.6% | Val Macro-F1: 0.5541 | Time: 8.9m
+13654.8s 1113 Epoch [57/80] | Train Loss: 0.9077 | Train Acc:  76.7% | Val Acc:  65.2% | Val Macro-F1: 0.5254 | Time: 9.0m
+13664.3s 1114 Epoch [58/80] | Train Loss: 0.9006 | Train Acc:  76.7% | Val Acc:  66.9% | Val Macro-F1: 0.5555 | Time: 9.2m
+13673.7s 1115 Epoch [59/80] | Train Loss: 0.8798 | Train Acc:  78.1% | Val Acc:  66.3% | Val Macro-F1: 0.5273 | Time: 9.3m
+13683.1s 1116 Epoch [60/80] | Train Loss: 0.9036 | Train Acc:  77.9% | Val Acc:  69.1% | Val Macro-F1: 0.5723 | Time: 9.5m
+13683.1s 1117 >> New best fold F1: 0.5723
+13692.7s 1118 Epoch [61/80] | Train Loss: 0.9300 | Train Acc:  75.1% | Val Acc:  68.5% | Val Macro-F1: 0.5636 | Time: 9.7m
+13701.9s 1119 Epoch [62/80] | Train Loss: 0.9225 | Train Acc:  75.1% | Val Acc:  65.2% | Val Macro-F1: 0.5461 | Time: 9.8m
+13711.3s 1120 Epoch [63/80] | Train Loss: 0.8939 | Train Acc:  78.1% | Val Acc:  64.9% | Val Macro-F1: 0.5345 | Time: 10.0m
+13720.5s 1121 Epoch [64/80] | Train Loss: 0.9054 | Train Acc:  78.1% | Val Acc:  65.7% | Val Macro-F1: 0.5495 | Time: 10.1m
+13729.9s 1122 Epoch [65/80] | Train Loss: 0.9071 | Train Acc:  77.4% | Val Acc:  66.3% | Val Macro-F1: 0.5545 | Time: 10.3m
+13739.3s 1123 Epoch [66/80] | Train Loss: 0.8773 | Train Acc:  79.2% | Val Acc:  68.2% | Val Macro-F1: 0.5649 | Time: 10.4m
+13748.8s 1124 Epoch [67/80] | Train Loss: 0.9043 | Train Acc:  75.9% | Val Acc:  67.1% | Val Macro-F1: 0.5512 | Time: 10.6m
+13758.3s 1125 Epoch [68/80] | Train Loss: 0.9038 | Train Acc:  77.1% | Val Acc:  66.3% | Val Macro-F1: 0.5352 | Time: 10.8m
+13767.5s 1126 Epoch [69/80] | Train Loss: 0.8984 | Train Acc:  76.7% | Val Acc:  68.0% | Val Macro-F1: 0.5608 | Time: 10.9m
+13777.1s 1127 Epoch [70/80] | Train Loss: 0.8923 | Train Acc:  77.7% | Val Acc:  69.1% | Val Macro-F1: 0.5761 | Time: 11.1m
+13777.1s 1128 >> New best fold F1: 0.5761
+13786.7s 1129 Epoch [71/80] | Train Loss: 0.8996 | Train Acc:  77.6% | Val Acc:  69.3% | Val Macro-F1: 0.5738 | Time: 11.2m
+13796.1s 1130 Epoch [72/80] | Train Loss: 0.8931 | Train Acc:  77.1% | Val Acc:  68.8% | Val Macro-F1: 0.5669 | Time: 11.4m
+13805.4s 1131 Epoch [73/80] | Train Loss: 0.8843 | Train Acc:  77.4% | Val Acc:  68.5% | Val Macro-F1: 0.5666 | Time: 11.5m
+13815.2s 1132 Epoch [74/80] | Train Loss: 0.8653 | Train Acc:  80.1% | Val Acc:  69.1% | Val Macro-F1: 0.5736 | Time: 11.7m
+13824.9s 1133 Epoch [75/80] | Train Loss: 0.8839 | Train Acc:  77.7% | Val Acc:  68.8% | Val Macro-F1: 0.5709 | Time: 11.9m
+13834.2s 1134 Epoch [76/80] | Train Loss: 0.8913 | Train Acc:  77.8% | Val Acc:  68.8% | Val Macro-F1: 0.5709 | Time: 12.0m
+13844.0s 1135 Epoch [77/80] | Train Loss: 0.8678 | Train Acc:  79.9% | Val Acc:  69.6% | Val Macro-F1: 0.5819 | Time: 12.2m
+13844.0s 1136 >> New best fold F1: 0.5819
+13853.6s 1137 Epoch [78/80] | Train Loss: 0.8799 | Train Acc:  78.6% | Val Acc:  69.1% | Val Macro-F1: 0.5769 | Time: 12.3m
+13863.2s 1138 Epoch [79/80] | Train Loss: 0.8752 | Train Acc:  78.2% | Val Acc:  69.3% | Val Macro-F1: 0.5788 | Time: 12.5m
+13873.0s 1139 Epoch [80/80] | Train Loss: 0.9040 | Train Acc:  77.3% | Val Acc:  69.6% | Val Macro-F1: 0.5819 | Time: 12.7m
+13880.7s 1140 FOLD 2 OOF (TTA) — Acc: 0.6906 | F1: 0.5729
+13880.9s 1141 
+13880.9s 1142 ============================================================
+13880.9s 1143 efficientformer_l1 | Loss: ce_smooth | Fold 3/5
+13880.9s 1144 ============================================================
+13881.0s 1145 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+13881.0s 1146 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+13881.0s 1147 
+13881.0s 1148 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+13881.0s 1149 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+13890.4s 1150 Epoch [ 1/80] | Train Loss: 1.8398 | Train Acc:  16.5% | Val Acc:  46.7% | Val Macro-F1: 0.1141 | Time: 0.2m
+13890.4s 1151 >> New best fold F1: 0.1141
+13899.9s 1152 Epoch [ 2/80] | Train Loss: 1.8302 | Train Acc:  17.6% | Val Acc:  46.7% | Val Macro-F1: 0.1061 | Time: 0.3m
+13909.2s 1153 Epoch [ 3/80] | Train Loss: 1.8163 | Train Acc:  17.4% | Val Acc:   4.4% | Val Macro-F1: 0.0232 | Time: 0.5m
+13918.7s 1154 Epoch [ 4/80] | Train Loss: 1.8086 | Train Acc:  19.1% | Val Acc:  13.3% | Val Macro-F1: 0.0828 | Time: 0.6m
+13928.1s 1155 Epoch [ 5/80] | Train Loss: 1.7778 | Train Acc:  22.0% | Val Acc:   7.7% | Val Macro-F1: 0.0511 | Time: 0.8m
+13937.4s 1156 Epoch [ 6/80] | Train Loss: 1.7466 | Train Acc:  26.3% | Val Acc:   7.5% | Val Macro-F1: 0.0451 | Time: 0.9m
+13947.0s 1157 Epoch [ 7/80] | Train Loss: 1.7329 | Train Acc:  28.1% | Val Acc:  31.5% | Val Macro-F1: 0.1491 | Time: 1.1m
+13947.0s 1158 >> New best fold F1: 0.1491
+13956.6s 1159 Epoch [ 8/80] | Train Loss: 1.7286 | Train Acc:  26.8% | Val Acc:  46.7% | Val Macro-F1: 0.1061 | Time: 1.3m
+13965.9s 1160 Epoch [ 9/80] | Train Loss: 1.6721 | Train Acc:  33.1% | Val Acc:  17.4% | Val Macro-F1: 0.0894 | Time: 1.4m
+13975.2s 1161 Epoch [10/80] | Train Loss: 1.6275 | Train Acc:  36.7% | Val Acc:   3.9% | Val Macro-F1: 0.0128 | Time: 1.6m
+13984.5s 1162 Epoch [11/80] | Train Loss: 1.6026 | Train Acc:  36.8% | Val Acc:  17.4% | Val Macro-F1: 0.1156 | Time: 1.7m
+13993.9s 1163 Epoch [12/80] | Train Loss: 1.5895 | Train Acc:  37.8% | Val Acc:  32.0% | Val Macro-F1: 0.1333 | Time: 1.9m
+14003.2s 1164 Epoch [13/80] | Train Loss: 1.5528 | Train Acc:  40.6% | Val Acc:  17.4% | Val Macro-F1: 0.0875 | Time: 2.0m
+14013.0s 1165 Epoch [14/80] | Train Loss: 1.5148 | Train Acc:  43.1% | Val Acc:  42.5% | Val Macro-F1: 0.2022 | Time: 2.2m
+14013.0s 1166 >> New best fold F1: 0.2022
+14022.4s 1167 Epoch [15/80] | Train Loss: 1.4701 | Train Acc:  45.5% | Val Acc:  20.2% | Val Macro-F1: 0.1317 | Time: 2.4m
+14031.7s 1168 Epoch [16/80] | Train Loss: 1.4615 | Train Acc:  46.7% | Val Acc:  20.7% | Val Macro-F1: 0.1115 | Time: 2.5m
+14041.3s 1169 Epoch [17/80] | Train Loss: 1.4341 | Train Acc:  48.1% | Val Acc:  45.0% | Val Macro-F1: 0.1847 | Time: 2.7m
+14051.0s 1170 Epoch [18/80] | Train Loss: 1.3987 | Train Acc:  48.8% | Val Acc:  24.9% | Val Macro-F1: 0.1423 | Time: 2.8m
+14060.1s 1171 Epoch [19/80] | Train Loss: 1.3685 | Train Acc:  51.6% | Val Acc:   6.6% | Val Macro-F1: 0.0315 | Time: 3.0m
+14069.4s 1172 Epoch [20/80] | Train Loss: 1.3325 | Train Acc:  54.4% | Val Acc:  11.0% | Val Macro-F1: 0.0333 | Time: 3.1m
+14079.0s 1173 Epoch [21/80] | Train Loss: 1.3395 | Train Acc:  52.8% | Val Acc:  37.6% | Val Macro-F1: 0.2187 | Time: 3.3m
+14079.0s 1174 >> New best fold F1: 0.2187
+14088.6s 1175 Epoch [22/80] | Train Loss: 1.3206 | Train Acc:  55.1% | Val Acc:   9.9% | Val Macro-F1: 0.0628 | Time: 3.5m
+14098.1s 1176 Epoch [23/80] | Train Loss: 1.3082 | Train Acc:  55.5% | Val Acc:  46.4% | Val Macro-F1: 0.2717 | Time: 3.6m
+14098.1s 1177 >> New best fold F1: 0.2717
+14107.5s 1178 Epoch [24/80] | Train Loss: 1.2647 | Train Acc:  59.1% | Val Acc:  49.2% | Val Macro-F1: 0.2184 | Time: 3.8m
+14116.8s 1179 Epoch [25/80] | Train Loss: 1.2609 | Train Acc:  59.1% | Val Acc:  24.9% | Val Macro-F1: 0.1732 | Time: 3.9m
+14126.2s 1180 Epoch [26/80] | Train Loss: 1.2518 | Train Acc:  57.7% | Val Acc:  54.4% | Val Macro-F1: 0.2777 | Time: 4.1m
+14126.2s 1181 >> New best fold F1: 0.2777
+14135.6s 1182 Epoch [27/80] | Train Loss: 1.2276 | Train Acc:  59.4% | Val Acc:  32.6% | Val Macro-F1: 0.2467 | Time: 4.2m
+14145.1s 1183 Epoch [28/80] | Train Loss: 1.2219 | Train Acc:  60.3% | Val Acc:  40.1% | Val Macro-F1: 0.2607 | Time: 4.4m
+14154.5s 1184 Epoch [29/80] | Train Loss: 1.1916 | Train Acc:  61.4% | Val Acc:  37.8% | Val Macro-F1: 0.2238 | Time: 4.6m
+14164.1s 1185 Epoch [30/80] | Train Loss: 1.1901 | Train Acc:  61.9% | Val Acc:  55.8% | Val Macro-F1: 0.4115 | Time: 4.7m
+14164.2s 1186 >> New best fold F1: 0.4115
+14173.5s 1187 Epoch [31/80] | Train Loss: 1.1654 | Train Acc:  62.9% | Val Acc:  51.9% | Val Macro-F1: 0.3081 | Time: 4.9m
+14183.0s 1188 Epoch [32/80] | Train Loss: 1.1642 | Train Acc:  63.0% | Val Acc:  55.2% | Val Macro-F1: 0.3195 | Time: 5.0m
+14192.7s 1189 Epoch [33/80] | Train Loss: 1.1375 | Train Acc:  64.0% | Val Acc:  61.6% | Val Macro-F1: 0.4749 | Time: 5.2m
+14192.7s 1190 >> New best fold F1: 0.4749
+14202.4s 1191 Epoch [34/80] | Train Loss: 1.1591 | Train Acc:  63.7% | Val Acc:  62.2% | Val Macro-F1: 0.4856 | Time: 5.4m
+14202.4s 1192 >> New best fold F1: 0.4856
+14211.9s 1193 Epoch [35/80] | Train Loss: 1.1019 | Train Acc:  66.8% | Val Acc:  61.6% | Val Macro-F1: 0.4883 | Time: 5.5m
+14211.9s 1194 >> New best fold F1: 0.4883
+14221.1s 1195 Epoch [36/80] | Train Loss: 1.0839 | Train Acc:  69.2% | Val Acc:  58.6% | Val Macro-F1: 0.4699 | Time: 5.7m
+14230.6s 1196 Epoch [37/80] | Train Loss: 1.0936 | Train Acc:  67.2% | Val Acc:  61.6% | Val Macro-F1: 0.4471 | Time: 5.8m
+14239.7s 1197 Epoch [38/80] | Train Loss: 1.1003 | Train Acc:  66.1% | Val Acc:  62.2% | Val Macro-F1: 0.4883 | Time: 6.0m
+14249.0s 1198 Epoch [39/80] | Train Loss: 1.0529 | Train Acc:  68.1% | Val Acc:  58.0% | Val Macro-F1: 0.3957 | Time: 6.1m
+14258.3s 1199 Epoch [40/80] | Train Loss: 1.0560 | Train Acc:  68.8% | Val Acc:  61.0% | Val Macro-F1: 0.4517 | Time: 6.3m
+14267.6s 1200 Epoch [41/80] | Train Loss: 1.0476 | Train Acc:  70.0% | Val Acc:  56.9% | Val Macro-F1: 0.4431 | Time: 6.4m
+14277.1s 1201 Epoch [42/80] | Train Loss: 1.0476 | Train Acc:  68.2% | Val Acc:  63.8% | Val Macro-F1: 0.5064 | Time: 6.6m
+14277.1s 1202 >> New best fold F1: 0.5064
+14286.3s 1203 Epoch [43/80] | Train Loss: 1.0449 | Train Acc:  68.4% | Val Acc:  64.4% | Val Macro-F1: 0.4397 | Time: 6.8m
+14295.5s 1204 Epoch [44/80] | Train Loss: 1.0214 | Train Acc:  71.5% | Val Acc:  57.7% | Val Macro-F1: 0.3428 | Time: 6.9m
+14304.8s 1205 Epoch [45/80] | Train Loss: 1.0511 | Train Acc:  68.8% | Val Acc:  62.2% | Val Macro-F1: 0.4472 | Time: 7.1m
+14314.2s 1206 Epoch [46/80] | Train Loss: 1.0023 | Train Acc:  71.1% | Val Acc:  60.2% | Val Macro-F1: 0.4586 | Time: 7.2m
+14323.4s 1207 Epoch [47/80] | Train Loss: 1.0121 | Train Acc:  70.6% | Val Acc:  62.7% | Val Macro-F1: 0.4907 | Time: 7.4m
+14332.7s 1208 Epoch [48/80] | Train Loss: 1.0069 | Train Acc:  71.8% | Val Acc:  56.9% | Val Macro-F1: 0.4386 | Time: 7.5m
+14342.0s 1209 Epoch [49/80] | Train Loss: 1.0049 | Train Acc:  71.5% | Val Acc:  64.6% | Val Macro-F1: 0.4294 | Time: 7.7m
+14351.2s 1210 Epoch [50/80] | Train Loss: 1.0256 | Train Acc:  69.7% | Val Acc:  64.4% | Val Macro-F1: 0.4591 | Time: 7.8m
+14360.5s 1211 Epoch [51/80] | Train Loss: 0.9782 | Train Acc:  72.6% | Val Acc:  58.8% | Val Macro-F1: 0.4005 | Time: 8.0m
+14369.9s 1212 Epoch [52/80] | Train Loss: 1.0090 | Train Acc:  71.0% | Val Acc:  62.2% | Val Macro-F1: 0.5077 | Time: 8.1m
+14369.9s 1213 >> New best fold F1: 0.5077
+14379.3s 1214 Epoch [53/80] | Train Loss: 0.9807 | Train Acc:  72.2% | Val Acc:  59.7% | Val Macro-F1: 0.4361 | Time: 8.3m
+14388.9s 1215 Epoch [54/80] | Train Loss: 1.0041 | Train Acc:  72.1% | Val Acc:  57.7% | Val Macro-F1: 0.4635 | Time: 8.5m
+14398.3s 1216 Epoch [55/80] | Train Loss: 0.9510 | Train Acc:  75.0% | Val Acc:  54.1% | Val Macro-F1: 0.4058 | Time: 8.6m
+14408.0s 1217 Epoch [56/80] | Train Loss: 0.9766 | Train Acc:  71.9% | Val Acc:  66.3% | Val Macro-F1: 0.5123 | Time: 8.8m
+14408.0s 1218 >> New best fold F1: 0.5123
+14417.3s 1219 Epoch [57/80] | Train Loss: 0.9577 | Train Acc:  75.1% | Val Acc:  64.4% | Val Macro-F1: 0.5074 | Time: 8.9m
+14426.8s 1220 Epoch [58/80] | Train Loss: 0.9557 | Train Acc:  74.2% | Val Acc:  65.7% | Val Macro-F1: 0.5326 | Time: 9.1m
+14426.8s 1221 >> New best fold F1: 0.5326
+14436.2s 1222 Epoch [59/80] | Train Loss: 0.9592 | Train Acc:  74.2% | Val Acc:  66.0% | Val Macro-F1: 0.5346 | Time: 9.2m
+14436.2s 1223 >> New best fold F1: 0.5346
+14445.7s 1224 Epoch [60/80] | Train Loss: 0.9671 | Train Acc:  74.4% | Val Acc:  65.5% | Val Macro-F1: 0.5085 | Time: 9.4m
+14455.2s 1225 Epoch [61/80] | Train Loss: 0.9473 | Train Acc:  73.8% | Val Acc:  69.1% | Val Macro-F1: 0.5699 | Time: 9.6m
+14455.2s 1226 >> New best fold F1: 0.5699
+14464.8s 1227 Epoch [62/80] | Train Loss: 0.9751 | Train Acc:  73.3% | Val Acc:  68.5% | Val Macro-F1: 0.5775 | Time: 9.7m
+14464.8s 1228 >> New best fold F1: 0.5775
+14474.1s 1229 Epoch [63/80] | Train Loss: 0.9588 | Train Acc:  73.5% | Val Acc:  68.8% | Val Macro-F1: 0.5797 | Time: 9.9m
+14474.1s 1230 >> New best fold F1: 0.5797
+14483.4s 1231 Epoch [64/80] | Train Loss: 0.9726 | Train Acc:  72.3% | Val Acc:  67.7% | Val Macro-F1: 0.5706 | Time: 10.0m
+14493.4s 1232 Epoch [65/80] | Train Loss: 0.9680 | Train Acc:  73.3% | Val Acc:  64.9% | Val Macro-F1: 0.5468 | Time: 10.2m
+14502.9s 1233 Epoch [66/80] | Train Loss: 0.9557 | Train Acc:  72.6% | Val Acc:  68.2% | Val Macro-F1: 0.5734 | Time: 10.4m
+14512.1s 1234 Epoch [67/80] | Train Loss: 0.9377 | Train Acc:  75.6% | Val Acc:  65.2% | Val Macro-F1: 0.5165 | Time: 10.5m
+14521.7s 1235 Epoch [68/80] | Train Loss: 0.9039 | Train Acc:  77.5% | Val Acc:  69.6% | Val Macro-F1: 0.5818 | Time: 10.7m
+14521.7s 1236 >> New best fold F1: 0.5818
+14530.8s 1237 Epoch [69/80] | Train Loss: 0.9558 | Train Acc:  73.9% | Val Acc:  69.9% | Val Macro-F1: 0.5813 | Time: 10.8m
+14540.4s 1238 Epoch [70/80] | Train Loss: 0.9426 | Train Acc:  74.9% | Val Acc:  69.9% | Val Macro-F1: 0.5868 | Time: 11.0m
+14540.4s 1239 >> New best fold F1: 0.5868
+14550.1s 1240 Epoch [71/80] | Train Loss: 0.9603 | Train Acc:  74.6% | Val Acc:  70.2% | Val Macro-F1: 0.5945 | Time: 11.1m
+14550.1s 1241 >> New best fold F1: 0.5945
+14559.7s 1242 Epoch [72/80] | Train Loss: 0.9748 | Train Acc:  73.5% | Val Acc:  70.7% | Val Macro-F1: 0.5944 | Time: 11.3m
+14569.1s 1243 Epoch [73/80] | Train Loss: 0.9376 | Train Acc:  74.4% | Val Acc:  68.8% | Val Macro-F1: 0.5685 | Time: 11.5m
+14578.7s 1244 Epoch [74/80] | Train Loss: 0.9607 | Train Acc:  74.7% | Val Acc:  69.1% | Val Macro-F1: 0.5735 | Time: 11.6m
+14588.1s 1245 Epoch [75/80] | Train Loss: 0.9257 | Train Acc:  74.7% | Val Acc:  69.3% | Val Macro-F1: 0.5718 | Time: 11.8m
+14597.5s 1246 Epoch [76/80] | Train Loss: 0.9101 | Train Acc:  77.2% | Val Acc:  69.1% | Val Macro-F1: 0.5776 | Time: 11.9m
+14607.1s 1247 Epoch [77/80] | Train Loss: 0.9430 | Train Acc:  76.4% | Val Acc:  68.0% | Val Macro-F1: 0.5516 | Time: 12.1m
+14616.6s 1248 Epoch [78/80] | Train Loss: 0.9383 | Train Acc:  74.2% | Val Acc:  68.2% | Val Macro-F1: 0.5541 | Time: 12.3m
+14626.0s 1249 Epoch [79/80] | Train Loss: 0.9443 | Train Acc:  74.8% | Val Acc:  69.1% | Val Macro-F1: 0.5665 | Time: 12.4m
+14635.5s 1250 Epoch [80/80] | Train Loss: 0.9314 | Train Acc:  75.5% | Val Acc:  68.5% | Val Macro-F1: 0.5587 | Time: 12.6m
+14643.5s 1251 FOLD 3 OOF (TTA) — Acc: 0.6961 | F1: 0.5892
+14643.8s 1252 
+14643.8s 1253 ============================================================
+14643.8s 1254 efficientformer_l1 | Loss: ce_smooth | Fold 4/5
+14643.8s 1255 ============================================================
+14643.8s 1256 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+14643.8s 1257 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+14643.8s 1258 
+14643.8s 1259 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+14643.8s 1260 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+14653.4s 1261 Epoch [ 1/80] | Train Loss: 1.8331 | Train Acc:  17.2% | Val Acc:  23.0% | Val Macro-F1: 0.1537 | Time: 0.2m
+14653.4s 1262 >> New best fold F1: 0.1537
+14662.8s 1263 Epoch [ 2/80] | Train Loss: 1.8203 | Train Acc:  17.4% | Val Acc:  18.6% | Val Macro-F1: 0.0794 | Time: 0.3m
+14671.9s 1264 Epoch [ 3/80] | Train Loss: 1.7928 | Train Acc:  21.5% | Val Acc:  13.0% | Val Macro-F1: 0.0680 | Time: 0.5m
+14681.2s 1265 Epoch [ 4/80] | Train Loss: 1.7874 | Train Acc:  22.4% | Val Acc:  45.2% | Val Macro-F1: 0.1039 | Time: 0.6m
+14690.5s 1266 Epoch [ 5/80] | Train Loss: 1.7792 | Train Acc:  23.0% | Val Acc:  38.2% | Val Macro-F1: 0.1262 | Time: 0.8m
+14699.8s 1267 Epoch [ 6/80] | Train Loss: 1.7359 | Train Acc:  27.4% | Val Acc:  22.2% | Val Macro-F1: 0.0606 | Time: 0.9m
+14709.3s 1268 Epoch [ 7/80] | Train Loss: 1.7005 | Train Acc:  28.9% | Val Acc:  16.9% | Val Macro-F1: 0.0943 | Time: 1.1m
+14718.4s 1269 Epoch [ 8/80] | Train Loss: 1.6874 | Train Acc:  29.6% | Val Acc:  22.2% | Val Macro-F1: 0.0605 | Time: 1.2m
+14727.7s 1270 Epoch [ 9/80] | Train Loss: 1.6642 | Train Acc:  32.9% | Val Acc:   9.1% | Val Macro-F1: 0.0280 | Time: 1.4m
+14736.9s 1271 Epoch [10/80] | Train Loss: 1.6069 | Train Acc:  37.6% | Val Acc:  10.2% | Val Macro-F1: 0.0455 | Time: 1.6m
+14746.2s 1272 Epoch [11/80] | Train Loss: 1.5452 | Train Acc:  40.9% | Val Acc:   8.9% | Val Macro-F1: 0.0275 | Time: 1.7m
+14755.8s 1273 Epoch [12/80] | Train Loss: 1.5433 | Train Acc:  41.5% | Val Acc:  42.1% | Val Macro-F1: 0.1899 | Time: 1.9m
+14755.8s 1274 >> New best fold F1: 0.1899
+14764.9s 1275 Epoch [13/80] | Train Loss: 1.4725 | Train Acc:  46.5% | Val Acc:   6.9% | Val Macro-F1: 0.0536 | Time: 2.0m
+14774.3s 1276 Epoch [14/80] | Train Loss: 1.4725 | Train Acc:  44.2% | Val Acc:   7.2% | Val Macro-F1: 0.0370 | Time: 2.2m
+14783.6s 1277 Epoch [15/80] | Train Loss: 1.4404 | Train Acc:  47.1% | Val Acc:  23.0% | Val Macro-F1: 0.1046 | Time: 2.3m
+14793.1s 1278 Epoch [16/80] | Train Loss: 1.4223 | Train Acc:  50.1% | Val Acc:  14.7% | Val Macro-F1: 0.1120 | Time: 2.5m
+14802.7s 1279 Epoch [17/80] | Train Loss: 1.3980 | Train Acc:  48.5% | Val Acc:  45.2% | Val Macro-F1: 0.1791 | Time: 2.6m
+14812.2s 1280 Epoch [18/80] | Train Loss: 1.3800 | Train Acc:  50.3% | Val Acc:  23.8% | Val Macro-F1: 0.1146 | Time: 2.8m
+14821.3s 1281 Epoch [19/80] | Train Loss: 1.3300 | Train Acc:  54.5% | Val Acc:  23.0% | Val Macro-F1: 0.1280 | Time: 3.0m
+14830.5s 1282 Epoch [20/80] | Train Loss: 1.2952 | Train Acc:  56.2% | Val Acc:   9.1% | Val Macro-F1: 0.0845 | Time: 3.1m
+14839.8s 1283 Epoch [21/80] | Train Loss: 1.3015 | Train Acc:  56.0% | Val Acc:  11.9% | Val Macro-F1: 0.0839 | Time: 3.3m
+14849.1s 1284 Epoch [22/80] | Train Loss: 1.2807 | Train Acc:  57.5% | Val Acc:  44.6% | Val Macro-F1: 0.1834 | Time: 3.4m
+14858.3s 1285 Epoch [23/80] | Train Loss: 1.2533 | Train Acc:  57.3% | Val Acc:  49.0% | Val Macro-F1: 0.1772 | Time: 3.6m
+14867.9s 1286 Epoch [24/80] | Train Loss: 1.2242 | Train Acc:  59.5% | Val Acc:  48.2% | Val Macro-F1: 0.2124 | Time: 3.7m
+14867.9s 1287 >> New best fold F1: 0.2124
+14877.4s 1288 Epoch [25/80] | Train Loss: 1.2109 | Train Acc:  61.1% | Val Acc:  24.9% | Val Macro-F1: 0.1459 | Time: 3.9m
+14886.7s 1289 Epoch [26/80] | Train Loss: 1.1745 | Train Acc:  61.9% | Val Acc:  43.2% | Val Macro-F1: 0.2044 | Time: 4.0m
+14896.1s 1290 Epoch [27/80] | Train Loss: 1.1359 | Train Acc:  63.7% | Val Acc:  51.2% | Val Macro-F1: 0.3398 | Time: 4.2m
+14896.1s 1291 >> New best fold F1: 0.3398
+14905.4s 1292 Epoch [28/80] | Train Loss: 1.1490 | Train Acc:  62.8% | Val Acc:  28.8% | Val Macro-F1: 0.2014 | Time: 4.4m
+14914.9s 1293 Epoch [29/80] | Train Loss: 1.1461 | Train Acc:  65.0% | Val Acc:  30.2% | Val Macro-F1: 0.2403 | Time: 4.5m
+14924.2s 1294 Epoch [30/80] | Train Loss: 1.1261 | Train Acc:  63.4% | Val Acc:  48.2% | Val Macro-F1: 0.3323 | Time: 4.7m
+14933.7s 1295 Epoch [31/80] | Train Loss: 1.0917 | Train Acc:  65.6% | Val Acc:  42.9% | Val Macro-F1: 0.3529 | Time: 4.8m
+14933.7s 1296 >> New best fold F1: 0.3529
+14943.1s 1297 Epoch [32/80] | Train Loss: 1.0880 | Train Acc:  68.1% | Val Acc:  45.4% | Val Macro-F1: 0.2861 | Time: 5.0m
+14952.5s 1298 Epoch [33/80] | Train Loss: 1.0630 | Train Acc:  68.5% | Val Acc:  54.3% | Val Macro-F1: 0.4192 | Time: 5.1m
+14952.5s 1299 >> New best fold F1: 0.4192
+14961.9s 1300 Epoch [34/80] | Train Loss: 1.0509 | Train Acc:  69.3% | Val Acc:  62.3% | Val Macro-F1: 0.4808 | Time: 5.3m
+14961.9s 1301 >> New best fold F1: 0.4808
+14971.4s 1302 Epoch [35/80] | Train Loss: 1.0458 | Train Acc:  70.6% | Val Acc:  54.8% | Val Macro-F1: 0.3649 | Time: 5.5m
+14980.8s 1303 Epoch [36/80] | Train Loss: 1.0452 | Train Acc:  69.2% | Val Acc:  65.1% | Val Macro-F1: 0.5301 | Time: 5.6m
+14980.8s 1304 >> New best fold F1: 0.5301
+14990.2s 1305 Epoch [37/80] | Train Loss: 1.0815 | Train Acc:  67.8% | Val Acc:  64.5% | Val Macro-F1: 0.5109 | Time: 5.8m
+14999.6s 1306 Epoch [38/80] | Train Loss: 1.0154 | Train Acc:  72.1% | Val Acc:  52.9% | Val Macro-F1: 0.4049 | Time: 5.9m
+15008.9s 1307 Epoch [39/80] | Train Loss: 1.0483 | Train Acc:  69.7% | Val Acc:  63.7% | Val Macro-F1: 0.5271 | Time: 6.1m
+15018.2s 1308 Epoch [40/80] | Train Loss: 0.9730 | Train Acc:  73.4% | Val Acc:  55.7% | Val Macro-F1: 0.4084 | Time: 6.2m
+15027.9s 1309 Epoch [41/80] | Train Loss: 1.0234 | Train Acc:  70.3% | Val Acc:  64.8% | Val Macro-F1: 0.5393 | Time: 6.4m
+15027.9s 1310 >> New best fold F1: 0.5393
+15037.2s 1311 Epoch [42/80] | Train Loss: 0.9918 | Train Acc:  72.7% | Val Acc:  57.3% | Val Macro-F1: 0.4500 | Time: 6.6m
+15046.7s 1312 Epoch [43/80] | Train Loss: 0.9754 | Train Acc:  73.7% | Val Acc:  62.9% | Val Macro-F1: 0.4624 | Time: 6.7m
+15056.0s 1313 Epoch [44/80] | Train Loss: 0.9909 | Train Acc:  72.1% | Val Acc:  60.9% | Val Macro-F1: 0.5009 | Time: 6.9m
+15065.3s 1314 Epoch [45/80] | Train Loss: 0.9856 | Train Acc:  74.0% | Val Acc:  64.5% | Val Macro-F1: 0.5301 | Time: 7.0m
+15074.4s 1315 Epoch [46/80] | Train Loss: 0.9865 | Train Acc:  72.9% | Val Acc:  63.7% | Val Macro-F1: 0.5082 | Time: 7.2m
+15083.8s 1316 Epoch [47/80] | Train Loss: 0.9804 | Train Acc:  73.7% | Val Acc:  68.7% | Val Macro-F1: 0.5116 | Time: 7.3m
+15093.0s 1317 Epoch [48/80] | Train Loss: 0.9673 | Train Acc:  74.7% | Val Acc:  68.4% | Val Macro-F1: 0.5078 | Time: 7.5m
+15102.3s 1318 Epoch [49/80] | Train Loss: 0.9463 | Train Acc:  75.7% | Val Acc:  65.4% | Val Macro-F1: 0.5223 | Time: 7.6m
+15111.4s 1319 Epoch [50/80] | Train Loss: 0.9441 | Train Acc:  75.9% | Val Acc:  62.9% | Val Macro-F1: 0.4412 | Time: 7.8m
+15120.6s 1320 Epoch [51/80] | Train Loss: 0.9486 | Train Acc:  73.7% | Val Acc:  68.1% | Val Macro-F1: 0.5214 | Time: 7.9m
+15130.0s 1321 Epoch [52/80] | Train Loss: 0.9615 | Train Acc:  74.7% | Val Acc:  69.0% | Val Macro-F1: 0.5189 | Time: 8.1m
+15139.2s 1322 Epoch [53/80] | Train Loss: 0.9413 | Train Acc:  74.2% | Val Acc:  67.6% | Val Macro-F1: 0.5250 | Time: 8.3m
+15148.7s 1323 Epoch [54/80] | Train Loss: 0.9425 | Train Acc:  74.6% | Val Acc:  65.4% | Val Macro-F1: 0.5400 | Time: 8.4m
+15148.7s 1324 >> New best fold F1: 0.5400
+15157.9s 1325 Epoch [55/80] | Train Loss: 0.9165 | Train Acc:  77.2% | Val Acc:  61.8% | Val Macro-F1: 0.4533 | Time: 8.6m
+15167.2s 1326 Epoch [56/80] | Train Loss: 0.9188 | Train Acc:  75.0% | Val Acc:  66.5% | Val Macro-F1: 0.5288 | Time: 8.7m
+15177.3s 1327 Epoch [57/80] | Train Loss: 0.9468 | Train Acc:  73.9% | Val Acc:  65.9% | Val Macro-F1: 0.5460 | Time: 8.9m
+15177.3s 1328 >> New best fold F1: 0.5460
+15187.1s 1329 Epoch [58/80] | Train Loss: 0.9277 | Train Acc:  76.0% | Val Acc:  69.5% | Val Macro-F1: 0.5749 | Time: 9.1m
+15187.1s 1330 >> New best fold F1: 0.5749
+15196.6s 1331 Epoch [59/80] | Train Loss: 0.9323 | Train Acc:  76.2% | Val Acc:  69.0% | Val Macro-F1: 0.5736 | Time: 9.2m
+15206.1s 1332 Epoch [60/80] | Train Loss: 0.9129 | Train Acc:  77.2% | Val Acc:  66.2% | Val Macro-F1: 0.5500 | Time: 9.4m
+15215.5s 1333 Epoch [61/80] | Train Loss: 0.9358 | Train Acc:  75.8% | Val Acc:  68.1% | Val Macro-F1: 0.5519 | Time: 9.5m
+15225.0s 1334 Epoch [62/80] | Train Loss: 0.9210 | Train Acc:  75.4% | Val Acc:  69.5% | Val Macro-F1: 0.5670 | Time: 9.7m
+15234.5s 1335 Epoch [63/80] | Train Loss: 0.9268 | Train Acc:  76.3% | Val Acc:  68.7% | Val Macro-F1: 0.5644 | Time: 9.8m
+15243.9s 1336 Epoch [64/80] | Train Loss: 0.9491 | Train Acc:  74.5% | Val Acc:  69.5% | Val Macro-F1: 0.5709 | Time: 10.0m
+15253.4s 1337 Epoch [65/80] | Train Loss: 0.9193 | Train Acc:  76.9% | Val Acc:  66.5% | Val Macro-F1: 0.5294 | Time: 10.2m
+15262.8s 1338 Epoch [66/80] | Train Loss: 0.9132 | Train Acc:  76.3% | Val Acc:  69.5% | Val Macro-F1: 0.5696 | Time: 10.3m
+15272.5s 1339 Epoch [67/80] | Train Loss: 0.9024 | Train Acc:  77.8% | Val Acc:  70.1% | Val Macro-F1: 0.5720 | Time: 10.5m
+15282.6s 1340 Epoch [68/80] | Train Loss: 0.9157 | Train Acc:  76.2% | Val Acc:  69.8% | Val Macro-F1: 0.5755 | Time: 10.6m
+15282.6s 1341 >> New best fold F1: 0.5755
+15295.1s 1342 Epoch [69/80] | Train Loss: 0.8910 | Train Acc:  78.5% | Val Acc:  67.9% | Val Macro-F1: 0.5602 | Time: 10.9m
+15307.3s 1343 Epoch [70/80] | Train Loss: 0.9057 | Train Acc:  77.5% | Val Acc:  70.1% | Val Macro-F1: 0.5742 | Time: 11.1m
+15319.1s 1344 Epoch [71/80] | Train Loss: 0.9227 | Train Acc:  75.1% | Val Acc:  70.1% | Val Macro-F1: 0.5776 | Time: 11.3m
+15319.1s 1345 >> New best fold F1: 0.5776
+15330.7s 1346 Epoch [72/80] | Train Loss: 0.9035 | Train Acc:  76.7% | Val Acc:  70.1% | Val Macro-F1: 0.5769 | Time: 11.4m
+15342.6s 1347 Epoch [73/80] | Train Loss: 0.9302 | Train Acc:  75.6% | Val Acc:  69.5% | Val Macro-F1: 0.5585 | Time: 11.6m
+15353.9s 1348 Epoch [74/80] | Train Loss: 0.8958 | Train Acc:  77.9% | Val Acc:  69.3% | Val Macro-F1: 0.5584 | Time: 11.8m
+15365.4s 1349 Epoch [75/80] | Train Loss: 0.8912 | Train Acc:  78.4% | Val Acc:  69.8% | Val Macro-F1: 0.5694 | Time: 12.0m
+15376.0s 1350 Epoch [76/80] | Train Loss: 0.9092 | Train Acc:  76.4% | Val Acc:  69.3% | Val Macro-F1: 0.5679 | Time: 12.2m
+15385.4s 1351 Epoch [77/80] | Train Loss: 0.9119 | Train Acc:  77.2% | Val Acc:  69.5% | Val Macro-F1: 0.5650 | Time: 12.4m
+15395.6s 1352 Epoch [78/80] | Train Loss: 0.9460 | Train Acc:  74.4% | Val Acc:  70.1% | Val Macro-F1: 0.5743 | Time: 12.5m
+15405.8s 1353 Epoch [79/80] | Train Loss: 0.9296 | Train Acc:  75.3% | Val Acc:  70.4% | Val Macro-F1: 0.5811 | Time: 12.7m
+15405.8s 1354 >> New best fold F1: 0.5811
+15415.6s 1355 Epoch [80/80] | Train Loss: 0.9033 | Train Acc:  77.1% | Val Acc:  70.1% | Val Macro-F1: 0.5772 | Time: 12.9m
+15424.9s 1356 FOLD 4 OOF (TTA) — Acc: 0.7091 | F1: 0.5987
+15425.1s 1357 
+15425.1s 1358 ============================================================
+15425.1s 1359 efficientformer_l1 | Loss: ce_smooth | Fold 5/5
+15425.1s 1360 ============================================================
+15425.2s 1361 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+15425.2s 1362 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+15425.2s 1363 
+15425.2s 1364 /tmp/ipykernel_23/2946703354.py:551: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+15425.2s 1365 scaler = GradScaler(enabled=(DEVICE.type == "cuda"))
+15435.0s 1366 Epoch [ 1/80] | Train Loss: 1.8363 | Train Acc:  16.7% | Val Acc:   8.6% | Val Macro-F1: 0.0604 | Time: 0.2m
+15435.0s 1367 >> New best fold F1: 0.0604
+15444.4s 1368 Epoch [ 2/80] | Train Loss: 1.8226 | Train Acc:  17.4% | Val Acc:   7.2% | Val Macro-F1: 0.0310 | Time: 0.3m
+15454.8s 1369 Epoch [ 3/80] | Train Loss: 1.8056 | Train Acc:  18.6% | Val Acc:  23.5% | Val Macro-F1: 0.1362 | Time: 0.5m
+15454.8s 1370 >> New best fold F1: 0.1362
+15464.7s 1371 Epoch [ 4/80] | Train Loss: 1.7783 | Train Acc:  21.0% | Val Acc:  13.0% | Val Macro-F1: 0.1034 | Time: 0.7m
+15474.1s 1372 Epoch [ 5/80] | Train Loss: 1.7601 | Train Acc:  24.9% | Val Acc:  22.4% | Val Macro-F1: 0.0612 | Time: 0.8m
+15483.5s 1373 Epoch [ 6/80] | Train Loss: 1.7456 | Train Acc:  27.0% | Val Acc:  21.6% | Val Macro-F1: 0.1440 | Time: 1.0m
+15483.5s 1374 >> New best fold F1: 0.1440
+15492.8s 1375 Epoch [ 7/80] | Train Loss: 1.7249 | Train Acc:  27.8% | Val Acc:   7.2% | Val Macro-F1: 0.0258 | Time: 1.1m
+15502.0s 1376 Epoch [ 8/80] | Train Loss: 1.7091 | Train Acc:  27.8% | Val Acc:  11.4% | Val Macro-F1: 0.0508 | Time: 1.3m
+15511.4s 1377 Epoch [ 9/80] | Train Loss: 1.6642 | Train Acc:  32.2% | Val Acc:  12.7% | Val Macro-F1: 0.0588 | Time: 1.4m
+15520.6s 1378 Epoch [10/80] | Train Loss: 1.5899 | Train Acc:  37.4% | Val Acc:  10.5% | Val Macro-F1: 0.0608 | Time: 1.6m
+15529.9s 1379 Epoch [11/80] | Train Loss: 1.5580 | Train Acc:  40.5% | Val Acc:  15.8% | Val Macro-F1: 0.0693 | Time: 1.7m
+15539.4s 1380 Epoch [12/80] | Train Loss: 1.5252 | Train Acc:  41.0% | Val Acc:   9.1% | Val Macro-F1: 0.0596 | Time: 1.9m
+15548.6s 1381 Epoch [13/80] | Train Loss: 1.4726 | Train Acc:  45.0% | Val Acc:  12.2% | Val Macro-F1: 0.0945 | Time: 2.1m
+15558.0s 1382 Epoch [14/80] | Train Loss: 1.4440 | Train Acc:  47.3% | Val Acc:  45.4% | Val Macro-F1: 0.1488 | Time: 2.2m
+15558.0s 1383 >> New best fold F1: 0.1488
+15567.6s 1384 Epoch [15/80] | Train Loss: 1.4070 | Train Acc:  49.3% | Val Acc:  45.7% | Val Macro-F1: 0.1727 | Time: 2.4m
+15567.6s 1385 >> New best fold F1: 0.1727
+15576.7s 1386 Epoch [16/80] | Train Loss: 1.3920 | Train Acc:  51.2% | Val Acc:  44.0% | Val Macro-F1: 0.1421 | Time: 2.5m
+15586.1s 1387 Epoch [17/80] | Train Loss: 1.3628 | Train Acc:  51.2% | Val Acc:  51.2% | Val Macro-F1: 0.2439 | Time: 2.7m
+15586.1s 1388 >> New best fold F1: 0.2439
+15595.4s 1389 Epoch [18/80] | Train Loss: 1.3447 | Train Acc:  52.8% | Val Acc:  44.6% | Val Macro-F1: 0.1886 | Time: 2.8m
+15604.5s 1390 Epoch [19/80] | Train Loss: 1.3503 | Train Acc:  52.6% | Val Acc:  42.4% | Val Macro-F1: 0.1692 | Time: 3.0m
+15613.8s 1391 Epoch [20/80] | Train Loss: 1.2760 | Train Acc:  58.1% | Val Acc:  26.0% | Val Macro-F1: 0.2109 | Time: 3.1m
+15623.3s 1392 Epoch [21/80] | Train Loss: 1.2828 | Train Acc:  56.9% | Val Acc:  47.9% | Val Macro-F1: 0.3230 | Time: 3.3m
+15623.3s 1393 >> New best fold F1: 0.3230
+15632.6s 1394 Epoch [22/80] | Train Loss: 1.2367 | Train Acc:  57.9% | Val Acc:  22.4% | Val Macro-F1: 0.1772 | Time: 3.5m
+15642.0s 1395 Epoch [23/80] | Train Loss: 1.2271 | Train Acc:  61.3% | Val Acc:  36.8% | Val Macro-F1: 0.2859 | Time: 3.6m
+15651.5s 1396 Epoch [24/80] | Train Loss: 1.2083 | Train Acc:  60.3% | Val Acc:  49.3% | Val Macro-F1: 0.3614 | Time: 3.8m
+15651.5s 1397 >> New best fold F1: 0.3614
+15660.9s 1398 Epoch [25/80] | Train Loss: 1.1716 | Train Acc:  61.9% | Val Acc:  28.8% | Val Macro-F1: 0.1938 | Time: 3.9m
+15670.4s 1399 Epoch [26/80] | Train Loss: 1.1887 | Train Acc:  62.2% | Val Acc:  42.1% | Val Macro-F1: 0.3282 | Time: 4.1m
+15679.7s 1400 Epoch [27/80] | Train Loss: 1.1884 | Train Acc:  61.5% | Val Acc:  42.7% | Val Macro-F1: 0.3562 | Time: 4.2m
+15688.9s 1401 Epoch [28/80] | Train Loss: 1.1348 | Train Acc:  66.1% | Val Acc:  36.8% | Val Macro-F1: 0.3194 | Time: 4.4m
+15698.3s 1402 Epoch [29/80] | Train Loss: 1.1254 | Train Acc:  65.1% | Val Acc:  35.5% | Val Macro-F1: 0.3011 | Time: 4.6m
+15707.3s 1403 Epoch [30/80] | Train Loss: 1.1437 | Train Acc:  64.9% | Val Acc:  39.6% | Val Macro-F1: 0.2906 | Time: 4.7m
+15716.7s 1404 Epoch [31/80] | Train Loss: 1.1126 | Train Acc:  65.6% | Val Acc:  55.4% | Val Macro-F1: 0.4522 | Time: 4.9m
+15716.7s 1405 >> New best fold F1: 0.4522
+15725.9s 1406 Epoch [32/80] | Train Loss: 1.1350 | Train Acc:  64.5% | Val Acc:  52.1% | Val Macro-F1: 0.3896 | Time: 5.0m
+15735.1s 1407 Epoch [33/80] | Train Loss: 1.0575 | Train Acc:  68.6% | Val Acc:  28.8% | Val Macro-F1: 0.2077 | Time: 5.2m
+15744.3s 1408 Epoch [34/80] | Train Loss: 1.0749 | Train Acc:  67.8% | Val Acc:  29.9% | Val Macro-F1: 0.1913 | Time: 5.3m
+15753.6s 1409 Epoch [35/80] | Train Loss: 1.0610 | Train Acc:  68.7% | Val Acc:  50.7% | Val Macro-F1: 0.3623 | Time: 5.5m
+15763.0s 1410 Epoch [36/80] | Train Loss: 1.0563 | Train Acc:  69.5% | Val Acc:  62.3% | Val Macro-F1: 0.4665 | Time: 5.6m
+15763.0s 1411 >> New best fold F1: 0.4665
+15772.3s 1412 Epoch [37/80] | Train Loss: 1.0201 | Train Acc:  70.8% | Val Acc:  50.7% | Val Macro-F1: 0.4120 | Time: 5.8m
+15781.3s 1413 Epoch [38/80] | Train Loss: 1.0685 | Train Acc:  68.2% | Val Acc:  59.3% | Val Macro-F1: 0.4296 | Time: 5.9m
+15790.5s 1414 Epoch [39/80] | Train Loss: 1.0410 | Train Acc:  70.3% | Val Acc:  60.1% | Val Macro-F1: 0.4241 | Time: 6.1m
+15799.6s 1415 Epoch [40/80] | Train Loss: 1.0215 | Train Acc:  71.1% | Val Acc:  42.7% | Val Macro-F1: 0.3132 | Time: 6.2m
+15808.9s 1416 Epoch [41/80] | Train Loss: 1.0190 | Train Acc:  70.5% | Val Acc:  66.2% | Val Macro-F1: 0.5726 | Time: 6.4m
+15808.9s 1417 >> New best fold F1: 0.5726
+15818.1s 1418 Epoch [42/80] | Train Loss: 1.0005 | Train Acc:  71.5% | Val Acc:  56.8% | Val Macro-F1: 0.4628 | Time: 6.5m
+15827.4s 1419 Epoch [43/80] | Train Loss: 1.0005 | Train Acc:  72.8% | Val Acc:  56.5% | Val Macro-F1: 0.4470 | Time: 6.7m
+15836.5s 1420 Epoch [44/80] | Train Loss: 0.9922 | Train Acc:  72.4% | Val Acc:  62.0% | Val Macro-F1: 0.5333 | Time: 6.9m
+15845.6s 1421 Epoch [45/80] | Train Loss: 0.9677 | Train Acc:  74.4% | Val Acc:  56.2% | Val Macro-F1: 0.4737 | Time: 7.0m
+15854.7s 1422 Epoch [46/80] | Train Loss: 0.9678 | Train Acc:  71.8% | Val Acc:  64.0% | Val Macro-F1: 0.5191 | Time: 7.2m
+15863.9s 1423 Epoch [47/80] | Train Loss: 0.9690 | Train Acc:  73.5% | Val Acc:  53.7% | Val Macro-F1: 0.4749 | Time: 7.3m
+15873.1s 1424 Epoch [48/80] | Train Loss: 0.9738 | Train Acc:  72.8% | Val Acc:  63.7% | Val Macro-F1: 0.5171 | Time: 7.5m
+15882.7s 1425 Epoch [49/80] | Train Loss: 0.9803 | Train Acc:  73.0% | Val Acc:  60.7% | Val Macro-F1: 0.4987 | Time: 7.6m
+15891.9s 1426 Epoch [50/80] | Train Loss: 0.9792 | Train Acc:  73.4% | Val Acc:  68.1% | Val Macro-F1: 0.5829 | Time: 7.8m
+15891.9s 1427 >> New best fold F1: 0.5829
+15901.0s 1428 Epoch [51/80] | Train Loss: 0.9627 | Train Acc:  72.4% | Val Acc:  66.2% | Val Macro-F1: 0.5523 | Time: 7.9m
+15910.3s 1429 Epoch [52/80] | Train Loss: 0.9673 | Train Acc:  74.2% | Val Acc:  64.8% | Val Macro-F1: 0.5796 | Time: 8.1m
+15919.8s 1430 Epoch [53/80] | Train Loss: 0.9559 | Train Acc:  74.3% | Val Acc:  64.0% | Val Macro-F1: 0.5413 | Time: 8.2m
+15929.1s 1431 Epoch [54/80] | Train Loss: 0.9483 | Train Acc:  74.0% | Val Acc:  65.1% | Val Macro-F1: 0.5543 | Time: 8.4m
+15938.4s 1432 Epoch [55/80] | Train Loss: 0.9277 | Train Acc:  75.7% | Val Acc:  68.1% | Val Macro-F1: 0.5800 | Time: 8.6m
+15947.6s 1433 Epoch [56/80] | Train Loss: 0.9486 | Train Acc:  74.7% | Val Acc:  65.4% | Val Macro-F1: 0.5715 | Time: 8.7m
+15956.9s 1434 Epoch [57/80] | Train Loss: 0.9613 | Train Acc:  75.2% | Val Acc:  66.2% | Val Macro-F1: 0.5727 | Time: 8.9m
+15966.2s 1435 Epoch [58/80] | Train Loss: 0.9478 | Train Acc:  74.4% | Val Acc:  65.7% | Val Macro-F1: 0.5818 | Time: 9.0m
+15975.4s 1436 Epoch [59/80] | Train Loss: 0.9247 | Train Acc:  75.8% | Val Acc:  66.2% | Val Macro-F1: 0.5733 | Time: 9.2m
+15984.6s 1437 Epoch [60/80] | Train Loss: 0.9086 | Train Acc:  75.8% | Val Acc:  66.5% | Val Macro-F1: 0.5713 | Time: 9.3m
+15994.0s 1438 Epoch [61/80] | Train Loss: 0.9636 | Train Acc:  73.3% | Val Acc:  67.0% | Val Macro-F1: 0.5806 | Time: 9.5m
+16003.1s 1439 Epoch [62/80] | Train Loss: 0.9313 | Train Acc:  74.9% | Val Acc:  65.9% | Val Macro-F1: 0.5783 | Time: 9.6m
+16012.4s 1440 Epoch [63/80] | Train Loss: 0.8976 | Train Acc:  77.2% | Val Acc:  66.8% | Val Macro-F1: 0.5671 | Time: 9.8m
+16021.5s 1441 Epoch [64/80] | Train Loss: 0.9264 | Train Acc:  75.9% | Val Acc:  65.9% | Val Macro-F1: 0.5653 | Time: 9.9m
+16031.2s 1442 Epoch [65/80] | Train Loss: 0.9244 | Train Acc:  75.0% | Val Acc:  66.8% | Val Macro-F1: 0.5847 | Time: 10.1m
+16031.2s 1443 >> New best fold F1: 0.5847
+16040.7s 1444 Epoch [66/80] | Train Loss: 0.9120 | Train Acc:  75.8% | Val Acc:  66.5% | Val Macro-F1: 0.5881 | Time: 10.3m
+16040.7s 1445 >> New best fold F1: 0.5881
+16050.4s 1446 Epoch [67/80] | Train Loss: 0.9142 | Train Acc:  76.1% | Val Acc:  68.1% | Val Macro-F1: 0.5976 | Time: 10.4m
+16050.4s 1447 >> New best fold F1: 0.5976
+16059.8s 1448 Epoch [68/80] | Train Loss: 0.9195 | Train Acc:  75.7% | Val Acc:  67.9% | Val Macro-F1: 0.5895 | Time: 10.6m
+16069.0s 1449 Epoch [69/80] | Train Loss: 0.9343 | Train Acc:  74.6% | Val Acc:  67.3% | Val Macro-F1: 0.5789 | Time: 10.7m
+16078.2s 1450 Epoch [70/80] | Train Loss: 0.9214 | Train Acc:  75.7% | Val Acc:  66.8% | Val Macro-F1: 0.5813 | Time: 10.9m
+16087.3s 1451 Epoch [71/80] | Train Loss: 0.9206 | Train Acc:  76.7% | Val Acc:  67.6% | Val Macro-F1: 0.5900 | Time: 11.0m
+16096.6s 1452 Epoch [72/80] | Train Loss: 0.8983 | Train Acc:  77.6% | Val Acc:  67.9% | Val Macro-F1: 0.5841 | Time: 11.2m
+16105.8s 1453 Epoch [73/80] | Train Loss: 0.9080 | Train Acc:  76.2% | Val Acc:  67.3% | Val Macro-F1: 0.5803 | Time: 11.3m
+16115.0s 1454 Epoch [74/80] | Train Loss: 0.9082 | Train Acc:  76.4% | Val Acc:  68.7% | Val Macro-F1: 0.6052 | Time: 11.5m
+16115.0s 1455 >> New best fold F1: 0.6052
+16124.1s 1456 Epoch [75/80] | Train Loss: 0.9344 | Train Acc:  75.6% | Val Acc:  69.0% | Val Macro-F1: 0.5993 | Time: 11.6m
+16133.3s 1457 Epoch [76/80] | Train Loss: 0.9128 | Train Acc:  75.6% | Val Acc:  68.7% | Val Macro-F1: 0.5988 | Time: 11.8m
+16142.8s 1458 Epoch [77/80] | Train Loss: 0.9119 | Train Acc:  77.2% | Val Acc:  69.3% | Val Macro-F1: 0.6023 | Time: 12.0m
+16151.9s 1459 Epoch [78/80] | Train Loss: 0.9195 | Train Acc:  76.6% | Val Acc:  69.3% | Val Macro-F1: 0.6033 | Time: 12.1m
+16161.4s 1460 Epoch [79/80] | Train Loss: 0.9010 | Train Acc:  76.9% | Val Acc:  69.3% | Val Macro-F1: 0.6033 | Time: 12.3m
+16170.8s 1461 Epoch [80/80] | Train Loss: 0.9204 | Train Acc:  76.7% | Val Acc:  68.7% | Val Macro-F1: 0.5993 | Time: 12.4m
+16178.4s 1462 FOLD 5 OOF (TTA) — Acc: 0.6842 | F1: 0.6114
+16178.8s 1463 
+16178.8s 1464 efficientformer_l1 CV mean (5 folds) — Acc: 0.5936+/-0.2030 | F1: 0.5012+/-0.1842
+16178.8s 1465 
+16178.8s 1466 ======================================================================
+16178.8s 1467 FINAL MODEL COMPARISON (Stratified K-Fold CV)
+16178.8s 1468 ======================================================================
+16178.8s 1469 Model                                      Acc         F1       Prec        Rec  Folds
+16178.8s 1470 --------------------------------------------------------------------------------------
+16178.8s 1471 vgg16                               0.7135+/-0.014 0.6114+/-0.017 0.5987+/-0.022 0.6574+/-0.022      5
+16178.8s 1472 swin_base_patch4_window7_224        0.7201+/-0.013 0.6064+/-0.028 0.5938+/-0.028 0.6421+/-0.029      5
+16178.8s 1473 vit_base_patch16_224                0.7196+/-0.009 0.6037+/-0.026 0.5932+/-0.027 0.6403+/-0.038      5
+16178.8s 1474 deit_small_patch16_224              0.7152+/-0.012 0.6015+/-0.026 0.5882+/-0.027 0.6389+/-0.027      5
+16178.8s 1475 maxvit_tiny_rw_224                  0.7096+/-0.009 0.6006+/-0.026 0.5885+/-0.020 0.6423+/-0.032      5
+16178.8s 1476 swin_tiny_patch4_window7_224        0.7057+/-0.012 0.5985+/-0.021 0.5847+/-0.022 0.6350+/-0.023      5
+16178.8s 1477 densenet121                         0.7091+/-0.011 0.5944+/-0.020 0.5830+/-0.022 0.6264+/-0.029      5
+16178.8s 1478 efficientnet_b0                     0.7074+/-0.015 0.5863+/-0.033 0.5807+/-0.033 0.6165+/-0.041      5
+16178.8s 1479 mobilenetv2_100                     0.6980+/-0.022 0.5845+/-0.034 0.5753+/-0.033 0.6183+/-0.037      5
+16178.8s 1480 resnet50                            0.6620+/-0.022 0.5609+/-0.031 0.5424+/-0.032 0.6085+/-0.031      5
+16178.8s 1481 efficientformer_l1                  0.5936+/-0.203 0.5012+/-0.184 0.5084+/-0.161 0.5527+/-0.180      5
+16178.8s 1482 convnext_tiny                       0.2742+/-0.165 0.0761+/-0.026 0.0540+/-0.020 0.1591+/-0.009      5
+16179.7s 1483 /tmp/ipykernel_23/2946703354.py:758: FutureWarning:
+16179.7s 1484 
+16179.7s 1485 Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
+16179.7s 1486 
+16179.7s 1487 sns.barplot(data=df_f1, x="Model", y="F1", palette="coolwarm", ax=ax2)
+16179.7s 1488 
+16179.7s 1489 /tmp/ipykernel_23/2946703354.py:758: FutureWarning:
+16179.7s 1490 
+16179.7s 1491 Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
+16179.7s 1492 
+16179.7s 1493 sns.barplot(data=df_f1, x="Model", y="F1", palette="coolwarm", ax=ax2)
+16183.5s 1494 
+16183.5s 1495 All CV results and paper-ready figures saved to /kaggle/working/results/paper_figures/
+16183.5s 1496 Download the output dataset from the Kaggle 'Output' tab.
+16183.7s 1497 [*] Running on Device: cuda | Output Directory: /kaggle/working/results/proposed_model_proposed
+16183.7s 1498 [*] Dataset Directory: /kaggle/working/dataset_mtcnn
+16183.7s 1499 [*] Building full dataset (train+valid+test merged) ...
+16183.7s 1500 [*] Total images: 0
+16183.7s 1501 [*] Loaded fold assignment from /kaggle/working/results/fold_id_by_path.json
+16187.3s 1502 Traceback (most recent call last):
+16187.3s 1503 File "<string>", line 1, in <module>
+16187.3s 1504 File "/usr/local/lib/python3.12/dist-packages/papermill/execute.py", line 131, in execute_notebook
+16187.3s 1505 raise_for_execution_errors(nb, output_path)
+16187.3s 1506 File "/usr/local/lib/python3.12/dist-packages/papermill/execute.py", line 251, in raise_for_execution_errors
+16187.3s 1507 raise error
+16187.3s 1508 papermill.exceptions.PapermillExecutionError:
+16187.3s 1509 ---------------------------------------------------------------------------
+16187.3s 1510 Exception encountered at "In [3]":
+16187.3s 1511 ---------------------------------------------------------------------------
+16187.3s 1512 ZeroDivisionError                         Traceback (most recent call last)
+16187.3s 1513 /tmp/ipykernel_23/2390319524.py in <cell line: 0>()
+16187.3s 1514 432          for fold in range(N_FOLDS)]
+16187.3s 1515 433
+16187.3s 1516 --> 434 alpha = compute_focal_alpha(labels)
+16187.3s 1517 435 print(f"[*] Focal Loss Class Weights (V6 Boost): { {CLASSES[i]: f'{alpha[i].item():.2f}' for i in range(NUM_CLASSES)} }")
+16187.3s 1518 436 loss_fn = FocalLoss(alpha=alpha, gamma=1.5)
+16187.3s 1519 
+16187.3s 1520 /tmp/ipykernel_23/2390319524.py in compute_focal_alpha(labels)
+16187.3s 1521 397     total = len(labels)
+16187.3s 1522 398     alpha = torch.tensor(
+16187.3s 1523 --> 399         [total / (NUM_CLASSES * counts[i]) for i in range(NUM_CLASSES)],
+16187.3s 1524 400         dtype=torch.float32,
+16187.3s 1525 401     ).to(device)
+16187.3s 1526 
+16187.3s 1527 ZeroDivisionError: division by zero
+16187.3s 1528 
+16189.6s 1529 /usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\|'
+16189.6s 1530 cells[i][c] = re.sub('\\\\\|', '|', cell)
+16189.8s 1531 /usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\_'
+16189.8s 1532 text = re.sub(r'_', '\_', text) # Escape underscores in display text
+16190.4s 1533 [NbConvertApp] Converting notebook __notebook__.ipynb to notebook
+16190.9s 1534 [NbConvertApp] Writing 285616 bytes to __notebook__.ipynb
+16193.2s 1535 [NbConvertApp] Converting notebook __notebook__.ipynb to html
+16194.3s 1536 [NbConvertApp] Writing 829393 bytes to __results__.html

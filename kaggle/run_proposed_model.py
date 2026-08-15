@@ -82,44 +82,38 @@ NUM_WORKERS = 2 if sys.platform == "linux" else 0  # Windows spawn breaks multip
 
 _EXPECTED_CLASSES = ("anger", "fear", "joy", "natural", "sadness", "surprise")
 
-def find_dataset_dir():
-    """Locate the dataset root containing train/valid/test class folders.
-
-    Kaggle mounts datasets under /kaggle/input/<slug>/ but the slug and
-    internal folder names vary, so walk a few levels and match on structure.
-    """
+def find_dataset_dir(hardcoded=None):
+    """Locate the dataset root containing train/valid/test class folders."""
     base = "/kaggle/input"
     if not os.path.isdir(base):
-        return None
+        return hardcoded
+        
     for root, dirs, _ in os.walk(base):
-        depth = root[len(base):].count(os.sep)
-        if depth > 3:
-            dirs[:] = []
-            continue
-        subs = os.listdir(root) if os.path.isdir(root) else []
-        if any(s in subs for s in ("train", "valid", "test")):
-            for split in ("train", "valid", "test"):
-                split_dir = os.path.join(root, split)
-                if os.path.isdir(split_dir) and any(
-                    os.path.isdir(os.path.join(split_dir, c)) for c in _EXPECTED_CLASSES):
-                    print(f"[*] Auto-detected dataset at {root}")
-                    return root
-    return None
+        if all(split in dirs for split in ("train", "valid", "test")):
+            print(f"[*] Auto-detected dataset at {root}")
+            return root
+            
+    if hardcoded:
+        print(f"[!] Dataset not found under {base}; using hardcoded path")
+    return hardcoded
 
 KAGGLE_MTCNN_DIR   = "/kaggle/working/dataset_mtcnn"
 KAGGLE_DATASET_DIR = "/kaggle/input/datasets/mrsohel/autism-dataset/dataset_clean"
 LOCAL_DATASET_DIR  = r"C:\Users\mrsoh\Documents\Autism-Facial-Expression-Recognition\dataset_clean"
 
 # RAW dataset first — the MTCNN variant hurt accuracy.
+# Priority: auto-detect (most reliable on Kaggle) > hardcoded slug > local > MTCNN fallback
 _auto_detected = find_dataset_dir() if os.path.isdir("/kaggle/input") else None
-if os.path.exists(KAGGLE_DATASET_DIR):
+if _auto_detected:
+    DATASET_DIR = _auto_detected
+elif os.path.exists(KAGGLE_DATASET_DIR):
     DATASET_DIR = KAGGLE_DATASET_DIR
 elif os.path.exists(LOCAL_DATASET_DIR):
     DATASET_DIR = LOCAL_DATASET_DIR
-elif _auto_detected:
-    DATASET_DIR = _auto_detected
 else:
     DATASET_DIR = KAGGLE_MTCNN_DIR
+    print(f"[!] WARNING: All dataset paths failed — falling back to {KAGGLE_MTCNN_DIR} (likely empty!)"
+          " Run Cell 2 (run_all_models.py) first and ensure the dataset slug is attached.")
 
 OUTPUT_DIR = "/kaggle/working/results/proposed_model_proposed" if os.path.exists("/kaggle") else "./results/proposed_model_proposed"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -399,8 +393,21 @@ class ModelEMA:
 
 def compute_focal_alpha(labels):
     """Inverse-frequency class weights + sadness x2.0, fear x1.2 (V6 boost)."""
+    if len(labels) == 0:
+        raise RuntimeError(
+            "[!] Dataset is EMPTY — no images found in DATASET_DIR.\n"
+            f"    Resolved DATASET_DIR = {DATASET_DIR}\n"
+            "    Check that the correct Kaggle dataset is attached and the slug matches."
+        )
     counts = Counter(labels)
     total = len(labels)
+    missing = [CLASSES[i] for i in range(NUM_CLASSES) if counts.get(i, 0) == 0]
+    if missing:
+        raise RuntimeError(
+            f"[!] The following classes have 0 images: {missing}\n"
+            f"    DATASET_DIR = {DATASET_DIR}\n"
+            "    Verify that train/valid/test subdirs contain all 6 class folders."
+        )
     alpha = torch.tensor(
         [total / (NUM_CLASSES * counts[i]) for i in range(NUM_CLASSES)],
         dtype=torch.float32,

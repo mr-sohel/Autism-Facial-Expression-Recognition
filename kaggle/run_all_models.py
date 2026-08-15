@@ -103,6 +103,10 @@ def restore_from_prior_session(output_dir):
       (it has cv_done.json at root or inside a 'results/' sub-folder) and
       copies everything into output_dir so the in-session resume logic finds
       it at the expected paths.
+
+    NOTE: .pth checkpoint files are intentionally skipped — they are large
+    (100-400 MB each) and NOT needed for the resume logic (only .npy OOF
+    arrays and .json metrics are checked). Skipping them keeps this fast.
     """
     base = "/kaggle/input"
     if not os.path.isdir(base):
@@ -117,26 +121,33 @@ def restore_from_prior_session(output_dir):
             if os.path.exists(os.path.join(croot, "cv_done.json")):
                 print(f"[*] Found prior session output at {croot} — restoring to {output_dir}")
                 import shutil
+                copied, skipped_pth = 0, 0
                 for item in os.listdir(croot):
                     src = os.path.join(croot, item)
                     dst = os.path.join(output_dir, item)
                     if os.path.isdir(src):
                         if not os.path.exists(dst):
-                            shutil.copytree(src, dst)
-                        else:
-                            # Merge: only copy files that don't already exist
-                            for root, dirs, files in os.walk(src):
-                                rel = os.path.relpath(root, src)
-                                dest_root = os.path.join(dst, rel)
-                                os.makedirs(dest_root, exist_ok=True)
-                                for f in files:
-                                    dest_f = os.path.join(dest_root, f)
-                                    if not os.path.exists(dest_f):
-                                        shutil.copy2(os.path.join(root, f), dest_f)
+                            os.makedirs(dst, exist_ok=True)
+                        # Merge: only copy files that don't already exist; skip .pth
+                        for root, dirs, files in os.walk(src):
+                            rel = os.path.relpath(root, src)
+                            dest_root = os.path.join(dst, rel)
+                            os.makedirs(dest_root, exist_ok=True)
+                            for f in files:
+                                if f.endswith(".pth"):
+                                    skipped_pth += 1
+                                    continue  # skip — not needed for resume
+                                dest_f = os.path.join(dest_root, f)
+                                if not os.path.exists(dest_f):
+                                    shutil.copy2(os.path.join(root, f), dest_f)
+                                    copied += 1
+                                    if copied % 10 == 0:
+                                        print(f"    ... copied {copied} files so far (skipped {skipped_pth} .pth)")
                     else:
-                        if not os.path.exists(dst):
+                        if not os.path.exists(dst) and not item.endswith(".pth"):
                             shutil.copy2(src, dst)
-                print(f"[*] Restore complete.")
+                            copied += 1
+                print(f"[*] Restore complete: {copied} files copied, {skipped_pth} large .pth files skipped.")
                 return  # only restore from the first matching prior output
 
 
