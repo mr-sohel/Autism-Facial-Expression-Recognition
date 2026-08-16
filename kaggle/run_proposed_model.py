@@ -566,13 +566,14 @@ def evaluate_model(model, val_ds):
         imgs, labels = imgs.to(device), labels.to(device)
         with autocast(device_type=device.type, dtype=torch.float16 if device.type == "cuda" else torch.bfloat16):
             outputs = model(imgs)
-        val_loss += loss_fn(outputs, labels).item() * imgs.size(0)
+            loss = loss_fn(outputs, labels)
+        val_loss += loss.item() * imgs.size(0)
         out_preds = outputs.argmax(dim=1)
         correct += (out_preds == labels).sum().item()
         total += imgs.size(0)
         preds.extend(out_preds.cpu().numpy())
         targets.extend(labels.cpu().numpy())
-    f1 = f1_score(targets, preds, average="macro")
+    f1 = f1_score(targets, preds, average="macro", zero_division=0)
     return val_loss / total, correct / total, f1
 
 
@@ -684,7 +685,7 @@ def run_fold(fold, train_idx, val_idx):
     preds, targets, probs = evaluate_tta(eval_model, val_ds)
 
     acc = accuracy_score(targets, preds)
-    f1 = f1_score(targets, preds, average="macro")
+    f1 = f1_score(targets, preds, average="macro", zero_division=0)
     prec = precision_score(targets, preds, average="macro", zero_division=0)
     rec = recall_score(targets, preds, average="macro", zero_division=0)
     per_class_f1 = f1_score(targets, preds, average=None, zero_division=0, labels=list(range(NUM_CLASSES)))
@@ -693,6 +694,13 @@ def run_fold(fold, train_idx, val_idx):
               "precision_macro": float(prec), "recall_macro": float(rec),
               "per_class_f1": {c: float(f) for c, f in zip(CLASSES, per_class_f1)}}
     print(f"  FOLD {fold+1} OOF (5-view TTA) — Acc: {acc:.4f} | F1: {f1:.4f}")
+
+    # Cleanup memory to prevent Kaggle OOMs across folds
+    del model, eval_model, train_loader, optimizer, scheduler, ema_model, scaler
+    del train_loader_s2, optimizer_stage2, ema_model_stage2, scaler_s2
+    import gc
+    gc.collect()
+    torch.cuda.empty_cache()
 
     return fold_m, preds, targets, probs
 
@@ -751,7 +759,7 @@ test_targets = np.array(all_labels)
 test_probs = np.array(all_probs)
 
 test_acc = accuracy_score(test_targets, test_preds)
-test_f1 = f1_score(test_targets, test_preds, average="macro")
+test_f1 = f1_score(test_targets, test_preds, average="macro", zero_division=0)
 test_prec = precision_score(test_targets, test_preds, average="macro", zero_division=0)
 test_rec = recall_score(test_targets, test_preds, average="macro", zero_division=0)
 
@@ -787,7 +795,7 @@ print(f"    High-Confidence: {high_conf.sum()} / {len(confidences)} images")
 print(f"    Flagged for Caregiver Review (Low Conf): {(~high_conf).sum()} images ({rejection_rate:.1f}% Rejection Rate)")
 if high_conf.sum() > 0:
     hc_acc = accuracy_score(test_targets[high_conf], test_preds[high_conf])
-    hc_f1 = f1_score(test_targets[high_conf], test_preds[high_conf], average="macro")
+    hc_f1 = f1_score(test_targets[high_conf], test_preds[high_conf], average="macro", zero_division=0)
     print(f"    -> High-Confidence Subset Accuracy: {hc_acc*100:.2f}% | Macro F1: {hc_f1:.4f}")
 
 # ==============================================================================
