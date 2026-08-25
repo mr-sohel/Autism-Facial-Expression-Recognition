@@ -12,14 +12,26 @@ adapted to Stratified K-Fold Cross-Validation on RAW images (no MTCNN/CLAHE):
 5. Clinical Safety: Confidence Uncertainty Rejection Guardrail
 6. Publication Figures: Confusion Matrix, Curves, Per-Class Metrics, Grad-CAM Heatmaps
 
-Methodology fixes (match run_all_models.py):
-- RAW images only (the MTCNN+CLAHE step hurt accuracy).
-- Identical train-time augmentation as the baselines (fair comparison):
-  no MixUp, no RandomErasing, no RandAugment.
-- Class imbalance handled ONLY via FocalLoss class weights (single weighting).
-- Stratified K-Fold CV using the SAME fold assignment as the baselines
-  (fold_id_by_path.json written by run_all_models.py).
-- Resumable: per-fold checkpoints + cv_done.json marker.
+Methodology fixes in v4-proposed-opt (see IMPROVE.md for evidence behind each):
+- HONEST MEASUREMENT: `FIXED_SCHEDULE=True` trains a fixed number of epochs with no early stopping
+  and no best-checkpoint selection, then evaluates the FINAL EMA weights. The old code picked the
+  best epoch by macro-F1 on the very fold it reported, so every previous number was inflated.
+- REPRODUCIBILITY: per-(fold) DataLoader generators + per-fold `seed_everything`. One shared global
+  generator previously made resumed sessions diverge (measured 0.1337 vs 0.3727 on one fold).
+- SINGLE WEIGHTING: stage-1/stage-2 weighting is selected explicitly; stage 2 no longer applies a
+  balanced sampler AND alpha-weighted loss at the same time.
+- REAL BACKBONE FREEZE: frozen modules are put in eval() so their BatchNorm running statistics stop
+  drifting during stage 2.
+- EMA WARM-UP RAMP: decay ramps 0 -> 0.999 over the first epochs, instead of starting ~91% stale.
+- FOLD-WISE CLASS WEIGHTS, CAPPED: alpha is computed from the fold's training labels only and its
+  max/min ratio is capped (legacy spread 14.8x drove fear precision to 0.37).
+- NOISE-ROBUST LOSS OPTIONS: `STAGE1_LOSS` in {focal, gce, sce}. A 12-model consensus audit found
+  ~15% of labels contradicted by every model, concentrated in sadness<->anger/fear.
+- SPATIAL DETAIL: `STREAM_A_POOL` in {gap, spatial2x2, attn}; standalone VGG16 outscored the
+  GAP-pooled hybrid, so global average pooling was discarding the useful signal.
+- SAFER PERSISTENCE: OOF arrays are saved before the fold is marked done, an `oof_paths.json` index
+  is written so predictions can be traced back to images, and fold coverage is asserted instead of
+  silently defaulting unmatched paths to fold 0.
 
 Run run_all_models.py FIRST (it writes fold_id_by_path.json), then this cell.
 ========================================================================================
@@ -67,18 +79,45 @@ warnings.filterwarnings("ignore")
 # 1. HYPERPARAMETERS & CONFIGURATION
 # ==============================================================================
 SEED = 42
-NUM_EPOCHS = 160      # Stage 1
+NUM_EPOCHS = 110      # Stage 1 (fixed schedule; EMA ramp removed the ~20 wasted cold-start epochs)
 STAGE2_EPOCHS = 20    # Stage 2 (frozen backbone)
 BATCH_SIZE = 16
 LEARNING_RATE = 1e-4  # Optimal for Hybrid Transformer-CNN architectures
 WEIGHT_DECAY = 1e-4
 EMA_DECAY = 0.999
+EMA_WARMUP_EPOCHS = 5  # ramp decay 0 -> EMA_DECAY so the EMA is not ~91% stale after epoch 1
 TTA_VIEWS = 5
-UNCERTAINTY_THRESH = 0.30  # Clinical rejection guardrail
+UNCERTAINTY_THRESH = 0.50  # was 0.30 -> flagged only 4/1808 images (min observed max-prob is 0.2491)
 IMG_SIZE = 224
-PATIENCE = 20
+PATIENCE = 20         # only used when FIXED_SCHEDULE = False
+PATIENCE_S2 = 8       # must be < STAGE2_EPOCHS or stage-2 early stop can never fire
 N_FOLDS = 5           # MUST match run_all_models.py
 NUM_WORKERS = 2 if sys.platform == "linux" else 0  # Windows spawn breaks multiprocessing loaders
+
+# ---- Methodology switches (see IMPROVE.md) ----
+# FIXED_SCHEDULE: train a fixed number of epochs, no early stopping, no best-checkpoint selection,
+# and evaluate the FINAL EMA weights. The old behaviour picked the best epoch by macro-F1 on the very
+# fold it then reported (leakage) — every reported number was optimistically biased.
+FIXED_SCHEDULE = True
+# Loss for stage 1: "focal" (original) | "gce" (generalized CE) | "sce" (symmetric CE).
+# The label audit found ~15% symmetric noise concentrated in sadness<->anger/fear, which imbalance
+# weighting cannot fix; GCE/SCE are noise-robust drop-ins.
+STAGE1_LOSS = "focal"
+GCE_Q = 0.7           # generalized-CE exponent (q->0 behaves like CE, q=1 like MAE)
+SCE_ALPHA, SCE_BETA = 1.0, 0.5
+# Class weighting: "alpha" (focal alpha only) | "sampler" (WeightedRandomSampler only) | "both" (buggy legacy)
+STAGE1_WEIGHTING = "alpha"
+STAGE2_WEIGHTING = "sampler"   # legacy code applied BOTH sampler and alpha here
+# Class weights are tempered: w = (1/freq)^ALPHA_POWER. 1.0 = full inverse frequency (legacy, gave
+# fear a 12.4x weight and drove its precision to 0.37), 0.0 = uniform. 0.5 (sqrt) keeps the ordering
+# while compressing the range to ~3.5x. ALPHA_MAX_RATIO is a secondary safety net only.
+ALPHA_POWER = 0.5
+ALPHA_MAX_RATIO = 6.0
+SADNESS_BOOST, FEAR_BOOST = 1.5, 1.0   # legacy: 2.0 / 1.2 (fear boost drove precision down to 0.37)
+# Stream A pooling: "gap" (legacy, 512-d) | "spatial2x2" (2048-d) | "attn" (attention-pooled 512-d).
+# VGG16 alone (0.6114) beat the GAP-based hybrid (0.5981) -> GAP is discarding spatial detail.
+STREAM_A_POOL = "attn"
+DEIT_DROP_PATH = 0.1           # baseline deit_small got drop_path 0.2; hybrid streams had none
 
 _EXPECTED_CLASSES = ("anger", "fear", "joy", "natural", "sadness", "surprise")
 
@@ -173,18 +212,19 @@ def restore_from_prior_session(output_dir, shared_results_dir):
 
 restore_from_prior_session(OUTPUT_DIR, _SHARED_RESULTS)
 
-# Bump when the training/eval methodology changes; warns if an old results dir is resumed.
-PIPELINE_VERSION = "v3-emabn"
+# Bump when the training/eval methodology changes. Mixing versions in one results dir is fatal, so
+# this REFUSES to resume rather than warning. The marker is written only after a successful run
+# (legacy code overwrote it immediately after warning, destroying the evidence).
+PIPELINE_VERSION = "v4-proposed-opt"
 _ver_path = os.path.join(OUTPUT_DIR, "pipeline_version.json")
 if os.path.exists(_ver_path):
     with open(_ver_path) as f:
         _old_ver = json.load(f).get("pipeline_version")
     if _old_ver != PIPELINE_VERSION:
-        print(f"[!] {OUTPUT_DIR} was produced by pipeline '{_old_ver}' != "
-              f"'{PIPELINE_VERSION}'. Resuming would MIX incompatible metrics — "
-              "delete the results dir before re-running.")
-with open(_ver_path, "w") as f:
-    json.dump({"pipeline_version": PIPELINE_VERSION}, f, indent=2)
+        raise RuntimeError(
+            f"[!] {OUTPUT_DIR} was produced by pipeline '{_old_ver}' != '{PIPELINE_VERSION}'.\n"
+            "    Resuming would mix incompatible metrics. Delete that directory and re-run."
+        )
 
 CLASSES = ["anger", "fear", "joy", "natural", "sadness", "surprise"]
 NUM_CLASSES = len(CLASSES)
@@ -203,7 +243,17 @@ def seed_everything(seed=42):
 
 
 seed_everything(SEED)
-DL_GENERATOR = torch.Generator().manual_seed(SEED)
+
+
+def fold_generator(fold):
+    """Per-fold DataLoader generator.
+
+    The legacy code shared ONE global generator across every loader, so the random stream for a given
+    fold depended on how many loaders had been created earlier in the session. That made resumed runs
+    irreproducible (measured: efficientformer_l1 fold-0 macro-F1 0.1337 in one session vs 0.3727 in
+    another, identical code and pipeline tag).
+    """
+    return torch.Generator().manual_seed(SEED * 1000 + fold)
 
 
 def seed_worker(worker_id):
@@ -308,26 +358,58 @@ class SqueezeExcitationBlock(nn.Module):
         return x * w
 
 
-class CareFERModel(nn.Module):
-    """Dual-stream: VGG16-BN spatial (forward_features + GAP, 512-d) + DeiT-S CLS (384-d),
-    dual SE recalibration, head 896->512->256->6."""
+class AttentionPool2d(nn.Module):
+    """Learned spatial attention pooling over a HxW feature map (keeps channel dim)."""
 
-    def __init__(self, num_classes=6, pretrained=True):
+    def __init__(self, channels):
         super().__init__()
+        self.score = nn.Conv2d(channels, 1, kernel_size=1)
+
+    def forward(self, x):                        # x: (B, C, H, W)
+        w = torch.softmax(self.score(x).flatten(2), dim=-1)   # (B, 1, HW)
+        return (x.flatten(2) * w).sum(-1)                     # (B, C)
+
+
+class CareFERModel(nn.Module):
+    """Dual-stream: VGG16-BN spatial features + DeiT-S CLS token (384-d), dual SE recalibration.
+
+    Stream A pooling is configurable (`STREAM_A_POOL`): GAP throws away the 7x7 spatial detail that
+    makes standalone VGG16 the strongest baseline, so "attn" (learned attention pooling) and
+    "spatial2x2" (2x2 adaptive pool -> 2048-d) are provided.
+    """
+
+    def __init__(self, num_classes=6, pretrained=True, pool=None, deit_drop_path=None):
+        super().__init__()
+        pool = STREAM_A_POOL if pool is None else pool
+        deit_drop_path = DEIT_DROP_PATH if deit_drop_path is None else deit_drop_path
+        self.pool_mode = pool
+
         vgg = timm.create_model("vgg16_bn", pretrained=pretrained, num_classes=0)
         self.stream_a = vgg
-        dim_a = 512
+        if pool == "spatial2x2":
+            self.pool_a = nn.AdaptiveAvgPool2d(2)
+            dim_a = 512 * 4
+        elif pool == "attn":
+            self.pool_a = AttentionPool2d(512)
+            dim_a = 512
+        else:
+            self.pool_a = None
+            dim_a = 512
 
-        deit = timm.create_model("deit_small_patch16_224", pretrained=pretrained, num_classes=0)
+        try:
+            deit = timm.create_model("deit_small_patch16_224", pretrained=pretrained,
+                                     num_classes=0, drop_path_rate=deit_drop_path)
+        except TypeError:
+            deit = timm.create_model("deit_small_patch16_224", pretrained=pretrained, num_classes=0)
         self.stream_b = deit
         dim_b = 384
 
-        print(f"[*] Stream A (VGG16-BN spatial+GAP): {dim_a}-d | Stream B (DeiT-S CLS): {dim_b}-d | Combined: {dim_a+dim_b}-d")
+        print(f"[*] Stream A (VGG16-BN {pool}): {dim_a}-d | Stream B (DeiT-S CLS): {dim_b}-d | Combined: {dim_a+dim_b}-d")
 
         self.se_a = SqueezeExcitationBlock(dim_a, reduction=16)
         self.se_b = SqueezeExcitationBlock(dim_b, reduction=16)
 
-        combined_dim = dim_a + dim_b  # 896
+        combined_dim = dim_a + dim_b
         self.classifier = nn.Sequential(
             nn.Dropout(p=0.4),
             nn.Linear(combined_dim, 512),
@@ -341,9 +423,23 @@ class CareFERModel(nn.Module):
             nn.Linear(256, num_classes),
         )
 
+    def set_backbone_eval(self):
+        """Keep frozen backbones in eval mode so their BN running stats stop drifting.
+
+        Legacy stage 2 set requires_grad=False but left the modules in train() (via model.train()),
+        so the "frozen" backbone's BatchNorm statistics kept updating under the balanced sampler.
+        """
+        self.stream_a.eval()
+        self.stream_b.eval()
+
     def forward(self, x):
         feat_map_a = self.stream_a.forward_features(x)
-        feat_a = feat_map_a.mean(dim=[2, 3])
+        if self.pool_mode == "spatial2x2":
+            feat_a = self.pool_a(feat_map_a).flatten(1)
+        elif self.pool_mode == "attn":
+            feat_a = self.pool_a(feat_map_a)
+        else:
+            feat_a = feat_map_a.mean(dim=[2, 3])
         feat_b = self.stream_b(x)
         rec_a = self.se_a(feat_a)
         rec_b = self.se_b(feat_b)
@@ -355,7 +451,7 @@ class CareFERModel(nn.Module):
 # 4. LOSS, EMA & UTILITIES
 # ==============================================================================
 class FocalLoss(nn.Module):
-    """Focal loss with per-class alpha (SINGLE weighting mechanism — no sampler)."""
+    """Focal loss with optional per-class alpha."""
 
     def __init__(self, alpha=None, gamma=1.5):
         super().__init__()
@@ -368,31 +464,101 @@ class FocalLoss(nn.Module):
         return ((1 - pt) ** self.gamma * ce_loss).mean()
 
 
-class ModelEMA:
-    """Deep-copy EMA — save/load the EMA weights, not the raw model."""
+class GeneralizedCELoss(nn.Module):
+    """Generalized Cross Entropy (Zhang & Sabuncu 2018) — noise-robust.
 
-    def __init__(self, model, decay=0.999):
+    L = (1 - p_t^q) / q. Bounded gradients on confidently-wrong samples, so mislabelled images stop
+    dominating training. Motivated by the label audit: ~15% of images (38% of the sadness class) are
+    labelled against the unanimous prediction of 12 independent models.
+    """
+
+    def __init__(self, q=0.7, alpha=None):
+        super().__init__()
+        self.q = q
+        self.alpha = alpha
+
+    def forward(self, inputs, targets):
+        p = torch.softmax(inputs, dim=1).clamp_min(1e-7)
+        pt = p.gather(1, targets.unsqueeze(1)).squeeze(1)
+        loss = (1.0 - pt ** self.q) / self.q
+        if self.alpha is not None:
+            loss = loss * self.alpha[targets]
+        return loss.mean()
+
+
+class SymmetricCELoss(nn.Module):
+    """Symmetric Cross Entropy (Wang et al. 2019): alpha*CE + beta*RCE — noise-robust."""
+
+    def __init__(self, alpha_w=1.0, beta_w=0.5, alpha=None):
+        super().__init__()
+        self.alpha_w = alpha_w
+        self.beta_w = beta_w
+        self.alpha = alpha
+
+    def forward(self, inputs, targets):
+        ce = F.cross_entropy(inputs, targets, weight=self.alpha, reduction="none")
+        p = torch.softmax(inputs, dim=1).clamp(1e-7, 1.0)
+        onehot = F.one_hot(targets, num_classes=inputs.size(1)).float().clamp_min(1e-4)
+        rce = -(p * torch.log(onehot)).sum(1)
+        return (self.alpha_w * ce + self.beta_w * rce).mean()
+
+
+def build_loss(kind, alpha):
+    if kind == "gce":
+        return GeneralizedCELoss(q=GCE_Q, alpha=alpha)
+    if kind == "sce":
+        return SymmetricCELoss(SCE_ALPHA, SCE_BETA, alpha=alpha)
+    return FocalLoss(alpha=alpha, gamma=1.5)
+
+
+class ModelEMA:
+    """Deep-copy EMA with a warm-up ramp — save/load the EMA weights, not the raw model.
+
+    Legacy behaviour started the shadow at a randomly-initialised head with decay fixed at 0.999, so
+    after one epoch (~90 steps) the EMA was still ~91% initial noise: fold-1 validation accuracy was
+    8.6% at epoch 1 and roughly 15-20 epochs per fold were wasted. The ramp fixes that.
+    """
+
+    def __init__(self, model, decay=0.999, warmup_steps=0):
         self.module = copy.deepcopy(model)
         self.module.eval()
         self.decay = decay
+        self.warmup_steps = max(0, int(warmup_steps))
+        self.step = 0
         for p in self.module.parameters():
             p.requires_grad_(False)
 
+    def _current_decay(self):
+        if self.step >= self.warmup_steps or self.warmup_steps == 0:
+            return self.decay
+        # ramp 0 -> decay so early updates track the live model almost exactly
+        return self.decay * (self.step / self.warmup_steps)
+
     def update(self, model):
+        d = self._current_decay()
+        self.step += 1
         with torch.no_grad():
             for ema_param, model_param in zip(self.module.parameters(), model.parameters()):
-                ema_param.data.mul_(self.decay).add_(model_param.data, alpha=1 - self.decay)
+                ema_param.data.mul_(d).add_(model_param.data, alpha=1 - d)
             # Decay BN running stats too — deepcopy'd buffers are frozen at init
             # unless decayed, so eval would otherwise use untrained statistics.
             for ema_buf, model_buf in zip(self.module.buffers(), model.buffers()):
                 if ema_buf.dtype.is_floating_point:
-                    ema_buf.data.mul_(self.decay).add_(model_buf.data, alpha=1 - self.decay)
+                    ema_buf.data.mul_(d).add_(model_buf.data, alpha=1 - d)
                 else:
                     ema_buf.data.copy_(model_buf.data)
 
 
 def compute_focal_alpha(labels):
-    """Inverse-frequency class weights + sadness x2.0, fear x1.2 (V6 boost)."""
+    """Tempered inverse-frequency class weights.
+
+    Three fixes vs legacy:
+      * called with the FOLD'S TRAINING labels only (legacy used all 1,808, leaking val-fold priors);
+      * tempered by ALPHA_POWER instead of raw inverse frequency. Legacy gave fear 12.4x the weight of
+        joy, which pushed fear's recall to 0.66 but its precision down to 0.37 — a net macro-F1 loss;
+      * ALPHA_MAX_RATIO acts only as a safety net (capping against the minimum would otherwise flatten
+        five of six classes, since joy alone holds 47% of the data).
+    """
     if len(labels) == 0:
         raise RuntimeError(
             "[!] Dataset is EMPTY — no images found in DATASET_DIR.\n"
@@ -408,13 +574,15 @@ def compute_focal_alpha(labels):
             f"    DATASET_DIR = {DATASET_DIR}\n"
             "    Verify that train/valid/test subdirs contain all 6 class folders."
         )
-    alpha = torch.tensor(
-        [total / (NUM_CLASSES * counts[i]) for i in range(NUM_CLASSES)],
-        dtype=torch.float32,
-    ).to(device)
-    alpha[CLASSES.index("sadness")] *= 2.0
-    alpha[CLASSES.index("fear")] *= 1.2
-    return alpha
+    freq = np.array([counts[i] / total for i in range(NUM_CLASSES)], dtype=np.float64)
+    w = (1.0 / freq) ** ALPHA_POWER
+    w = w / w.mean()
+    w[CLASSES.index("sadness")] *= SADNESS_BOOST
+    w[CLASSES.index("fear")] *= FEAR_BOOST
+    if ALPHA_MAX_RATIO and ALPHA_MAX_RATIO > 1:
+        w = np.minimum(w, w.min() * ALPHA_MAX_RATIO)
+    w = w / w.mean()
+    return torch.tensor(w, dtype=torch.float32).to(device)
 
 
 # ==============================================================================
@@ -428,7 +596,17 @@ FOLD_FILE = "/kaggle/working/results/fold_id_by_path.json"
 if os.path.exists(FOLD_FILE):
     with open(FOLD_FILE) as f:
         fold_id_by_path = json.load(f)
-    fold_ids = [fold_id_by_path.get(s, 0) for s in samples]
+    # No silent .get(s, 0) fallback: legacy code routed every unmatched path into fold 0, which would
+    # blow up fold 0 and put the same images in other folds' training sets without any warning.
+    missing = [s for s in samples if s not in fold_id_by_path]
+    if missing:
+        raise RuntimeError(
+            f"[!] {len(missing)} of {len(samples)} image paths are absent from {FOLD_FILE}.\n"
+            f"    First few: {missing[:3]}\n"
+            "    run_all_models.py wrote that file from a different DATASET_DIR — re-run Cell 2 with\n"
+            "    the same dataset mount, or delete the file to recompute folds here."
+        )
+    fold_ids = [fold_id_by_path[s] for s in samples]
     print(f"[*] Loaded fold assignment from {FOLD_FILE}")
 else:
     print(f"[!] {FOLD_FILE} not found — recomputing folds (must run run_all_models.py first "
@@ -444,9 +622,16 @@ folds = [(fold, [i for i in range(len(samples)) if fold_ids[i] != fold],
                [i for i in range(len(samples)) if fold_ids[i] == fold])
          for fold in range(N_FOLDS)]
 
+_fold_sizes = [len(v) for _, _, v in folds]
+if sum(_fold_sizes) != len(samples) or min(_fold_sizes) == 0:
+    raise RuntimeError(f"[!] Bad fold partition: sizes {_fold_sizes} for {len(samples)} images.")
+print(f"[*] Fold sizes (val): {_fold_sizes}")
+print(f"[*] Protocol: {'FIXED schedule (no epoch selection)' if FIXED_SCHEDULE else 'best-epoch on reported fold (LEAKY)'}"
+      f" | stage-1 loss: {STAGE1_LOSS} | weighting s1/s2: {STAGE1_WEIGHTING}/{STAGE2_WEIGHTING}")
+
 alpha = compute_focal_alpha(labels)
-print(f"[*] Focal Loss Class Weights (V6 Boost): { {CLASSES[i]: f'{alpha[i].item():.2f}' for i in range(NUM_CLASSES)} }")
-loss_fn = FocalLoss(alpha=alpha, gamma=1.5)
+print(f"[*] Full-set class weights (reference only; per-fold weights are recomputed from train split): "
+      f"{ {CLASSES[i]: f'{alpha[i].item():.2f}' for i in range(NUM_CLASSES)} }")
 
 
 # ==============================================================================
@@ -469,16 +654,30 @@ def mark_done(fold):
 # ==============================================================================
 # 7. TRAINING (per fold)
 # ==============================================================================
-def train_stage1(model, train_idx):
+def _capped_sampler(targets):
+    """WeightedRandomSampler with the weight ratio capped at 9x (matches run_all_models.py)."""
+    counts = Counter(targets)
+    inv_freq = [1.0 / counts[t] for t in targets]
+    w_min = min(inv_freq)
+    weights = [min(w, w_min * 9.0) for w in inv_freq]
+    return WeightedRandomSampler(weights, len(targets), replacement=True)
+
+
+def train_stage1(model, train_idx, fold):
     train_ds = AutismFERDataset([samples[i] for i in train_idx],
                                 [labels[i] for i in train_idx], train_transform)
-    train_loader = DataLoader(train_ds, batch_size=BATCH_SIZE, shuffle=True,
-                              num_workers=NUM_WORKERS, pin_memory=True, drop_last=True,
-                              worker_init_fn=seed_worker, generator=DL_GENERATOR)
+    gen = fold_generator(fold)
+    use_sampler = STAGE1_WEIGHTING in ("sampler", "both")
+    train_loader = DataLoader(
+        train_ds, batch_size=BATCH_SIZE,
+        sampler=_capped_sampler(train_ds.targets) if use_sampler else None,
+        shuffle=(not use_sampler),
+        num_workers=NUM_WORKERS, pin_memory=True, drop_last=True,
+        worker_init_fn=seed_worker, generator=gen)
 
     backbone_params, head_params = [], []
     for name, param in model.named_parameters():
-        if "classifier" in name or "se_a" in name or "se_b" in name:
+        if "classifier" in name or "se_a" in name or "se_b" in name or "pool_a" in name:
             head_params.append(param)
         else:
             backbone_params.append(param)
@@ -497,7 +696,9 @@ def train_stage1(model, train_idx):
         return max(0.01, 0.5 * (1.0 + math.cos(math.pi * progress)))
 
     scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=_lr_lambda)
-    ema_model = ModelEMA(model, decay=EMA_DECAY)
+    steps_per_epoch = max(1, len(train_loader))
+    ema_model = ModelEMA(model, decay=EMA_DECAY,
+                         warmup_steps=EMA_WARMUP_EPOCHS * steps_per_epoch)
     scaler = GradScaler(enabled=(device.type == "cuda"))
     return train_loader, optimizer, scheduler, ema_model, scaler
 
@@ -506,7 +707,8 @@ def train_stage1(model, train_idx):
 def evaluate_tta(model, val_ds):
     """5-view TTA averaged probabilities over the validation subset.
 
-    Batches each view over the dataset (mirrors run_all_models.evaluate_tta).
+    Runs in fp32 (the baseline script does too); the legacy fp16 autocast path made probability rows
+    sum to 0.9998-1.0002 and made the two arms' inference numerically inconsistent.
     """
     model.eval()
     tta_transforms = get_tta_transforms()
@@ -523,26 +725,28 @@ def evaluate_tta(model, val_ds):
                     raw = Image.new("RGB", (IMG_SIZE, IMG_SIZE), (0, 0, 0))
                 batch.append(t_form(raw))
             x = torch.stack(batch).to(device)
-            with autocast(device_type=device.type,
-                          dtype=torch.float16 if device.type == "cuda" else torch.bfloat16):
-                logits = model(x)
-            all_probs[start:end] += F.softmax(logits, dim=1).float().cpu().numpy()
+            logits = model(x)
+            all_probs[start:end] += F.softmax(logits.float(), dim=1).cpu().numpy()
     all_probs /= len(tta_transforms)
     preds = all_probs.argmax(1).tolist()
     targets = [int(t) for t in val_ds.targets]
     return preds, targets, all_probs
 
 
-def train_one_epoch(model, loader, optimizer, scaler, ema_model, clip_params):
+def train_one_epoch(model, loader, optimizer, scaler, ema_model, clip_params, criterion,
+                    freeze_backbone=False):
     """Run one training pass, return (avg_loss, accuracy)."""
     model.train()
+    if freeze_backbone:
+        # Frozen means frozen: keep backbone BN in eval so running stats stop drifting.
+        model.set_backbone_eval()
     total_loss, correct, total = 0.0, 0, 0
     for imgs, targets in loader:
         imgs, targets = imgs.to(device), targets.to(device)
         optimizer.zero_grad(set_to_none=True)
         with autocast(device_type=device.type, dtype=torch.float16 if device.type == "cuda" else torch.bfloat16):
             outputs = model(imgs)
-            loss = loss_fn(outputs, targets)
+            loss = criterion(outputs, targets)
         scaler.scale(loss).backward()
         scaler.unscale_(optimizer)
         clip_grad_norm_(clip_params, max_norm=5.0)
@@ -556,32 +760,30 @@ def train_one_epoch(model, loader, optimizer, scaler, ema_model, clip_params):
 
 
 @torch.no_grad()
-def evaluate_model(model, val_ds):
+def evaluate_model(model, val_ds, criterion):
     """Validate the EMA model on the fold's val split; return (loss, accuracy, macro-F1)."""
     model.eval()
     val_loss, correct, total = 0.0, 0, 0
     preds, targets = [], []
     loader = val_ds_transform_loader(val_ds)
-    for imgs, labels in loader:
-        imgs, labels = imgs.to(device), labels.to(device)
-        with autocast(device_type=device.type, dtype=torch.float16 if device.type == "cuda" else torch.bfloat16):
-            outputs = model(imgs)
-            loss = loss_fn(outputs, labels)
+    for imgs, labels_b in loader:
+        imgs, labels_b = imgs.to(device), labels_b.to(device)
+        outputs = model(imgs)
+        loss = criterion(outputs, labels_b)
         val_loss += loss.item() * imgs.size(0)
         out_preds = outputs.argmax(dim=1)
-        correct += (out_preds == labels).sum().item()
+        correct += (out_preds == labels_b).sum().item()
         total += imgs.size(0)
         preds.extend(out_preds.cpu().numpy())
-        targets.extend(labels.cpu().numpy())
+        targets.extend(labels_b.cpu().numpy())
     f1 = f1_score(targets, preds, average="macro", zero_division=0)
     return val_loss / total, correct / total, f1
 
 
 def val_ds_transform_loader(val_ds):
-    loader = DataLoader(val_ds, batch_size=BATCH_SIZE, shuffle=False,
-                        num_workers=NUM_WORKERS, pin_memory=True,
-                        worker_init_fn=seed_worker, generator=DL_GENERATOR)
-    return loader
+    return DataLoader(val_ds, batch_size=BATCH_SIZE, shuffle=False,
+                      num_workers=NUM_WORKERS, pin_memory=True,
+                      worker_init_fn=seed_worker)
 
 
 def run_fold(fold, train_idx, val_idx):
@@ -589,12 +791,24 @@ def run_fold(fold, train_idx, val_idx):
     print(f"  PROPOSED-MODEL | Fold {fold+1}/{N_FOLDS}")
     print(f"{'='*70}")
 
+    seed_everything(SEED + fold)   # per-fold determinism (see fold_generator docstring)
+
     val_ds = AutismFERDataset([samples[i] for i in val_idx],
                               [labels[i] for i in val_idx], val_transform)
 
+    # Class weights from THIS FOLD'S TRAINING LABELS ONLY.
+    train_labels = [labels[i] for i in train_idx]
+    fold_alpha = compute_focal_alpha(train_labels)
+    print("[*] Fold class weights: "
+          f"{ {CLASSES[i]: f'{fold_alpha[i].item():.2f}' for i in range(NUM_CLASSES)} }")
+    s1_alpha = fold_alpha if STAGE1_WEIGHTING in ("alpha", "both") else None
+    criterion_s1 = build_loss(STAGE1_LOSS, s1_alpha)
+    s2_alpha = fold_alpha if STAGE2_WEIGHTING in ("alpha", "both") else None
+    criterion_s2 = build_loss(STAGE1_LOSS, s2_alpha)
+
     # ---- Stage 1 ----
     model = CareFERModel(num_classes=NUM_CLASSES, pretrained=True).to(device)
-    train_loader, optimizer, scheduler, ema_model, scaler = train_stage1(model, train_idx)
+    train_loader, optimizer, scheduler, ema_model, scaler = train_stage1(model, train_idx, fold)
 
     best_val_f1 = 0.0
     patience_counter = 0
@@ -603,53 +817,61 @@ def run_fold(fold, train_idx, val_idx):
 
     for epoch in range(1, NUM_EPOCHS + 1):
         train_loss, train_acc = train_one_epoch(model, train_loader, optimizer, scaler,
-                                                ema_model, clip_params=model.parameters())
+                                                ema_model, clip_params=model.parameters(),
+                                                criterion=criterion_s1)
         scheduler.step()
-        _, val_acc, epoch_val_f1 = evaluate_model(ema_model.module, val_ds)
+        _, val_acc, epoch_val_f1 = evaluate_model(ema_model.module, val_ds, criterion_s1)
 
         elapsed = (time.time() - start) / 60
         print(f"  Epoch {epoch:3d}/{NUM_EPOCHS} | TrL {train_loss:.4f} "
               f"VaA {val_acc:.4f} F1 {epoch_val_f1:.4f} | {elapsed:.1f}min")
 
+        if FIXED_SCHEDULE:
+            # No selection on the reported fold: the val numbers above are monitoring only.
+            best_val_f1 = epoch_val_f1
+            continue
         if epoch_val_f1 > best_val_f1:
             best_val_f1 = epoch_val_f1
             patience_counter = 0
-            torch.save({
-                "epoch": epoch,
-                "model_state_dict": ema_model.module.state_dict(),
-                "val_f1": best_val_f1,
-            }, ckpt_path)
+            torch.save({"epoch": epoch, "model_state_dict": ema_model.module.state_dict(),
+                        "val_f1": best_val_f1}, ckpt_path)
         else:
             patience_counter += 1
             if patience_counter >= PATIENCE:
                 print(f"  Early stopping at epoch {epoch}")
                 break
 
-    print(f"[*] Stage 1 Complete in {(time.time()-start)/60:.1f} min | Best Val Macro F1: {best_val_f1:.4f}")
+    if FIXED_SCHEDULE:
+        # Final-epoch EMA weights are the deliverable.
+        torch.save({"epoch": NUM_EPOCHS, "model_state_dict": ema_model.module.state_dict(),
+                    "val_f1": best_val_f1}, ckpt_path)
+    print(f"[*] Stage 1 Complete in {(time.time()-start)/60:.1f} min | "
+          f"{'final-epoch' if FIXED_SCHEDULE else 'best'} Val Macro F1: {best_val_f1:.4f}")
 
     # ---- Stage 2: frozen backbone, unfrozen head ----
     checkpoint = torch.load(ckpt_path, map_location=device, weights_only=False)
     model.load_state_dict(checkpoint["model_state_dict"])
     for name, param in model.named_parameters():
-        param.requires_grad = "classifier" in name or "se_a" in name or "se_b" in name
+        param.requires_grad = ("classifier" in name or "se_a" in name or "se_b" in name
+                               or "pool_a" in name)
     head_params = [p for p in model.parameters() if p.requires_grad]
 
     optimizer_stage2 = torch.optim.AdamW(head_params, lr=1e-4, weight_decay=WEIGHT_DECAY)
-    ema_model_stage2 = ModelEMA(model, decay=EMA_DECAY)
+    steps_s2 = 0
+    ema_model_stage2 = ModelEMA(model, decay=EMA_DECAY, warmup_steps=steps_s2)
     scaler_s2 = GradScaler(enabled=(device.type == "cuda"))
 
-    # Balanced train loader for stage 2 (single weighting — sampler only, no loss weights here).
-    # Cap the weight ratio, matching run_all_models.py, to avoid over-repeating rare classes.
+    # Stage-2 weighting is SINGLE by construction now: the sampler is only built when
+    # STAGE2_WEIGHTING selects it, and criterion_s2 only carries alpha when it selects alpha.
     train_ds_s2 = AutismFERDataset([samples[i] for i in train_idx],
                                    [labels[i] for i in train_idx], train_transform)
-    counts = Counter(train_ds_s2.targets)
-    inv_freq = [1.0 / counts[t] for t in train_ds_s2.targets]
-    w_min = min(inv_freq)
-    sample_weights = [min(w, w_min * 9.0) for w in inv_freq]
-    sampler_s2 = WeightedRandomSampler(sample_weights, len(train_ds_s2), replacement=True)
-    train_loader_s2 = DataLoader(train_ds_s2, batch_size=BATCH_SIZE, sampler=sampler_s2,
-                                 num_workers=NUM_WORKERS, pin_memory=True, drop_last=True,
-                                 worker_init_fn=seed_worker, generator=DL_GENERATOR)
+    use_sampler_s2 = STAGE2_WEIGHTING in ("sampler", "both")
+    train_loader_s2 = DataLoader(
+        train_ds_s2, batch_size=BATCH_SIZE,
+        sampler=_capped_sampler(train_ds_s2.targets) if use_sampler_s2 else None,
+        shuffle=(not use_sampler_s2),
+        num_workers=NUM_WORKERS, pin_memory=True, drop_last=True,
+        worker_init_fn=seed_worker, generator=fold_generator(fold + 100))
 
     best_f1_s2 = best_val_f1
     patience_s2 = 0
@@ -657,26 +879,30 @@ def run_fold(fold, train_idx, val_idx):
 
     for epoch in range(1, STAGE2_EPOCHS + 1):
         train_loss, _ = train_one_epoch(model, train_loader_s2, optimizer_stage2, scaler_s2,
-                                        ema_model_stage2, clip_params=head_params)
-        _, val_acc, epoch_val_f1 = evaluate_model(ema_model_stage2.module, val_ds)
+                                        ema_model_stage2, clip_params=head_params,
+                                        criterion=criterion_s2, freeze_backbone=True)
+        _, val_acc, epoch_val_f1 = evaluate_model(ema_model_stage2.module, val_ds, criterion_s2)
         print(f"  Stage 2 Epoch {epoch:3d}/{STAGE2_EPOCHS} | TrL {train_loss:.4f} "
               f"VaA {val_acc:.4f} F1 {epoch_val_f1:.4f}")
 
+        if FIXED_SCHEDULE:
+            best_f1_s2 = epoch_val_f1
+            continue
         if epoch_val_f1 > best_f1_s2:
             best_f1_s2 = epoch_val_f1
             patience_s2 = 0
-            torch.save({
-                "epoch": epoch,
-                "model_state_dict": ema_model_stage2.module.state_dict(),
-                "val_f1": best_f1_s2,
-            }, ckpt_path)
+            torch.save({"epoch": epoch, "model_state_dict": ema_model_stage2.module.state_dict(),
+                        "val_f1": best_f1_s2}, ckpt_path)
         else:
             patience_s2 += 1
-            if patience_s2 >= PATIENCE:
+            if patience_s2 >= PATIENCE_S2:
                 print(f"  Early stopping Stage 2 at epoch {epoch}")
                 break
 
-    print(f"[*] Stage 2 Complete in {(time.time()-start_s2)/60:.1f} min | Final Best Val Macro F1: {best_f1_s2:.4f}")
+    if FIXED_SCHEDULE:
+        torch.save({"epoch": STAGE2_EPOCHS, "model_state_dict": ema_model_stage2.module.state_dict(),
+                    "val_f1": best_f1_s2}, ckpt_path)
+    print(f"[*] Stage 2 Complete in {(time.time()-start_s2)/60:.1f} min | Final Val Macro F1: {best_f1_s2:.4f}")
 
     # ---- OOF evaluation with 5-view TTA ----
     checkpoint = torch.load(ckpt_path, map_location=device, weights_only=False)
@@ -705,13 +931,6 @@ def run_fold(fold, train_idx, val_idx):
     return fold_m, preds, targets, probs
 
 
-def val_ds_transform_loader(val_ds):
-    loader = DataLoader(val_ds, batch_size=BATCH_SIZE, shuffle=False,
-                        num_workers=NUM_WORKERS, pin_memory=True,
-                        worker_init_fn=seed_worker, generator=DL_GENERATOR)
-    return loader
-
-
 # ==============================================================================
 # 8. RUN ALL FOLDS (OOF arrays + metrics persisted after every fold)
 # ==============================================================================
@@ -731,6 +950,12 @@ if os.path.exists(metrics_path):
     with open(metrics_path) as f:
         fold_metrics = json.load(f)
 
+oof_path_index = []
+_idx_file = os.path.join(OUTPUT_DIR, "oof_paths.json")
+if os.path.exists(_idx_file):
+    with open(_idx_file) as f:
+        oof_path_index = json.load(f)
+
 for fold, train_idx, val_idx in folds:
     if fold in done.get("proposed_model", []):
         print(f"  Fold {fold+1} already done — skipping.")
@@ -740,13 +965,19 @@ for fold, train_idx, val_idx in folds:
     all_preds = np.concatenate([all_preds, np.array(preds, dtype=int)])
     all_labels = np.concatenate([all_labels, np.array(targets, dtype=int)])
     all_probs = np.concatenate([all_probs, probs], axis=0)
-    mark_done(fold)
-    # persist incrementally (safe across session timeouts)
-    with open(metrics_path, "w") as f:
-        json.dump(fold_metrics, f, indent=2)
+    oof_path_index.extend([samples[i] for i in val_idx])
+
+    # Persist data FIRST, then the metrics, and only then mark the fold done. The legacy order
+    # (mark_done before np.save) meant a crash in between permanently marked a fold complete with
+    # no predictions on disk.
     np.save(os.path.join(OUTPUT_DIR, "oof_preds.npy"), all_preds)
     np.save(os.path.join(OUTPUT_DIR, "oof_labels.npy"), all_labels)
     np.save(os.path.join(OUTPUT_DIR, "oof_probs.npy"), all_probs)
+    with open(_idx_file, "w") as f:
+        json.dump(oof_path_index, f)
+    with open(metrics_path, "w") as f:
+        json.dump(fold_metrics, f, indent=2)
+    mark_done(fold)
 
 # ==============================================================================
 # 9. AGGREGATE + CLINICAL EVALUATION
@@ -786,7 +1017,10 @@ for d_cls in ("anger", "fear", "sadness"):
     sup = report_dict[d_cls]["support"]
     print(f"  [{d_cls.upper():<8}] Recall: {rec*100:.1f}% (Support: {sup} images)")
 
-# Uncertainty rejection guardrail
+# Uncertainty rejection guardrail.
+# The legacy 0.30 threshold was mathematically inert: with 6 classes max-prob >= 1/6 = 0.167, and the
+# lowest value actually observed was 0.2491, so only 4/1808 images could ever be flagged. A full
+# risk-coverage sweep is reported instead of a single arbitrary cut-off.
 confidences = test_probs.max(axis=1)
 rejection_rate = float(np.mean(confidences < UNCERTAINTY_THRESH)) * 100
 high_conf = confidences >= UNCERTAINTY_THRESH
@@ -797,6 +1031,22 @@ if high_conf.sum() > 0:
     hc_acc = accuracy_score(test_targets[high_conf], test_preds[high_conf])
     hc_f1 = f1_score(test_targets[high_conf], test_preds[high_conf], average="macro", zero_division=0)
     print(f"    -> High-Confidence Subset Accuracy: {hc_acc*100:.2f}% | Macro F1: {hc_f1:.4f}")
+
+print(f"\n[+] RISK-COVERAGE CURVE (confidence min = {confidences.min():.4f}, "
+      f"median = {np.median(confidences):.4f})")
+print(f"    {'thresh':>7} {'coverage':>9} {'kept':>6} {'accuracy':>9} {'macroF1':>8}")
+_rc_rows = []
+for _t in (0.0, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90):
+    keep = confidences >= _t
+    if keep.sum() < 10:
+        continue
+    _a = accuracy_score(test_targets[keep], test_preds[keep])
+    _f = f1_score(test_targets[keep], test_preds[keep], average="macro", zero_division=0)
+    _rc_rows.append({"threshold": _t, "coverage": float(keep.mean()), "kept": int(keep.sum()),
+                     "accuracy": float(_a), "f1_macro": float(_f)})
+    print(f"    {_t:>7.2f} {keep.mean():>9.3f} {keep.sum():>6d} {_a:>9.4f} {_f:>8.4f}")
+with open(os.path.join(OUTPUT_DIR, "risk_coverage.json"), "w") as f:
+    json.dump(_rc_rows, f, indent=2)
 
 # ==============================================================================
 # 10. PUBLICATION FIGURES
@@ -880,6 +1130,7 @@ class GradCAM:
 ckpt_files = sorted([f for f in os.listdir(OUTPUT_DIR) if f.startswith("proposed_model_fold") and f.endswith("_best.pth")])
 if ckpt_files:
     eval_model = CareFERModel(num_classes=NUM_CLASSES, pretrained=False).to(device)
+    # ckpt_files is sorted, so [0] is fold 1 — matched with fold 1's out-of-fold images below.
     eval_model.load_state_dict(torch.load(os.path.join(OUTPUT_DIR, ckpt_files[0]),
                                           map_location=device)["model_state_dict"])
     eval_model.eval()
@@ -893,8 +1144,12 @@ if ckpt_files:
         print("[!] No Conv2d found in stream_a — Grad-CAM skipped.")
     else:
         grad_cam = GradCAM(eval_model, _last_conv)
+        # Sample images that were OUT-OF-FOLD for the checkpoint being used (fold 1), so the
+        # heatmaps are not drawn on that model's own training images.
+        _fold1_val = [samples[i] for i in folds[0][2]]
+        _fold1_lab = [labels[i] for i in folds[0][2]]
         _seen, _gradcam_samples = set(), []
-        for path, cls in zip(samples, labels):
+        for path, cls in zip(_fold1_val, _fold1_lab):
             if cls not in _seen:
                 _seen.add(cls)
                 _gradcam_samples.append((path, cls))
@@ -924,6 +1179,16 @@ if ckpt_files:
         plt.close()
         grad_cam.remove()
         print(f"[*] Grad-CAM heatmaps saved to: {OUTPUT_DIR}/4_gradcam_heatmaps.png")
+
+# Mark this results dir as produced by the current pipeline — only now that the run finished.
+with open(_ver_path, "w") as f:
+    json.dump({"pipeline_version": PIPELINE_VERSION,
+               "config": {"FIXED_SCHEDULE": FIXED_SCHEDULE, "STAGE1_LOSS": STAGE1_LOSS,
+                          "STAGE1_WEIGHTING": STAGE1_WEIGHTING, "STAGE2_WEIGHTING": STAGE2_WEIGHTING,
+                          "STREAM_A_POOL": STREAM_A_POOL, "NUM_EPOCHS": NUM_EPOCHS,
+                          "EMA_WARMUP_EPOCHS": EMA_WARMUP_EPOCHS,
+                          "ALPHA_MAX_RATIO": ALPHA_MAX_RATIO,
+                          "SADNESS_BOOST": SADNESS_BOOST, "FEAR_BOOST": FEAR_BOOST}}, f, indent=2)
 
 print("========================================================================================")
 print("  Proposed-Model Evaluation Complete! Ready for Paper Publication.")

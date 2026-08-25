@@ -1,57 +1,75 @@
-# Plan: Novel Superior Hybrid Model for Autism FER (Q1 Paper)
+# Plan: Maximize Proposed-Model Accuracy on `dataset_clean/`
 
-## Goal
-Replace the current 13-model sweep (`final-autism-fer.ipynb` = `run_all_models.py` + `run_proposed_model.py`) with a **clean, bug-free, honest, and novel** hybrid architecture that beats the baselines under a **statistically defensible protocol**, and produces paper-ready figures — all runnable in ~9 GPU-hours on Kaggle T4/P100.
+## Single objective (locked this session)
+**Push the proposed model's macro-F1 as high as possible on `dataset_clean/`.** The 12-baseline
+comparison table is set aside — it is no longer a constraint on data, protocol, or architecture.
+Reference points kept only as informal targets: proposed 0.5981 ± 0.0242, best baseline vgg16 0.6114.
 
-## Hard Truths from the Current Run (must fix)
-1. **Best-epoch-on-test leakage.** `run_all_models.py:583` picks best checkpoint by val F1, then computes OOF metrics on that same fold. All 13 numbers are optimistically biased.
-2. **Uncontrolled comparison (5 confounds).** Baselines: 80 epochs, WeightedRandomSampler, unweighted focal γ=2.0, drop_rate=0.3/drop_path=0.2. Proposed: 160+20 epochs, no sampler Stage 1, focal γ=1.5+alpha, no drop-path.
-3. **Silent regularization drift.** `get_model` (`run_all_models.py:349-359`) falls back to zero dropout on TypeError. VGG16 trained with zero dropout; ConvNeXt got 0.3+0.2.
-4. **ConvNeXt collapse = config bug.** `run_all_models.py:187` gives it lr=1e-3 with CosineAnnealingWarmRestarts; warmup /eonly applied for `ce_smooth` (`:553`). Guaranteed divergence.
-5. **Stage-2 double-weighting.** `run_proposed_model.py:641` comment says "sampler only, no loss weights here" but `train_one_epoch` uses module-global `loss_fn` carrying alpha → precision/recall gap.
-6. **EMA cripples early training.** Deepcopy EMA starts from pretrained-backbone + random-head; at ~90 steps/epoch it's ~91% stale after epoch 1 → val acc 8.5%, 40 wasted epochs.
-7. **Vacuous guardrail.** 6 classes → max-prob ≥ 0.167 always; 0.30 threshold abstains on 4/1808 images. ROC/PR labeled "Macro" but computed micro (`run_proposed_model.py:784`).
-8. **Silent leakage landmine.** `fold_id_by_path.get(s, 0)` (`run_proposed_model.py:431`) defaults unmatched paths to fold 0.
-9. **Dataset is a 4-source merge** incl. "augmented-autism-facial-emotion-recognition" → likely near-dup images straddling folds. Every number is optimistically biased.
+**Consequence accepted:** once the dataset or protocol changes, the old baseline numbers are no
+longer comparable. If a comparison table is needed later, all baselines must be re-run on the final
+data/protocol (~4 h GPU, resumable, folds reusable). Noted once here; not revisited.
 
-## Protocol Fixes (non-negotiable for Q1)
-- **Nested + grouped CV.** Cluster near-duplicate images (perceptual hash) into groups; split groups, not images (GroupKFold). Hold out one fold as test; inner CV (4 folds) for model selection. Report **test-fold** metrics only. This eliminates both best-epoch-on-test leakage AND cross-fold dup leakage.
-- **Fixed 40-epoch schedule** with warmup+cosine for ALL models (halves cost, loses nothing — your own log shows plateau well before epoch 100).
-- **Controlled comparison.** Same transforms, same TTA, same optimizer family (AdamW), same regularization (drop_path where supported, explicit 0 otherwise). No per-model LR accidents.
-- **Trim to 6 representative baselines** (fair, fit in ~9h): vgg16, resnet50, efficientnet_b0, deit_small, swin_tiny, convnext_tiny (fixed LR). Plus the proposed hybrid.
-- **PIPELINE_VERSION bump** → `v4-grouped-nested`; warn-and-refuse on old results dirs.
+## Protocol change: stop measuring the leak
+The current number selects the best epoch by macro-F1 **on the same fold it reports**
+(`run_proposed_model.py:614` → `:685`). Optimizing against that metric partly optimizes the leak.
 
-## Novelty (the paper's contribution)
-**Fusion of (a) FER-pretrained dual-stream CNN-ViT backbone, (b) a MediaPipe landmark/blendshape geometric stream, (c) a conformal-abstention clinical guardrail.** The geometric stream is the actual novelty: autistic children's expressions are less symmetric/less synchronized — geometry captures that, pixels alone don't. It also gives clinically readable explanations instead of a Grad-CAM blob. ImageNet→FER-pretraining on the image stream is the accuracy engine (feature gap is why all 13 plateau at 0.56–0.61 regardless of size).
+**New default: fixed-schedule training.** No early stopping, no best-checkpoint selection; train a
+fixed number of epochs with warmup+cosine and evaluate the **final EMA weights** on the held-out
+fold. This removes the leak by construction, keeps all 1,446 non-test images in training (no inner
+val split needed), and is cheaper. Expect the headline number to *drop* on first measurement — that
+drop is the leak being removed, and every subsequent gain is real. The old behaviour stays available
+behind a flag for one comparison run.
 
-## Deliverables (rewrite into `final-autism-fer.ipynb`)
-1. **Cell 0 (setup)** — `!pip install mediapipe` (internet on, no extra datasets needed).
-2. **Cell 1: `run_all_models.py` v2** — grouped+nested CV, 6 baselines, FER-pretrained vgg16 as the "baseline with the same head start" (for the ablation), fixed LR/regularization, honest OOF-on-test reporting, `fold_id_by_path.json` + `group_id_by_path.json`.
-3. **Cell 2: `run_proposed_model.py` v2** — new hybrid: FER-pretrained VGG16-BN + DeiT-S dual-stream, MediaPipe landmark/blendshape stream (with fallback for detection failure), conformal abstention, honest figures.
-4. **Cell 3: analysis** — the paper table, per-class metrics, conformal coverage curves, reliability diagrams, geometric-stream ablation, all with correct macro/micro labels.
+## What the evidence says to work on
+| Lever | Expected | Basis |
+|---|---|---|
+| **Label cleaning** (274 flagged; 154 are `sadness`) | +2 to +6 | 0 of 12 models match the label on 15.2% of images; 38% of the whole sadness class |
+| **P0 correctness fixes** | +1 to +3 | three handicaps the baselines never had (see below) |
+| **Class-balance surgery** | +1 to +3 | fear alpha 5.32× ⇒ precision 0.37; sadness recall 0.37 |
+| **Keep VGG16 spatial detail** | +0.5 to +2.5 | VGG16 *alone* (0.6114) beats the hybrid (0.5981) — GAP is discarding what makes it strong |
+| **Seed ensemble (3×)** | +0.5 to +1.5 | standard, reliable, 3× GPU |
+| Post-hoc probability tricks | **0** — falsified | logit adjust / reverse prior / temperature / thresholds all tested on saved OOF probs |
 
-## Sequence (ordered by cost/impact)
-1. Duplicate + label-noise audit (perceptual hash clustering) → group IDs. Free, CPU.
-2. FER-pretrain VGG16 backbone once on FER2013/RAF-DB (Kaggle, internet on) → reuse everywhere. ~45 min once.
-3. Rewrite both scripts with the fixed protocol + new hybrid + landmark stream.
-4. Conformal abstention + calibration on saved OOF probs. Free, CPU.
-5. Paper figures (correct macro/micro, grouped CV, ablation table).
+## Handicaps to remove (measured, not theoretical)
+1. **Irreproducibility** — one global `DL_GENERATOR` shared by every DataLoader means the random
+   stream depends on how many loaders were built before it. Proof: `efficientformer_l1` fold-0 F1 =
+   0.1337 vs 0.3727 across sessions, same code, same version tag. Fix: per-(model, fold) seed.
+2. **Stage-2 double weighting** — `WeightedRandomSampler` *and* the alpha-weighted global `loss_fn`
+   (`:641` comment vs `:545`).
+3. **Stage-2 backbone not frozen** — `requires_grad=False` but `model.train()` keeps backbone BN
+   running stats drifting (`:634` vs `:538`).
+4. **EMA cold start** — deepcopy EMA begins at a random head, ~91% stale after epoch 1 (fold-1 val
+   acc 8.6%) ⇒ ~15–20 epochs/fold wasted.
+5. **Alpha computed from all 1,808 labels** (`:447`) instead of the fold's train split.
+6. **`mark_done()` before `np.save()`** (`:743-749`) — a crash between them loses a fold silently.
+7. **`fold_id_by_path.get(s, 0)`** (`:431`) silently routes unmatched paths to fold 0.
+8. Eval precision fp16 vs the baselines' fp32; `PATIENCE == STAGE2_EPOCHS` (stage-2 early stop is a
+   no-op); duplicate `val_ds_transform_loader` (`:580`, `:708`); `pipeline_version.json` overwritten
+   immediately after warning (`:186`), destroying the evidence.
 
-## Risks & Mitigations
-- **MediaPipe failure on ASD faces** → fallback stream (frozen mean landmarks) + honest reporting of detection rate (itself a publishable finding).
-- **GPU budget** → 40-epoch schedule, resumable per-fold, 6 baselines (not 12).
-- **Landmark stream added only to proposed model** → baselines get FER-pretrained vgg16 too; report ImageNet-vs-FER as an ablation so the gain is attributable to architecture, not head start.
+## Dataset track (now active — no longer gated)
+- 1,808 images, all RGB, median 224×224, min side ≥131 px, single-subject, mostly frontal.
+- Visual sampling found label noise in ~3 of 7 inspected images (a "surprise" grimace reading as
+  anger, a "fear" toddler reading as neutral-curious, a near-neutral "sadness").
+- Consensus audit exports the 274 zero-agreement candidates with per-model votes for manual review;
+  class split: sadness 154, anger 30, joy 27, natural 25, surprise 24, fear 14.
+- Rule: log every relabel/removal decision (thesis appendix + reproducibility).
 
-## Files to change
-- `final-autism-fer.ipynb` (rewrite cells; keep in sync with `.py` scripts per AGENTS.md)
-- `kaggle/run_all_models.py` (protocol + 6 baselines + grouped/nested CV)
-- `kaggle/run_proposed_model.py` (new hybrid + landmark stream + conformal guardrail)
-- `kaggle/autism-fer-model.ipynb` (mirror of the notebook)
-- `AGENTS.md` (update pipeline version + workflow notes)
-- `PLAN.md` (this file)
+## Sequence
+1. P0 + P1 code fixes, fixed-schedule protocol → re-run 5 folds (~3 h GPU). Establishes the honest
+   baseline for the proposed model.
+2. Label review on the 274 candidates → re-run (~3 h). Biggest single jump.
+3. P2 architecture: VGG16 spatial detail, fusion, drop-path parity, seed ensemble.
+4. Optional novelty layers (geometry stream, conformal abstention) — accuracy-neutral but paper-relevant.
 
 ## Definition of Done
-- Proposed hybrid **beats the best baseline** on honest test-fold macro-F1 (not best-epoch-on-test).
-- All numbers reproducible, resumable, no leakage (grouped folds, single test fold).
-- Figures correct (macro/micro labeled properly, conformal coverage, reliability).
-- Paper-ready ablation: ImageNet vs FER-pretrained; pixel-only vs pixel+geometry; with/without conformal abstention.
+- Honest (no-peek) macro-F1 for the proposed model, reproducible: same fold re-run twice ⇒ identical
+  score.
+- Fold integrity asserted: 1,808/1,808 paths matched, sizes `[362, 362, 362, 361, 361]`.
+- Per-fold results logged with mean ± std, and a documented list of every change that moved the number.
+
+## Files
+- `kaggle/run_proposed_model.py` + `final-autism-fer.ipynb` Cell 3 (kept byte-identical)
+- `IMPROVE.md` — the execution checklist
+- Storage: archive `final_results (1)/` as the record of the old run. Never resume from local
+  `results/` — its `efficientformer_l1`/`maxvit` metrics and `paper_figures` come from a different run.

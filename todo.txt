@@ -1,0 +1,6 @@
+single-objective scope (accuracy only)
+Export label-audit CSV of 274 consensus-flagged images for review
+Implement P0 correctness fixes in run_proposed_model.py (seeding, weighting, BN freeze, EMA ramp, persistence order, fold asserts, fp32 eval)
+Implement P1 class-balance changes (train-only alpha, capped ratio, noise-robust loss option)
+Add P2 spatial-detail pooling option for VGG16 stream
+Regenerate notebook Cell 3 byte-identical to the script
