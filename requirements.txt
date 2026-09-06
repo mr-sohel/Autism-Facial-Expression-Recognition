@@ -1,0 +1,12 @@
+torch
+torchvision
+timm
+scikit-learn
+scipy
+pandas
+numpy
+matplotlib
+tqdm
+imagehash
+pillow
+facenet-pytorch
