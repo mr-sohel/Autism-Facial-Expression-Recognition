@@ -50,14 +50,19 @@ venv.bak/
 .DS_Store
 
 # Data and model checkpoints
-data/raw/*
+!data/raw/*
 !data/raw/.gitkeep
 data/processed/*
 !data/processed/.gitkeep
+
 runs/*
 !runs/.gitkeep
+!runs/manifest.csv
+!runs/demo/**
+
 results/*
 !results/.gitkeep
+
 
 # Large files
 *.npz
@@ -67,9 +72,6 @@ results/*
 *.hdf5
 *.ckpt
 *.onnx
-*.zip
-*.tar.gz
-*.csv
 
 # Logs
 logs/

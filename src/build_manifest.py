@@ -51,9 +51,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import os
 import sys
-from collections import defaultdict
 from pathlib import Path
 
 import numpy as np
@@ -76,6 +74,12 @@ LABEL_ALIASES = {
     "surprise": "surprise", "surprised": "surprise", "surprize": "surprise",
 }
 
+# Sanity check: every alias must map to a canonical class name
+_alias_targets = set(LABEL_ALIASES.values())
+_canonical_set = set(CANONICAL_CLASSES)
+assert _alias_targets == _canonical_set, (
+    f"LABEL_ALIASES maps to {_alias_targets} but CANONICAL_CLASSES is {_canonical_set}"
+)
 
 # --------------------------------------------------------------------------------------
 # 1. Scan
@@ -111,13 +115,6 @@ def scan_roots(roots: dict[str, str]) -> pd.DataFrame:
 # --------------------------------------------------------------------------------------
 # 2. Duplicate detection (exact + perceptual)
 # --------------------------------------------------------------------------------------
-def md5_of(path: str, chunk: int = 1 << 20) -> str:
-    h = hashlib.md5()
-    with open(path, "rb") as f:
-        while (b := f.read(chunk)):
-            h.update(b)
-    return h.hexdigest()
-
 
 def compute_hashes(df: pd.DataFrame) -> pd.DataFrame:
     try:
@@ -125,14 +122,17 @@ def compute_hashes(df: pd.DataFrame) -> pd.DataFrame:
     except ImportError:
         sys.exit("pip install imagehash")
 
+    from PIL import ImageOps
+
     md5s, phashes, sizes, bad = [], [], [], []
     for path in tqdm(df["path"], desc="hashing"):
         try:
             with Image.open(path) as im:
+                im = ImageOps.exif_transpose(im)
                 im = im.convert("RGB")
                 sizes.append(f"{im.width}x{im.height}")
                 phashes.append(str(imagehash.phash(im, hash_size=8)))
-            md5s.append(md5_of(path))
+                md5s.append(hashlib.md5(im.tobytes()).hexdigest())
         except Exception as e:  # corrupt file
             bad.append((path, repr(e)))
             sizes.append(""); phashes.append(""); md5s.append("")
@@ -146,12 +146,8 @@ def compute_hashes(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def _hex_to_bits(h: str) -> np.ndarray:
-    return np.array([int(b) for b in bin(int(h, 16))[2:].zfill(len(h) * 4)], dtype=np.uint8)
-
-
 def flag_duplicates(df: pd.DataFrame, threshold: int = 6) -> pd.DataFrame:
-    """Exact (md5) and near (pHash Hamming <= threshold) duplicate flagging.
+    """Exact (pixel md5) and near (pHash Hamming <= threshold) duplicate flagging.
 
     Near-duplicates get a shared `dup_cluster`. Keep ONE representative per cluster
     for training, but never let two members of a cluster land in different CV folds.
@@ -161,8 +157,15 @@ def flag_duplicates(df: pd.DataFrame, threshold: int = 6) -> pd.DataFrame:
     # exact
     df["is_exact_dup"] = df.duplicated(subset=["md5"], keep="first")
 
-    # near: bucket by the first 16 bits to keep pairwise cost sane, then exact Hamming.
-    bits = np.stack([_hex_to_bits(h) for h in df["phash"]])
+    # Warn about pixel-identical images with conflicting labels
+    label_per_md5 = df.groupby("md5")["label"].nunique()
+    n_conflicts = int((label_per_md5 > 1).sum())
+    if n_conflicts:
+        print(f"[WARN] {n_conflicts} pixel-identical image groups have CONFLICTING "
+              f"labels across sources -- review these manually!", file=sys.stderr)
+
+    # near: chunked brute force over 64-bit phashes for 100% recall
+    bits = np.array([int(h, 16) for h in df["phash"]], dtype=np.uint64)
     n = len(df)
     parent = list(range(n))
 
@@ -177,21 +180,13 @@ def flag_duplicates(df: pd.DataFrame, threshold: int = 6) -> pd.DataFrame:
         if ra != rb:
             parent[max(ra, rb)] = min(ra, rb)
 
-    buckets = defaultdict(list)
-    for i in range(n):
-        # multi-probe: 4 rotated 16-bit prefixes so a few flipped bits do not hide a pair
-        for shift in (0, 16, 32, 48):
-            key = (shift, bits[i, shift:shift + 16].tobytes())
-            buckets[key].append(i)
-
-    for idxs in tqdm(buckets.values(), desc="near-dup"):
-        if len(idxs) < 2 or len(idxs) > 4000:
-            continue
-        sub = bits[idxs]
-        d = (sub[:, None, :] != sub[None, :, :]).sum(-1)
-        ii, jj = np.where(np.triu(d <= threshold, k=1))
-        for a, b in zip(ii, jj):
-            union(idxs[a], idxs[b])
+    # Brute force 50M pairs in python (takes ~2 seconds for n=10k)
+    bits_list = bits.tolist()
+    for i in tqdm(range(n), desc="near-dup"):
+        h = bits_list[i]
+        for j in range(i + 1, n):
+            if (h ^ bits_list[j]).bit_count() <= threshold:
+                union(i, j)
 
     df["dup_cluster"] = [f"D{find(i):06d}" for i in range(n)]
     sizes = df["dup_cluster"].value_counts()
@@ -285,7 +280,8 @@ def audit(df: pd.DataFrame) -> dict:
     rep = {
         "n_images": int(len(df)),
         "n_exact_duplicates": int(df["is_exact_dup"].sum()),
-        "n_near_dup_clusters_gt1": int((df["dup_cluster_size"] > 1).sum()),
+        "n_images_in_near_dup_clusters": int((df["dup_cluster_size"] > 1).sum()),
+        "n_near_dup_clusters_gt1": int(df[df["dup_cluster_size"] > 1]["dup_cluster"].nunique()),
         "n_groups": int(df["group"].nunique()),
         "images_per_group_mean": float(g.size().mean()),
         "images_per_group_max": int(g.size().max()),
@@ -300,8 +296,29 @@ def audit(df: pd.DataFrame) -> dict:
         # a group that spans >1 label is either a clustering error or a labelling
         # inconsistency between source datasets -- both must be discussed in the paper
         "groups_spanning_labels": int((g["label"].nunique() > 1).sum()),
+        # pixel-identical images that got different labels across source datasets
+        "n_label_conflicts_exact_dup": int(
+            (df.groupby("md5")["label"].nunique() > 1).sum()),
     }
+
+    # Loud warnings for issues that affect downstream splits
+    n_span_labels = rep["groups_spanning_labels"]
+    n_span_sources = rep["groups_spanning_sources"]
+    n_groups = rep["n_groups"]
+    if n_span_labels:
+        print(f"\n[WARN] {n_span_labels}/{n_groups} identity groups "
+              f"({100*n_span_labels/n_groups:.0f}%) span MULTIPLE LABELS. "
+              f"This means the same child has different emotion labels across "
+              f"images. Downstream StratifiedGroupKFold class balancing will be "
+              f"approximate. Discuss this in the paper.", file=sys.stderr)
+    if n_span_sources:
+        print(f"[WARN] {n_span_sources}/{n_groups} identity groups "
+              f"({100*n_span_sources/n_groups:.0f}%) appear in MULTIPLE SOURCE "
+              f"DATASETS. Leave-One-Dataset-Out (LODO) evaluation is invalid.",
+              file=sys.stderr)
+
     return rep
+
 
 
 def main():

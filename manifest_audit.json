@@ -1,0 +1,60 @@
+{
+  "n_images": 10628,
+  "n_exact_duplicates": 1572,
+  "n_images_in_near_dup_clusters": 7501,
+  "n_near_dup_clusters_gt1": 2012,
+  "n_groups": 228,
+  "images_per_group_mean": 46.6140350877193,
+  "images_per_group_max": 2103,
+  "class_counts": {
+    "joy": 4590,
+    "sadness": 2451,
+    "anger": 1074,
+    "natural": 959,
+    "surprise": 936,
+    "fear": 618
+  },
+  "source_counts": {
+    "hasibur": 7600,
+    "nora": 1425,
+    "talaat": 833,
+    "ferac": 770
+  },
+  "class_x_source": {
+    "ferac": {
+      "anger": 74,
+      "fear": 49,
+      "joy": 463,
+      "natural": 184,
+      "sadness": 0,
+      "surprise": 0
+    },
+    "hasibur": {
+      "anger": 690,
+      "fear": 300,
+      "joy": 3500,
+      "natural": 480,
+      "sadness": 2000,
+      "surprise": 630
+    },
+    "nora": {
+      "anger": 240,
+      "fear": 236,
+      "joy": 235,
+      "natural": 240,
+      "sadness": 237,
+      "surprise": 237
+    },
+    "talaat": {
+      "anger": 70,
+      "fear": 33,
+      "joy": 392,
+      "natural": 55,
+      "sadness": 214,
+      "surprise": 69
+    }
+  },
+  "groups_spanning_sources": 189,
+  "groups_spanning_labels": 151,
+  "n_label_conflicts_exact_dup": 147
+}
