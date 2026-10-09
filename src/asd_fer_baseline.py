@@ -199,6 +199,13 @@ def load_manifest(cfg: Config) -> pd.DataFrame:
     if missing:
         raise ValueError(f"manifest missing columns: {missing}. Run build_manifest.py.")
     df = df[df["label"].isin(CLASSES)].copy()
+    if "is_photo_rep" in df.columns:
+        # One copy per PHOTOGRAPH. pHash clusters (below) miss mirrored, cropped,
+        # rotated and noised copies, so they leave ~5x too many "unique" images.
+        n0 = len(df)
+        df = df[df["is_photo_rep"].astype(bool)]
+        print(f"[data] kept {len(df)} photographs, dropped {n0 - len(df)} copies")
+        return df.sort_values("path").reset_index(drop=True)
     if cfg.drop_exact_dups and "is_exact_dup" in df.columns:
         n0 = len(df)
         df = df[~df["is_exact_dup"].astype(bool)]

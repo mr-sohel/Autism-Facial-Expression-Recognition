@@ -10,3 +10,4 @@ tqdm
 imagehash
 pillow
 facenet-pytorch
+opencv-python

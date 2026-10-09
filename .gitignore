@@ -54,11 +54,17 @@ venv.bak/
 !data/raw/.gitkeep
 data/processed/*
 !data/processed/.gitkeep
+# Research papers (ignored - large PDFs)
+Related_Research_Papers/
 
 runs/*
 !runs/.gitkeep
 !runs/manifest.csv
 !runs/demo/**
+!runs/unique_audit/
+runs/unique_audit/*
+!runs/unique_audit/photo_ids.csv
+!runs/unique_audit/unique_audit.json
 
 results/*
 !results/.gitkeep

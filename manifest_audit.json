@@ -3,9 +3,9 @@
   "n_exact_duplicates": 1572,
   "n_images_in_near_dup_clusters": 7501,
   "n_near_dup_clusters_gt1": 2012,
-  "n_groups": 228,
-  "images_per_group_mean": 46.6140350877193,
-  "images_per_group_max": 2103,
+  "n_groups": 176,
+  "images_per_group_mean": 60.38636363636363,
+  "images_per_group_max": 1940,
   "class_counts": {
     "joy": 4590,
     "sadness": 2451,
@@ -54,7 +54,50 @@
       "surprise": 69
     }
   },
-  "groups_spanning_sources": 189,
-  "groups_spanning_labels": 151,
-  "n_label_conflicts_exact_dup": 147
+  "groups_spanning_sources": 151,
+  "groups_spanning_labels": 113,
+  "n_label_conflicts_exact_dup": 147,
+  "n_pixel_unique_images": 9056,
+  "n_phash_clusters": 5139,
+  "n_unique_photos": 960,
+  "copies_per_photo_mean": 11.070833333333333,
+  "unique_photos_per_source": {
+    "ferac": 704,
+    "hasibur": 586,
+    "nora": 462,
+    "talaat": 645
+  },
+  "photos_exclusive_to_source": {
+    "ferac": 283,
+    "hasibur": 0,
+    "nora": 16,
+    "talaat": 42
+  },
+  "photos_in_multiple_sources": 619,
+  "representative_source_counts": {
+    "talaat": 645,
+    "ferac": 299,
+    "nora": 16
+  },
+  "class_counts_unique_photos": {
+    "joy": 553,
+    "natural": 137,
+    "sadness": 113,
+    "anger": 74,
+    "surprise": 42,
+    "fear": 41
+  },
+  "photos_with_conflicting_labels": 237,
+  "class_counts_unique_photos_no_conflict": {
+    "joy": 530,
+    "natural": 106,
+    "sadness": 52,
+    "surprise": 17,
+    "fear": 13,
+    "anger": 5
+  },
+  "photos_per_group_mean": 5.454545454545454,
+  "photos_per_group_median": 3.0,
+  "photos_per_group_max": 150,
+  "n_single_photo_groups": 42
 }

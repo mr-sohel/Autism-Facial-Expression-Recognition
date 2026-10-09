@@ -1,0 +1,74 @@
+{
+  "n_images": 10628,
+  "n_pixel_unique_images": 9056,
+  "n_phash_clusters": 5139,
+  "n_unique_photos": 960,
+  "copies_per_photo_mean": 11.070833333333333,
+  "copies_per_photo_max": 88,
+  "unique_photos_per_source": {
+    "ferac": 704,
+    "hasibur": 586,
+    "nora": 462,
+    "talaat": 645
+  },
+  "photos_by_n_sources": {
+    "1": 341,
+    "2": 100,
+    "3": 220,
+    "4": 299
+  },
+  "photos_exclusive_to_source": {
+    "ferac": 283,
+    "hasibur": 0,
+    "nora": 16,
+    "talaat": 42
+  },
+  "photos_per_label_first_seen": {
+    "joy": 543,
+    "natural": 154,
+    "sadness": 105,
+    "anger": 78,
+    "surprise": 45,
+    "fear": 35
+  },
+  "photos_with_conflicting_labels": 237,
+  "photos_split_across_identity_groups": 0,
+  "params": {
+    "model": "vit_base_patch16_224.augreg2_in21k_ft_in1k",
+    "top_k": 50,
+    "min_inliers": 12,
+    "sift_features": 500,
+    "parent_source": {
+      "hasibur": "talaat"
+    }
+  },
+  "n_filename_edges": 7686,
+  "n_unique_photos_matcher_only": 1130,
+  "matcher_validation_vs_filenames": {
+    "hasibur": {
+      "n_families": 760,
+      "family_size": 10,
+      "families_fully_recovered": 640,
+      "families_fully_recovered_frac": 0.8421052631578947,
+      "mean_photo_ids_per_family": 1.225,
+      "mean_phash_clusters_per_family": 6.410526315789474,
+      "images_linked_to_named_parent_frac": 0.9732894736842105
+    },
+    "nora": {
+      "n_families": 102,
+      "family_size": 1,
+      "families_fully_recovered": 99,
+      "families_fully_recovered_frac": 0.9705882352941176,
+      "mean_photo_ids_per_family": 1.0294117647058822,
+      "mean_phash_clusters_per_family": 1.5686274509803921
+    }
+  },
+  "n_unique_photos_by_min_inliers": {
+    "8": 888,
+    "10": 951,
+    "12": 960,
+    "15": 964,
+    "20": 968,
+    "30": 976
+  }
+}

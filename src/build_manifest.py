@@ -3,8 +3,9 @@
 build_manifest.py
 =================
 Step 0 of the publication-grade pipeline: turn a pile of merged ASD facial-emotion
-images into an auditable manifest with (a) exact + near-duplicate flags, (b) inferred
-subject/identity groups, and (c) source-dataset provenance.
+images into an auditable manifest with (a) exact + near-duplicate flags, (b) a
+`photo_id` shared by every copy of one photograph, (c) inferred subject/identity groups,
+and (d) source-dataset provenance.
 
 WHY THIS FILE EXISTS
 --------------------
@@ -19,7 +20,18 @@ It also produces the `source` column so you can run the two experiments reviewer
 always ask for on merged corpora:
   1. Source-probe: can a classifier predict which dataset an image came from?
      (High AUC => your emotion model may be exploiting dataset artifacts.)
-  2. Leave-one-dataset-out (LODO) generalization.
+  2. Leave-one-dataset-out (LODO) generalization -- ONLY if the audit shows the
+     sources do not share photographs or children. On the current four sources they
+     do (see `groups_spanning_sources`), so LODO is invalid there.
+
+PHOTOGRAPHS, NOT FILES
+----------------------
+pHash (`dup_cluster`) survives resizing and recompression but not the mirror / crop /
+rotation / noise augmentations these sources were built with: it reports 5,139 "unique"
+images where there are about 960 photographs. `photo_id` comes from the geometric
+matcher in audit_unique_images.py and is what everything downstream must use:
+train on `is_photo_rep` rows only, and identities are clustered per photograph so
+copies of one photo can never land in two groups.
 
 INPUT LAYOUT (flexible)
 -----------------------
@@ -31,18 +43,16 @@ Pass one or more roots as `name=path`, each containing class subfolders:
 
 USAGE
 -----
-    python build_manifest.py \
-        --roots nora=/kaggle/input/nora_mendeley \
-                ferac=/kaggle/input/ferac \
-                talaat=/kaggle/input/talaat \
-                hasibur=/kaggle/input/hasibur \
-        --out manifest.csv \
-        --phash-threshold 6 \
-        --identity-threshold 0.55
+    python src/build_manifest.py \
+        --roots nora=data/processed/nora ferac=data/processed/ferac \
+                talaat=data/processed/talaat hasibur=data/processed/hasibur \
+        --source-priority talaat ferac nora hasibur \
+        --out runs/manifest.csv
 
 DEPENDENCIES
 ------------
     pip install pillow imagehash numpy pandas scikit-learn tqdm
+    pip install torch timm opencv-python # photograph matching (audit_unique_images.py)
     pip install facenet-pytorch          # optional but STRONGLY recommended
 """
 
@@ -99,7 +109,8 @@ def scan_roots(roots: dict[str, str]) -> pd.DataFrame:
             if label is None:
                 unmapped.add(f"{source}:{raw_label}")
                 continue
-            rows.append({"path": str(p), "source": source,
+            # forward slashes: the manifest must load on Windows AND Linux/Kaggle
+            rows.append({"path": p.as_posix(), "source": source,
                          "raw_label": raw_label, "label": label})
     if unmapped:
         raise ValueError(
@@ -180,7 +191,7 @@ def flag_duplicates(df: pd.DataFrame, threshold: int = 6) -> pd.DataFrame:
         if ra != rb:
             parent[max(ra, rb)] = min(ra, rb)
 
-    # Brute force 50M pairs in python (takes ~2 seconds for n=10k)
+    # Brute force over all pairs in pure python (~56M pairs, about a minute at n=10k)
     bits_list = bits.tolist()
     for i in tqdm(range(n), desc="near-dup"):
         h = bits_list[i]
@@ -195,11 +206,52 @@ def flag_duplicates(df: pd.DataFrame, threshold: int = 6) -> pd.DataFrame:
 
 
 # --------------------------------------------------------------------------------------
-# 3. Identity (subject) clustering  -- the column that makes your splits defensible
+# 3. Photographs: augmentation-robust copy detection
+# --------------------------------------------------------------------------------------
+def mark_representatives(df: pd.DataFrame, source_priority: list[str]) -> pd.DataFrame:
+    """Pick the ONE copy of each photograph that training and evaluation may use.
+
+    Preference: the earliest source in `source_priority` (list the un-augmented
+    originals first), then a file not named `*_aug_*`, then path order. Also flags
+    photographs whose copies sit in different emotion folders -- the representative's
+    label is then only one of several claimed labels and needs adjudication.
+    """
+    df = df.copy()
+    rank = {s: i for i, s in enumerate(source_priority)}
+    order = pd.DataFrame({
+        "photo_id": df["photo_id"],
+        "src": df["source"].map(rank).fillna(len(rank)),
+        "aug": df["path"].map(lambda p: "_aug_" in Path(p).name),
+        "path": df["path"],
+    }).sort_values(["photo_id", "src", "aug", "path"])
+    df["is_photo_rep"] = df.index.isin(order.drop_duplicates("photo_id").index)
+    df["photo_label_conflict"] = df.groupby("photo_id")["label"].transform("nunique") > 1
+    return df
+
+
+def assign_photos(df: pd.DataFrame, cache_dir: str, min_inliers: int,
+                  parents: dict[str, str], device: str = "auto") -> pd.DataFrame:
+    """Add `photo_id` using the embedding-shortlist + SIFT/RANSAC matcher."""
+    from audit_unique_images import filename_edges, match_pairs, photo_ids
+
+    uniq, pairs, inl = match_pairs(df, cache_dir, device=device)
+    df = df.copy()
+    df["photo_id"] = photo_ids(df, uniq, pairs, inl, filename_edges(df, uniq, parents),
+                               min_inliers)
+    return df
+
+
+# --------------------------------------------------------------------------------------
+# 4. Identity (subject) clustering  -- the column that makes your splits defensible
 # --------------------------------------------------------------------------------------
 def infer_identities(df: pd.DataFrame, threshold: float = 0.55,
-                     batch_size: int = 64, device: str = "cuda") -> pd.DataFrame:
+                     batch_size: int = 64, device: str = "auto") -> pd.DataFrame:
     """Cluster faces by identity using FaceNet embeddings + agglomerative clustering.
+
+    ONE embedding per photograph (its representative), and every copy inherits that
+    group. Embedding all files instead lets the augmented copies vote: heavy-noise
+    copies of different children look alike to FaceNet and collapse into one giant
+    "child", while copies of a single photo get scattered over several groups.
 
     `threshold` is a cosine distance cut-off. 0.5-0.6 is the usual operating range for
     VGGFace2-trained InceptionResnetV1. TUNE IT: over-merging (too high) throws away
@@ -213,23 +265,27 @@ def infer_identities(df: pd.DataFrame, threshold: float = 0.55,
         import torch
         from facenet_pytorch import InceptionResnetV1
     except ImportError:
-        print("[warn] facenet-pytorch not installed -- falling back to dup_cluster as "
+        print("[warn] facenet-pytorch not installed -- falling back to photo_id as "
               "the grouping key. This is WEAKER: it removes duplicate leakage but NOT "
               "subject leakage. Install facenet-pytorch before submitting.",
               file=sys.stderr)
         df = df.copy()
-        df["group"] = df["dup_cluster"]
-        df["group_source"] = "dup_cluster_fallback"
+        df["group"] = df["photo_id"]
+        df["group_source"] = "photo_id_fallback"
         return df
 
+    from PIL import ImageOps
     from sklearn.cluster import AgglomerativeClustering
     from sklearn.preprocessing import normalize
 
-    device = device if torch.cuda.is_available() else "cpu"
+    if device == "auto":
+        device = ("cuda" if torch.cuda.is_available() else
+                  "xpu" if hasattr(torch, "xpu") and torch.xpu.is_available() else "cpu")
     net = InceptionResnetV1(pretrained="vggface2").eval().to(device)
 
-    embs, ok_idx = [], []
-    buf, buf_idx = [], []
+    reps = df[df["is_photo_rep"]]
+    embs, ok_photo = [], []
+    buf, buf_photo = [], []
 
     def flush():
         if not buf:
@@ -238,16 +294,16 @@ def infer_identities(df: pd.DataFrame, threshold: float = 0.55,
         with torch.no_grad():
             e = net(x).cpu().numpy()
         embs.append(e)
-        ok_idx.extend(buf_idx)
-        buf.clear(); buf_idx.clear()
+        ok_photo.extend(buf_photo)
+        buf.clear(); buf_photo.clear()
 
-    for i, path in enumerate(tqdm(df["path"], desc="embedding")):
+    for path, photo in zip(tqdm(reps["path"], desc="embedding"), reps["photo_id"]):
         try:
             with Image.open(path) as im:
-                im = im.convert("RGB").resize((160, 160))
-            t = torch.from_numpy(np.asarray(im)).permute(2, 0, 1).float()
+                im = ImageOps.exif_transpose(im).convert("RGB").resize((160, 160))
+            t = torch.from_numpy(np.asarray(im).copy()).permute(2, 0, 1).float()
             t = (t - 127.5) / 128.0
-            buf.append(t); buf_idx.append(i)
+            buf.append(t); buf_photo.append(photo)
         except Exception:
             continue
         if len(buf) == batch_size:
@@ -260,20 +316,16 @@ def infer_identities(df: pd.DataFrame, threshold: float = 0.55,
         metric="cosine", linkage="average",
     ).fit(E)
 
+    group_of = {p: f"ID{c:05d}" for p, c in zip(ok_photo, clust.labels_)}
     df = df.copy()
-    df["group"] = [f"UNK{i}" for i in range(len(df))]
-    df.loc[df.index[ok_idx], "group"] = [f"ID{c:05d}" for c in clust.labels_]
-    df["group_source"] = "facenet_agglomerative"
-
-    # A duplicate cluster must never straddle two identity groups.
-    for dc, sub in df.groupby("dup_cluster"):
-        if sub["group"].nunique() > 1:
-            df.loc[sub.index, "group"] = sub["group"].iloc[0]
+    # every copy of a photograph inherits its group; an unreadable one stands alone
+    df["group"] = [group_of.get(p, f"UNK_{p}") for p in df["photo_id"]]
+    df["group_source"] = "facenet_agglomerative_per_photo"
     return df
 
 
 # --------------------------------------------------------------------------------------
-# 4. Audit report
+# 5. Audit report
 # --------------------------------------------------------------------------------------
 def audit(df: pd.DataFrame) -> dict:
     g = df.groupby("group")
@@ -300,6 +352,34 @@ def audit(df: pd.DataFrame) -> dict:
         "n_label_conflicts_exact_dup": int(
             (df.groupby("md5")["label"].nunique() > 1).sum()),
     }
+
+    # ---- photograph level: these, not the file counts above, are the dataset size ----
+    r = df[df["is_photo_rep"]]
+    ph = df.groupby("photo_id")
+    per_group = r.groupby("group").size()
+    clean = r[~r["photo_label_conflict"]]
+    rep.update({
+        "n_pixel_unique_images": int(df["md5"].nunique()),
+        "n_phash_clusters": int(df["dup_cluster"].nunique()),
+        "n_unique_photos": int(len(r)),
+        "copies_per_photo_mean": float(ph.size().mean()),
+        "unique_photos_per_source": {s: int(d["photo_id"].nunique())
+                                     for s, d in df.groupby("source")},
+        "photos_exclusive_to_source": {
+            s: int(ph["source"].agg(lambda x: set(x) == {s}).sum())
+            for s in sorted(df["source"].unique())},
+        "photos_in_multiple_sources": int((ph["source"].nunique() > 1).sum()),
+        "representative_source_counts": r["source"].value_counts().to_dict(),
+        # label of the representative copy; arbitrary for the conflicting photos
+        "class_counts_unique_photos": r["label"].value_counts().to_dict(),
+        # the same photograph filed under different emotions by different files
+        "photos_with_conflicting_labels": int(r["photo_label_conflict"].sum()),
+        "class_counts_unique_photos_no_conflict": clean["label"].value_counts().to_dict(),
+        "photos_per_group_mean": float(per_group.mean()),
+        "photos_per_group_median": float(per_group.median()),
+        "photos_per_group_max": int(per_group.max()),
+        "n_single_photo_groups": int((per_group == 1).sum()),
+    })
 
     # Loud warnings for issues that affect downstream splits
     n_span_labels = rep["groups_spanning_labels"]
@@ -330,26 +410,51 @@ def main():
     ap.add_argument("--phash-threshold", type=int, default=6)
     ap.add_argument("--identity-threshold", type=float, default=0.55)
     ap.add_argument("--skip-identity", action="store_true")
+    ap.add_argument("--skip-photo-match", action="store_true",
+                    help="use pHash clusters as photo_id (fast, but misses augmented "
+                         "copies -- for smoke tests only)")
+    ap.add_argument("--photo-cache", default="runs/unique_audit",
+                    help="where verified image pairs are cached")
+    ap.add_argument("--min-inliers", type=int, default=12)
+    ap.add_argument("--parent-source", nargs="*", default=["hasibur=talaat"],
+                    help="child=parent: `<stem>_aug_<k>` in child is a copy of `<stem>` "
+                         "in the same label folder of parent")
+    ap.add_argument("--source-priority", nargs="*", default=None,
+                    help="sources in order of preference for a photo's representative "
+                         "copy; put un-augmented originals first (default: --roots order)")
+    ap.add_argument("--device", default="auto")
     args = ap.parse_args()
 
     roots = dict(r.split("=", 1) for r in args.roots)
+    priority = args.source_priority or list(roots)
+    unknown = set(priority) - set(roots)
+    if unknown:
+        ap.error(f"--source-priority names unknown sources: {sorted(unknown)}")
 
     df = scan_roots(roots)
-    print(f"[1/4] scanned {len(df)} images from {len(roots)} sources")
+    print(f"[1/5] scanned {len(df)} images from {len(roots)} sources")
 
     df = compute_hashes(df)
-    print("[2/4] hashes computed")
+    print("[2/5] hashes computed")
 
     df = flag_duplicates(df, args.phash_threshold)
-    print(f"[3/4] {df['is_exact_dup'].sum()} exact dups, "
+    print(f"[3/5] {df['is_exact_dup'].sum()} exact dups, "
           f"{(df['dup_cluster_size'] > 1).sum()} images in near-dup clusters")
 
-    if args.skip_identity:
-        df["group"] = df["dup_cluster"]
-        df["group_source"] = "dup_cluster_only"
+    if args.skip_photo_match:
+        df["photo_id"] = df["dup_cluster"]
     else:
-        df = infer_identities(df, args.identity_threshold)
-    print(f"[4/4] {df['group'].nunique()} identity groups")
+        df = assign_photos(df, args.photo_cache, args.min_inliers,
+                           dict(p.split("=", 1) for p in args.parent_source), args.device)
+    df = mark_representatives(df, priority)
+    print(f"[4/5] {df['photo_id'].nunique()} distinct photographs")
+
+    if args.skip_identity:
+        df["group"] = df["photo_id"]
+        df["group_source"] = "photo_id_only"
+    else:
+        df = infer_identities(df, args.identity_threshold, device=args.device)
+    print(f"[5/5] {df['group'].nunique()} identity groups")
 
     df.to_csv(args.out, index=False)
     rep = audit(df)
